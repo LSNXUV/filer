@@ -1,0 +1,40 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+
+    .tip {
+        font-size: 14px;
+        max-width: 450px;
+        text-align: center;
+        user-select: text;
+        -webkit-user-select: text;
+        word-break: break-word;
+    }
+
+	svg {
+		width: 60px;
+		height: 60px;
+		margin-bottom: 10px;
+		fill: #f0f0f0;
+	}
+    
+	button {
+		position: relative;
+		padding: 10px;
+		margin: 20px;
+		background-color: #f5222d;
+		border-radius: 5px;
+		width: 6rem;
+		line-height: 1.2rem;
+		border: none;
+		cursor: pointer;
+		transition: all 0.2s ease;
+		&:hover {
+			background-color: #c81b24;
+		}
+	}
+}
+

@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+
+    position: relative;
+
+    .welcome {
+        text-align: center;
+        line-height: 5rem;
+        font-size: 2.7em;
+        font-weight: 500;
+        margin: 0;
+        padding: 5px 0 0;
+        white-space: nowrap;
+    }
+
+    .open {
+        font-size: 1.5em;
+        font-weight: 400;
+        margin: 0;
+        padding: 5px 0 0;
+        white-space: nowrap;
+
+        color: #9D9D9D;
+
+        a {
+            color: #4DAAFC;
+            font-weight: 400;
+            cursor: pointer;
+
+            &:hover {
+                color: #abd1f1;
+            }
+        }
+    }
+
+
+    .botInfo {
+        position: absolute;
+        bottom: 15px;
+        font-size: 14px;
+        right: 50%;
+        transform: translateX(50%);
+
+        a {
+            text-decoration: underline;
+
+            &:hover {
+                color: #4DAAFC;
+                text-decoration: none;
+            }
+        }
+    }
+}

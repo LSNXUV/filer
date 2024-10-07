@@ -1,0 +1,33 @@
+.edit {
+	justify-content: center;
+	align-items: center;
+	padding: 2px;
+	height: var(--FileTree-File-height);
+	white-space: nowrap;
+  
+	input {
+		height: 100%;
+		width: 100%;
+		padding-left: 0.3rem;
+		font-size: 1em;
+		border-radius: 3px;
+		border: 1px solid #8e8f93;
+		background-color: #4f5360;
+		transition: all 0.3s;
+
+		&:focus {
+			outline: none;
+			border: 1px solid #3f97f4;
+		}
+
+		&::placeholder {
+			color: #dadbdd;
+			font-size: 0.9rem;
+		}
+	}
+
+	.icon {
+		margin-right: 5px;
+		display: flex;
+	}
+}

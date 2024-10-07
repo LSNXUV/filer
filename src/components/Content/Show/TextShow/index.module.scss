@@ -1,0 +1,19 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+
+	&::-webkit-scrollbar-thumb {
+		width: 8px;
+		background-color: #5e6fc3;
+	}
+
+	&::-webkit-scrollbar-corner {
+		background-color: transparent;
+	}
+    
+	&::-webkit-scrollbar {
+		width: 8px;
+		background-color: transparent;
+	}
+}

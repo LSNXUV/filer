@@ -1,0 +1,29 @@
+.menuContainer {
+	box-sizing: border-box;
+	position: absolute;
+	z-index: 99;
+	top: 100%;
+	width: 15rem;
+	display: flex;
+	flex-direction: column;
+	border-radius: 5px;
+	background-color: #2A2E3F;
+	overflow: hidden;
+	transition: all 0.3s;
+
+	.menuItem {
+		width: 100%;
+		font-size: 0.9rem;
+		line-height: 1.5rem;
+		padding: 5px 20px;
+		color: #ffffff;
+		cursor: pointer;
+		white-space: nowrap;
+		transition: all 0.3s ease;
+        
+		&:hover {
+			background-color: #171920;
+			color: #ffffff;
+		}
+	}
+}

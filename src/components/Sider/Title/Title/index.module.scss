@@ -1,0 +1,22 @@
+.titleContainer {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+
+    .title {
+        font-size: 1.4rem;
+        line-height: 2rem;
+        padding: 5px;
+        color: #25a6eb;
+        cursor: pointer;
+        transition: all 0.3s;
+        
+        &:hover {
+            color: #aebaf4;
+        }
+    }
+}
+

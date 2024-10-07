@@ -1,0 +1,44 @@
+@keyframes fadeDownIn {
+    0% {
+        opacity: 0;
+        top: -4rem;
+    }
+    100% {
+        opacity: 1;
+        top: 2rem;
+    }
+}
+
+.container {
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
+	height: 3rem;
+	padding: 1rem;
+	line-height: 3rem;
+	border-radius: 3px;
+	box-shadow: 0 0 16px 5px #3f4251;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5rem;
+	background-color: #53576b;
+	white-space: nowrap;
+	transition: top 0.3s ease, opacity 0.3s ease;
+	z-index: 9999;
+
+	.close {
+		position: absolute;
+		right: 2px;
+		top: 2px;
+		cursor: pointer;
+
+		svg {
+			display: block;
+		}
+        
+		&:hover {
+			background-color: #717070;
+		}
+	}
+}
