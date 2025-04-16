@@ -1,0 +1,87 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    padding-right: 0;
+
+    .btnContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        button {
+            position: relative;
+            padding: 10px;
+            margin: 10px;
+            background-color: #0078d4;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 1em;
+            width: 12rem;
+            line-height: 1.5rem;
+
+            &:hover {
+                background-color: #3fa0ea;
+                box-shadow: #317eb9 0 0 20px 2px;
+            }
+        }
+    }
+
+    .treeContainer {
+        display: flex;
+        position: relative;
+        flex-direction: column;
+        overflow: auto;
+        padding: 5px;
+        max-height: 80vh;
+        scrollbar-gutter: stable;
+
+        // overflow-x: scroll;
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #383c4f;
+
+            &:hover {
+                background-color: #5a5e6b;
+            }
+
+            &:active {
+                background-color: #878b99;
+            }
+        }
+
+        &::-webkit-scrollbar-corner {
+            background-color: transparent;
+        }
+
+        &::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+
+        .treeLoading {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            cursor: progress;
+        }
+    }
+}
+
+@keyframes loading {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loadnig {
+    margin: auto;
+    margin-top: 40px;
+    animation: loading 1s 0s linear infinite;
+}

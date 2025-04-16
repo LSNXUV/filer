@@ -1,0 +1,51 @@
+.container {
+    flex-shrink: 0;
+
+    width: var(--sider-width);
+    background-color: #1B1E2B;
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+
+    overflow: hidden;
+
+    &.unexpandContainer {
+        width: var(--sider-unexpand-width);
+    }
+
+    .expandIcon {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        cursor: pointer;
+        transform: rotate(0);
+
+        &:hover {
+            filter: brightness(1.2);
+        }
+
+        &.expand {
+            transform: rotateY(180deg);
+        }
+    }
+}
+
+.resizer {
+    flex-shrink: 0;
+    
+    width: 4px;
+    background-color: #2a2d3c;
+    cursor: col-resize;
+    user-select: none;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #5a5e6b;
+    }
+
+    &:active {
+        background-color: #878b99;
+    }
+}

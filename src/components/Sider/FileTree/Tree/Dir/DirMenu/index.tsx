@@ -3,60 +3,75 @@ import { useLang } from '@/lib/Context/Lang'
 import { useMessage } from '@/lib/Context/Message'
 import { useSingleInput } from '@/lib/Context/SingleInput'
 import { useFileOp } from '@/lib/Hooks/useFileOp'
-import { Files } from '@/lib/Types/File'
+
 import styles from './index.module.scss'
 import { memo, useCallback, useEffect } from 'react'
+import FileIcon from '@/components/Icons/File/File'
+import { backPath } from '@/lib/Utils/File'
 
-const DirMenu = memo(function DirMenu({isTop, file, show, toggle,dirToggle }: { 
+const DirMenu = memo(function DirMenu({ isTop, file, toggle, dirToggle }: {
     isTop: boolean, //是否为顶层目录
-    file: Files, 
-    show: boolean, 
+    file: Files,
     toggle: () => void,
-    dirToggle: (is?:boolean) => void,
+    dirToggle: (is?: boolean) => void,
 }) {
-    const {Lang} = useLang();
-    const {showMessage} = useMessage()
-    const {showSingleInput} = useSingleInput()
-    
-    const { deleteFile,openFileInExplorer,createFile} = useFileOp()
+    const { Lang } = useLang();
+    const { showMessage } = useMessage()
+    const { showSingleInput } = useSingleInput()
 
-    const createByName = useCallback(async function createByName(value: string,type: FileSystemHandleKind) {
-        const res = await createFile(value,file.path,type)
+    const { deleteFile, openFileInExplorer, createFile } = useFileOp()
+
+    const createByName = useCallback(async function createByName(value: string, type: FileSystemHandleKind) {
+        const res = await createFile(value, file.path, type)
         showMessage(
-            res.reason || 
-            type === 'file' 
-            ? Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.message.createFile
-            : Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.message.createDir,
+            res.reason ||
+                type === 'file'
+                ? Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.message.createFile
+                : Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.message.createDir,
             res.bool,
         )
-    }, [createFile,file.path,Lang,showMessage])
+    }, [createFile, file.path, Lang, showMessage])
 
     const handleCreateFile = useCallback(() => {
         showSingleInput({
             defaultValue: '',
             title: Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.handleCreateFile.singleInput.title,
-            info: file.path,
-            handle: (v:string)=>createByName(v,'file')}
-        )
+            info: (value) => {
+                return (
+                    <>
+                        <span>{backPath(file.path) + '/' + value}</span>
+                        <span>{value && <FileIcon name={value} />}</span>
+                    </>
+                )
+            },
+            handle: (v: string) => createByName(v, 'file')
+        })
         toggle()
         dirToggle(true)
-    }, [dirToggle,toggle,showSingleInput,Lang,createByName,file.path])
+    }, [dirToggle, toggle, showSingleInput, Lang, createByName, file.path])
 
     const handleCreateDir = useCallback(() => {
         showSingleInput({
             defaultValue: '',
             title: Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.handleCreateDir.singleInput.title,
-            info: file.path,
-            handle: (v:string)=>createByName(v,'directory')}
+            info: (value) => {
+                return (
+                    <>
+                        {file.path + '/'}
+                        {value}
+                    </>
+                )
+            },
+            handle: (v: string) => createByName(v, 'directory')
+        }
         )
         toggle()
         dirToggle(true)
-    }, [dirToggle,toggle,showSingleInput,Lang,createByName,file.path])
+    }, [dirToggle, toggle, showSingleInput, Lang, createByName, file.path])
 
     const handleOpenDirInExplorer = useCallback(() => {
         openFileInExplorer(file)
         toggle()
-        console.log('Open directory in explorer')
     }, [openFileInExplorer, file, toggle])
 
     const handleDeleteFile = useCallback(() => {
@@ -67,7 +82,7 @@ const DirMenu = memo(function DirMenu({isTop, file, show, toggle,dirToggle }: {
             )
             toggle()
         })
-    }, [toggle,deleteFile, file, showMessage, Lang])
+    }, [toggle, deleteFile, file, showMessage, Lang])
 
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
 
@@ -87,18 +102,17 @@ const DirMenu = memo(function DirMenu({isTop, file, show, toggle,dirToggle }: {
         if (event.key === 'Delete') {
             handleDeleteFile()
         }
-    }, [handleCreateFile,handleCreateDir,handleOpenDirInExplorer,handleDeleteFile]);
+    }, [handleCreateFile, handleCreateDir, handleOpenDirInExplorer, handleDeleteFile]);
 
     useEffect(() => {
-        if(!show) return
         document.addEventListener('keydown', handleKeyDown);
         return () => {
             document.removeEventListener('keydown', handleKeyDown);
         };
-    }, [handleKeyDown,show]);
+    }, [handleKeyDown]);
 
     return (
-        <div className={`bar ${styles.menu} ${show ? styles.show : ''}`}
+        <div className={`bar ${styles.menu}`}
             onClick={(e) => e.stopPropagation()}
             onKeyDown={(e) => e.stopPropagation()}
         >

@@ -1,0 +1,23 @@
+.file {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	padding: 2px;
+	height: var(--fileTree-file-height);
+	width: fit-content;
+	min-width: 100%;
+	white-space: nowrap;
+
+	&:hover {
+		background-color: #373b4a;
+	}
+
+	&.active {
+		background-color: #4f5360;
+	}
+
+	.icon {
+		margin-right: 5px;
+		display: flex;
+	}
+}

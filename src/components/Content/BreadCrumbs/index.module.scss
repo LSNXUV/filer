@@ -1,16 +1,18 @@
 
 .container{
-    /* margin: 10px 0; */
-    padding: 10px;
+    flex-shrink: 0;
+
+    padding: 6px;
     background-color: #1E1E1E;
     display: flex;
 
     align-items: center;
     white-space: nowrap;
-    width: var(--content-width);
+    
     overflow-x: auto;
+    overflow-y: hidden;
 
-    min-height: 2rem;
+    height: fit-content;
 
     &::-webkit-scrollbar {
         height: 4px;
@@ -39,6 +41,8 @@
 
         display: flex;
         align-items: center;
+
+        font-size: 0.9rem;
     }
 
     .route:hover {
@@ -64,7 +68,8 @@
     --shadow-color : rgb(91, 91, 91);
     box-shadow: 0 0 10px 3px var(--shadow-color);
 
-    
+    scrollbar-gutter: stable;
+
     &::-webkit-scrollbar-thumb {
         background-color: #383c4f;
     }

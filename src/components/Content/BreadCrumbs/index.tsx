@@ -1,13 +1,12 @@
 import { Right } from '@/components/Icons/Public/Direction'
-import { Tree } from '@/components/Sider/FileTree/Tree/Index'
+import { Tree } from '@/components/Sider/FileTree/Tree'
 import { Floating } from '@/components/public/Floating/Floating'
 import { useFiles } from '@/lib/Context/File'
-import { Files } from '@/lib/Types/File'
 import styles from './index.module.scss'
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
 
-const BreadCrumbs = memo(({path}:{
-    path:string
+const BreadCrumbs = memo(({ path }: {
+    path: string
 }) => {
     const { files } = useFiles()
     const [showTreeIndex, setShowTreeIndex] = useState<number>(-1)
@@ -32,7 +31,7 @@ const BreadCrumbs = memo(({path}:{
                 <Tree files={dir} />
             </div>
         )
-    },[paths,showTreeIndex])
+    }, [paths, showTreeIndex, files])
 
     const clickOutside = (e: MouseEvent) => {
         if (containerRef.current && !containerRef.current.contains(e.target as Node)
@@ -44,7 +43,7 @@ const BreadCrumbs = memo(({path}:{
         document.addEventListener('click', clickOutside)
         return () => document.removeEventListener('click', clickOutside)
     }, [])
-    
+
     return (
         <div className={styles.container} ref={containerRef}>
             {
@@ -67,9 +66,12 @@ const BreadCrumbs = memo(({path}:{
                     )
                 })
             }
-            <Floating show={showTreeIndex !== -1} position={treePosition}>
-                {showTreeIndex !== -1 && pathTree}
-            </Floating>
+            {
+                showTreeIndex !== -1 &&
+                <Floating position={treePosition}>
+                    {showTreeIndex !== -1 && pathTree}
+                </Floating>
+            }
         </div>
     )
 })

@@ -1,8 +1,9 @@
 .edit {
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	padding: 2px;
-	height: var(--FileTree-File-height);
+	height: var(--fileTree-file-height);
 	white-space: nowrap;
   
 	input {

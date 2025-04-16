@@ -10,7 +10,7 @@ export default function Menu({ show }: {
   const { Lang, changeLang } = useLang()
   const { showMessage } = useMessage()
 
-  const {hasFiles, openDirectoryPicker, resetDirectoryPicker, loadFilesAndHandles } = useFiles()
+  const { hasFiles, openDirectoryPicker, resetDirectoryPicker, loadFilesAndHandles } = useFiles()
   return (
     <div className={styles.menuContainer}
       style={{
@@ -18,19 +18,13 @@ export default function Menu({ show }: {
         padding: show ? '5px' : '0 5px',
       }}>
       <div className={styles.menuItem}
-        onClick={async () => {
-          const res = await openDirectoryPicker()
-          showMessage(
-            Lang.FileExploer.Sider.Title.Menu.message.selectFolder,
-            res
-          )
-        }}
+        onClick={openDirectoryPicker}
       >
         {Lang.FileExploer.Sider.Title.Menu.selectFolder}
       </div>
       <div className={`${styles.menuItem} ${hasFiles ? '' : 'disabled'}`}
         onClick={async () => {
-          if(!hasFiles) return;
+          if (!hasFiles) return;
           await loadFilesAndHandles()
           showMessage(
             Lang.FileExploer.Sider.Title.Menu.message.refresh,
@@ -41,8 +35,8 @@ export default function Menu({ show }: {
         {Lang.FileExploer.Sider.Title.Menu.refresh}
       </div>
       <div className={`${styles.menuItem} ${hasFiles ? '' : 'disabled'}`}
-        onClick={()=>{
-          if(!hasFiles) return;
+        onClick={() => {
+          if (!hasFiles) return;
           resetDirectoryPicker()
           showMessage(
             Lang.FileExploer.Sider.Title.Menu.message.reset,

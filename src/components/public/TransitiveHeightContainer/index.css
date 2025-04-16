@@ -1,0 +1,42 @@
+.thc-toggle-container {
+    overflow: hidden;
+}
+
+@supports (height: calc-size(auto, size)) {
+    .thc-toggle-container {
+        transition-property: height;
+    }
+
+    .thc-toggle-container.thc-toggle-container-expanded {
+        height: calc-size(auto, size);
+    }
+
+    .thc-toggle-container.thc-toggle-container-collapsed {
+        height: 0;
+    }
+}
+
+@supports (not (height: calc-size(auto, size))) and (grid-template-rows: 1fr) {
+    .thc-toggle-container {
+        display: grid;
+        transition-property: grid-template-rows;
+    }
+
+    .thc-toggle-container.thc-toggle-container-expanded {
+        grid-template-rows: 1fr;
+    }
+
+    .thc-toggle-container.thc-toggle-container-collapsed {
+        grid-template-rows: 0fr;
+    }
+}
+
+@supports (not (height: calc-size(auto, size))) and (not (grid-template-rows: 1fr)) {
+    .thc-toggle-container.thc-toggle-container-expanded {
+        height: auto;
+    }
+
+    .thc-toggle-container.thc-toggle-container-collapsed {
+        height: 0;
+    }
+}

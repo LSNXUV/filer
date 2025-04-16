@@ -1,0 +1,48 @@
+:root {
+  --file-tree-indent: calc((1rem + 4px) * 1.2);
+
+  --sider-width: 240px;
+  --sider-unexpand-width: calc(16px + 12px * 2);
+
+  --content-width: calc(100vw - var(--sider-width));
+
+  --fileTree-item-height: 1.5rem;
+  --fileTree-file-height: var(--fileTree-item-height);
+  --fileTree-dir-height: var(--fileTree-item-height);
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: dark;
+}
+
+// body {
+//   overflow: hidden;
+// }
+
+.bar {
+  &::-webkit-scrollbar-thumb {
+    background-color: #515256;
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-corner {
+    background-color: transparent;
+  }
+
+  &::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+}
+

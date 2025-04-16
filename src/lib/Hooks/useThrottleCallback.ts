@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { throttle } from "../Fun/debounce_throttle";
+import { throttle } from "../Utils/debounce_throttle";
 
 /**
  * 

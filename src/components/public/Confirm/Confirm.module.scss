@@ -22,6 +22,7 @@
 	scale: 0;
 
     .content {
+        position: relative;
         background-color: #45485a;
         width: 24rem;
         padding: 0.5rem;
@@ -64,6 +65,16 @@
                     background-color: #9f9f9f;
                     box-shadow: #878787 0 0 20px 2px;
                 }
+            }
+        }
+
+        .close {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            cursor: pointer;
+            &:hover {
+                filter: brightness(1.3);;
             }
         }
     }

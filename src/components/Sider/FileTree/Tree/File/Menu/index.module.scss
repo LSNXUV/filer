@@ -7,14 +7,7 @@
 	border-radius: 5px;
 	background-color: #2A2E3F;
 	box-shadow: 0 0 10px 0 rgba(0,0,0,0.5);
-	font-family: '宋体';
 	transition: all 0.2s;
-	transform: scale(0);
-
-	&.show {
-		transform: scale(1);
-		transform-origin: left;
-	}
 
 	div {
 		width: 300px;

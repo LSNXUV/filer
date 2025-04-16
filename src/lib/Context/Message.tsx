@@ -12,12 +12,12 @@ type MessageContextType = {
    */
   showMessage: (
     message: string | {
-      [key in MessageType]?:string
+      [key in MessageType]?: string
     },
     type?: MessageType | boolean,
     duration?: number,
   ) => void;
-  closeMessage: (index:string) => void;
+  closeMessage: (index: string) => void;
 };
 
 
@@ -32,40 +32,42 @@ export const useMessage = () => {
 };
 
 export const MessageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const {Lang} = useLang()
-  const [messages, setMessages] = useState<Record<string,Message>>({});
+  const { Lang } = useLang()
+  const [messages, setMessages] = useState<Record<string, Message>>({});
 
   const showMessage = useCallback((
     message: string | {
-      [key in MessageType]?:string;
+      [key in MessageType]?: string;
     },
-    type?:MessageType | boolean,
-    duration?: number 
+    type?: MessageType | boolean,
+    duration?: number
   ) => {
-    const id = new Date().getTime().toString() + message ;
+    const id = new Date().getTime().toString() + message;
     type = typeof type === 'boolean' ? (type ? 'success' : 'fail') : type || 'info';
-    if(typeof message !== 'string'){
+    if (typeof message !== 'string') {
       message = message[type] || Lang.Lib.Context.Message.showMessage.unkownMessage;
     }
-    setMessages((ms)=>{
-      return {...ms,
-        [id]:{
+    setMessages((ms) => {
+      return {
+        ...ms,
+        [id]: {
           message: message as string,
           duration: (duration || 3) * 1000,
           type: (type || 'info') as MessageType
-        }}
-      });
-  },[])
+        }
+      }
+    });
+  }, [Lang])
 
-  const closeMessage = useCallback((id:string) => {
+  const closeMessage = useCallback((id: string) => {
     setMessages((ms) => {
       const { [id]: _, ...rest } = ms;
       return rest;
     });
-  },[])
+  }, [])
 
   return (
-    <MessageContext.Provider value={{ showMessage,closeMessage }}>
+    <MessageContext value={{ showMessage, closeMessage }}>
       {children}
       {
         Object.keys(messages).map((id) => {
@@ -74,6 +76,6 @@ export const MessageProvider: React.FC<{ children: ReactNode }> = ({ children })
           );
         })
       }
-    </MessageContext.Provider>
+    </MessageContext>
   );
 };

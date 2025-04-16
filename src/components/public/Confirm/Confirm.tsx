@@ -1,18 +1,27 @@
 import { useLang } from '@/lib/Context/Lang';
 import styles from './Confirm.module.scss'
+import { Close } from '@/components/Icons/Public/Close';
 
 
 export type ConfirmType = 'confirm' | 'alert'
 
-export default function Confirm({show, title, info, onConfirm, onCancel,type = 'confirm' }: {
-    show:boolean;
-    title: string;
-    info: string;
-    onConfirm: () => any;
-    onCancel: () => any;
-    type: ConfirmType
-}) {
-    const {Lang} = useLang();
+export type ConfirmProps = {
+    title?: string;
+    info?: string;
+    onConfirm?: () => any;
+    onCancel?: () => any;
+    closable?: boolean;
+    onClose?: () => any;
+    type?: ConfirmType
+}
+
+export default function Confirm({
+    show, title, info,
+    onConfirm, onCancel,
+    closable = false, onClose,
+    type = 'confirm'
+}: ConfirmProps & { show: boolean }) {
+    const { Lang } = useLang();
 
     return (
         <div className={`${styles.container}`}
@@ -39,6 +48,7 @@ export default function Confirm({show, title, info, onConfirm, onCancel,type = '
                         </button>
                     }
                 </div>
+                {closable && <Close className={styles.close} onClick={onClose} />}
             </div>
         </div>
     )

@@ -1,0 +1,42 @@
+.dir {
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px;
+	height: var(--fileTree-dir-height);
+	width: fit-content;
+	min-width: 100%;
+	white-space: nowrap;
+
+	&:hover {
+		background-color: #373b4a;
+	}
+
+	.icon {
+		display: flex;
+
+		.arrow {
+			transition: transform 0.2s ease-in-out;
+			transform: rotate(0deg);
+
+			&.expanded {
+				transform: rotate(90deg);
+			}
+		}
+	}
+
+	@keyframes loading {
+		0% {
+			transform: rotate(0deg);
+		}
+
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+
+	.loadnig {
+		animation: loading 0.5s 0s linear infinite;
+	}
+}

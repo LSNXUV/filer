@@ -12,16 +12,10 @@
 	font-size: 0.9em;
 	white-space: nowrap;
 	transition: all 0.2s;
-	transform: scale(0);
 
 	.title {
 		font-size: 1.2em;
 		font-weight: 500;
 		margin-bottom: 5px;
-	}
-  
-	&.show {
-		transform: scale(1);
-		transform-origin: left;
 	}
 }

@@ -1,47 +1,35 @@
-import Confirm, { ConfirmType } from "@/components/public/Confirm/Confirm";
+import Confirm, { ConfirmProps, ConfirmType } from "@/components/public/Confirm/Confirm";
 import { ReactNode, createContext, useCallback, useContext, useEffect, useState } from "react";
 import { useLang } from "./Lang";
 
 const ConfirmContext = createContext<{
-    confirm: ({title, info, onConfirm, onCancel,type}:{
-        title?:string;
-        info?:string;
-        onConfirm?:() => void;
-        onCancel?:() => void;
-        type?: ConfirmType
-    }) => Promise<boolean>;
-    alert: ({title, info, onConfirm}:{
-        title?:string;
-        info?:string;
-        onConfirm?:() => void;
-    }) => Promise<boolean>;
+    confirm: (props: Omit<ConfirmProps, 'type'>) => Promise<boolean>;
+    alert: (props: Omit<ConfirmProps, 'onCancel' | 'closable' | 'onClose' | 'type'>) => Promise<boolean>;
 } | null>(null);
 
-export const ConfirmProvider: React.FC<{ children: ReactNode }>  = ({ children }) => {
-    const {Lang} = useLang();
+export const ConfirmProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+    const { Lang } = useLang();
 
     const [show, setShow] = useState(false);
-    console.log(Lang);
+
     const [title, setTitle] = useState(Lang.Lib.Context.Confirm.defaultTitle);
     const [info, setInfo] = useState(Lang.Lib.Context.Confirm.defaultInfo);
-    const [onConfirm, setOnConfirm] = useState(() => () => {});
-    const [onCancel, setOnCancel] = useState(() => () => {});
+    const [onConfirm, setOnConfirm] = useState(() => () => { });
+    const [onCancel, setOnCancel] = useState(() => () => { });
+    const [closable, setClosable] = useState(false);
+    const [onClose, setOnClose] = useState(() => () => { });
     const [type, setType] = useState<ConfirmType>('confirm')
 
-    const confirm = useCallback(({title, info, onConfirm, onCancel,type}:{
-        title?:string;
-        info?:string;
-        onConfirm?:() => void;
-        onCancel?:() => void;
-        type?: ConfirmType
-    }) => {
+    const confirm = useCallback(({ title, info, onConfirm, onCancel, type, closable, onClose }: ConfirmProps) => {
         title && setTitle(title);
         info && setInfo(info);
-        type && setType(type)
+        type && setType(type);
+        closable && setClosable(closable);
+        onClose && setOnClose(() => onClose);
 
         setShow(true);
 
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise<boolean>((resolve, _) => {
             setOnConfirm(() => () => {
                 onConfirm?.();
                 setShow(false);
@@ -50,45 +38,50 @@ export const ConfirmProvider: React.FC<{ children: ReactNode }>  = ({ children }
             setOnCancel(() => () => {
                 onCancel?.();
                 setShow(false);
-                reject(false);
+                resolve(false);
             });
         });
-    },[])
+    }, [])
 
-    const alert = useCallback(({title, info, onConfirm}:{
-        title?:string;
-        info?:string;
-        onConfirm?:() => void;
-    }) => {
-        
+    const alert = useCallback(({ title, info, onConfirm }: Omit<ConfirmProps, 'onCancel' | 'closable' | 'onClose' | 'type'>) => {
+
         return confirm({
-            title,info,onConfirm,
-            type:'alert'
+            title, info, onConfirm,
+            type: 'alert',
         })
-    },[confirm])
+    }, [confirm])
 
     const confirmHandle = useCallback(() => {
         onConfirm();
         setShow(false);
-    },[onConfirm])
+    }, [onConfirm])
 
     const cancelHandle = useCallback(() => {
         onCancel();
         setShow(false);
-    },[onCancel])
+    }, [onCancel])
+
+    const onCloseHandle = useCallback(() => {
+        setShow(false);
+        onClose();
+    }, [onClose])
 
     useEffect(() => {
         setTitle(Lang.Lib.Context.Confirm.defaultTitle);
         setInfo(Lang.Lib.Context.Confirm.defaultInfo);
-    },[Lang.Lib.Context.Confirm])
+    }, [Lang.Lib.Context.Confirm])
 
 
     // console.log('confirm render!!!')
     return (
-        <ConfirmContext.Provider value={{ confirm,alert }}>
+        <ConfirmContext value={{ confirm, alert }}>
             {children}
-            <Confirm show={show} title={title} info={info} type={type} onConfirm={confirmHandle} onCancel={cancelHandle}/>
-        </ConfirmContext.Provider>
+            <Confirm show={show}
+                title={title} info={info} type={type}
+                onConfirm={confirmHandle} onCancel={cancelHandle}
+                closable={closable} onClose={onCloseHandle}
+            />
+        </ConfirmContext>
     );
 };
 

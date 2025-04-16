@@ -1,18 +1,18 @@
 import { useLang } from '@/lib/Context/Lang'
-import { formatFileSize } from '@/lib/Fun/File'
-import { Files } from '@/lib/Types/File'
+import { formatFileSize } from '@/lib/Utils/File'
+
 import styles from './index.module.scss'
 import { memo, useMemo } from 'react'
 
-const DirDetail = memo(function DirDetail({ file, show }: { file: Files, show: boolean }) {
-    const {Lang} = useLang();
-    
-    const dirSize = useMemo(() =>{
+const DirDetail = memo(function DirDetail({ file }: { file: Files }) {
+    const { Lang } = useLang();
+
+    const dirSize = useMemo(() => {
         let size = 0
-        const calcSize = (file: Files) =>{
-            if(file.kind === 'file'){
+        const calcSize = (file: Files) => {
+            if (file.kind === 'file') {
                 size += file.size || 0
-            }else{
+            } else {
                 for (const f of file.children) {
                     calcSize(f)
                 }
@@ -22,7 +22,7 @@ const DirDetail = memo(function DirDetail({ file, show }: { file: Files, show: b
         return size
     }, [file])
     return (
-        <div className={`bar ${styles.detail} ${true ? styles.show : ''}`}
+        <div className={`bar ${styles.detail}`}
             onClick={(e) => e.stopPropagation()}
         >
             <div className={styles.title}>{Lang.FileExploer.Sider.FileTree.Tree.Dir.DirDetail.title}</div>

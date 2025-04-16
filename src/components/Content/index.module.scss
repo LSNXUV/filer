@@ -1,0 +1,12 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    height: 100vh;
+
+    background-color: #292D3E;
+
+    width: var(--content-width);
+
+}

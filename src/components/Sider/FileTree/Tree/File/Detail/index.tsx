@@ -1,15 +1,14 @@
 import { useLang } from '@/lib/Context/Lang'
-import { formatFileSize } from '@/lib/Fun/File'
-import { Files } from '@/lib/Types/File'
+import { formatFileSize } from '@/lib/Utils/File'
+
 import styles from './index.module.scss'
-import exp from 'constants'
 import { memo } from 'react'
 
-const FileDetail = memo(function FileDetail({ file, show }: { file: Files, show: boolean }) {
+const FileDetail = memo(function FileDetail({ file}: { file: Files }) {
     const {Lang} = useLang();
     
     return (
-        <div className={`bar ${styles.detail} ${true ? styles.show : ''}`}
+        <div className={`bar ${styles.detail}`}
             onClick={(e) => e.stopPropagation()}
         >
             <div className={styles.title}>{Lang.FileExploer.Sider.FileTree.Tree.File.FileDetail.title}</div>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import "@/styles/globals.scss";
+import "@/styles/global.scss";
 
 export const metadata: Metadata = {
   icons: [

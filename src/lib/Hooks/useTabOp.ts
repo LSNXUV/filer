@@ -1,6 +1,5 @@
 import { useCallback } from "react";
 import { useFiles } from "../Context/File";
-import { Files } from "../Types/File"
 
 export function useTabOp():{
     /**
@@ -41,7 +40,7 @@ export function useTabOp():{
         }
         setTabs((ts) => [...ts, file]);
         setSelect(() => tabs.length);
-    },[tabs])
+    },[tabs,setTabs,setSelect])
 
     const selectedFile = tabs[select];
 
@@ -57,7 +56,7 @@ export function useTabOp():{
         if (select < 0) {
             setSelect(() => tabs.length);
         }
-    },[tabs])
+    },[tabs,select,setTabs,setSelect])
 
     const closeFile = useCallback((param: number | Files): void => {
         let index: number;
@@ -80,7 +79,7 @@ export function useTabOp():{
             }
             return Math.min(select, len - 1);
         });
-    },[tabs])
+    },[tabs,setTabs,setSelect])
     
     // console.log('useTabOp render!!!')
     return {
