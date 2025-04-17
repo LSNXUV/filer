@@ -33,7 +33,6 @@ export default function Sider() {
     e.preventDefault();
     setHasWidthTransition?.(false); // 禁用过渡动画
     const startX = e.clientX;
-    const root = document.documentElement;
 
     const handleMouseMove = (e: MouseEvent) => {
       const delta = e.clientX - startX;
@@ -54,7 +53,7 @@ export default function Sider() {
 
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', handleMouseUp);
-  }, [toggleSider])
+  }, [toggleSider, width])
 
   return (
     <>
