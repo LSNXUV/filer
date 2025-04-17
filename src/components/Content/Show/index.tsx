@@ -6,6 +6,8 @@ import TextShow from "./Text"
 import NotSupport from "./NotSupport"
 import VideoShow from "./Video"
 import AudioShow from "./Audio"
+import { useFiles } from '@/lib/Context/File'
+import { useTabOp } from '@/lib/Hooks/useTabOp'
 
 const showFileMap: {
   [key: string]: React.FC<{
@@ -18,31 +20,38 @@ const showFileMap: {
   'default': TextShow, // 文本或代码
 }
 
-const Show = ({ file }: { file: Files }) => {
+const ShowFile = ({ file }: { file: Files }) => {
   const ext = file.name.split('.').pop() || 'not'
 
-  const ShowComponent = notSupportOpenExt.includes(ext)
+  const ShowFileComponent = notSupportOpenExt.includes(ext)
     ? NotSupport
     : showFileMap[file.type.split('/')[0]] || showFileMap['default']
 
-  return <ShowComponent file={file} />
+  return <ShowFileComponent file={file} />
 }
 
-const ShowFile = ({ file, show }: {
-  file: Files,
-  show: boolean
-}) => {
+const Show = () => {
+  const { tabs } = useFiles()
+  const { selectedFile } = useTabOp()
+
   return (
-    <div className={styles.container}
-      style={{
-        display: show ? '' : 'none',
-      }}
-    >
-      <Show file={file} />
-    </div>
+    <div className={styles.container}>
+      {
+        tabs.map((file, _) => (
+          <div key={file.path}
+            className={styles.showContainer}
+            style={{
+              display: selectedFile.path === file.path ? '' : 'none',
+            }}
+          >
+            <ShowFile file={file} />
+          </div>
+        ))
+      }
+    </div >
   )
 }
 
-ShowFile.displayName = 'ShowFile'
+Show.displayName = 'Show'
 
-export default ShowFile;
+export default Show;

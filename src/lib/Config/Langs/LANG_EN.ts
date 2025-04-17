@@ -5,8 +5,6 @@ export const LANG_EN: LangStruct = {
                 loadFilesAndHandles: {
                     notExist: 'In the case of no root directory handle, the file handle cannot be reloaded',
                     files: 'Folder Handle: ',
-                    fileHandles: 'File Handle Map: ',
-                    dirHandles: 'Directory Handle Map: '
                 },
                 openDirectoryPicker: {
                     notSupport: 'Not support'

@@ -1,0 +1,59 @@
+.resultContainer {
+    display: flex;
+    flex-direction: column;
+    padding-top: 4px;
+    padding-right: 4px;
+
+    position: relative;
+
+    &.unexpand {
+        height: 28px;
+    }
+
+    pre {
+        padding: 10px;
+        padding-left: 20px;
+        font-family: 'Courier New', Courier, monospace;
+        overflow: auto;
+
+        scrollbar-gutter: stable;
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #383c4f;
+
+            &:hover {
+                background-color: #5a5e6b;
+            }
+
+            &:active {
+                background-color: #878b99;
+            }
+        }
+
+        &::-webkit-scrollbar-corner {
+            background-color: transparent;
+        }
+
+        &::-webkit-scrollbar {
+            height: 8px;
+            width: 8px;
+        }
+    }
+
+    .close {
+        position: absolute;
+        top: 6px;
+        right: 6px + 8px + 4px;
+        cursor: pointer;
+        transform: rotate(90deg);
+        transition: all 0.2s ease;
+
+        &:hover {
+            filter: brightness(1.3);
+        }
+
+        &.unexpand {
+            transform: rotate(-90deg);
+        }
+    }
+}

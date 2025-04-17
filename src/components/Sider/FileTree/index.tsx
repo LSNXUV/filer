@@ -7,39 +7,6 @@ import { useMessage } from '@/lib/Context/Message';
 import { TransitionStartFunction, useEffect, useTransition } from 'react';
 import { DirLoadingIcon } from '@/components/Icons/File/Dir';
 
-export default function FileTree({ }: {
-}) {
-
-    const [isRefreshing, starTransition] = useTransition()
-    const { files, loading } = useFiles()
-
-    if (!files) {
-        return (
-            <>
-                <NoFile />
-                {loading && <DirLoadingIcon className={styles.loadnig} size={128} />}
-            </>
-        )
-    }
-    return (
-        <>
-            <div className={styles.container}>
-                <Buttons starTransition={starTransition} />
-
-                <div className={styles.treeContainer} style={{
-                    opacity: isRefreshing ? 0.5 : 1,
-                }}>
-                    <Tree files={files} />
-                    {
-                        isRefreshing &&
-                        (<div className={styles.treeLoading}></div>)
-                    }
-                </div>
-            </div>
-        </>
-    )
-}
-
 function Buttons({ starTransition }: {
     starTransition: TransitionStartFunction
 }) {
@@ -64,4 +31,42 @@ function Buttons({ starTransition }: {
         </div>
     )
 }
+
+export default function FileTree({ }: {
+}) {
+
+    const [isRefreshing, starTransition] = useTransition()
+    const { files, loading } = useFiles()
+
+    if (!files) {
+        return (
+            <>
+                <NoFile />
+                {
+                    loading &&
+                    <DirLoadingIcon className={styles.loadnig} size={128} />
+                }
+            </>
+        )
+    }
+    return (
+        <>
+            <div className={styles.container}>
+                <Buttons starTransition={starTransition} />
+
+                <div className={styles.treeContainer} style={{
+                    opacity: isRefreshing ? 0.5 : 1,
+                }}>
+                    <Tree files={files} />
+                    {
+                        isRefreshing &&
+                        (<div className={styles.treeLoading}></div>)
+                    }
+                </div>
+            </div>
+        </>
+    )
+}
+
+
 

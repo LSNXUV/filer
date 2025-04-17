@@ -9,13 +9,16 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@monaco-editor/react": "^4.6.0",
+    "@babel/standalone": "^7.27.0",
+    "@monaco-editor/react": "4.7.0-rc.0",
+    "idb": "^8.0.2",
     "next": "15.3.0",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sass": "1.77.6"
   },
   "devDependencies": {
+    "@types/babel__standalone": "^7.1.9",
     "@types/node": "^20",
     "@types/react": "19.1.1",
     "@types/react-dom": "19.1.2",

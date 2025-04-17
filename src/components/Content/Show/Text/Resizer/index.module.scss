@@ -1,0 +1,20 @@
+.resizer {
+    position: absolute;
+    width: 100%;
+    top: -1px;
+    flex-shrink: 0;
+    
+    height: var(--resizer-width);
+    background-color: #212533;
+    cursor: row-resize;
+    user-select: none;
+    transition: background-color 0.2s;
+
+    &:hover {
+        background-color: #5a5e6b;
+    }
+
+    &:active {
+        background-color: #878b99;
+    }
+}

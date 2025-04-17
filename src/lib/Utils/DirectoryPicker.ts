@@ -16,8 +16,6 @@ export async function showDirectoryPicker(onSuccess?: (dirHandle: FileSystemDire
 export async function processHandle(
     dirHandle: FileSystemDirectoryHandle,
     path: string = '',
-    fileHandleMap: Map<string, FileSystemFileHandle>,
-    dirHandleMap: Map<string, FileSystemDirectoryHandle>,
     /** 处理层级, 默认3 */
     level: number = 3
 ): Promise<Files> {
@@ -31,8 +29,6 @@ export async function processHandle(
         children: [],
         loaded: level !== 0,
     };
-    //保存文件夹句柄
-    dirHandleMap.set(files.path, dirHandle);
 
     if (level === 0) {
         return files;
@@ -50,10 +46,8 @@ export async function processHandle(
                 children: []
             };
             files.children.push(file);
-            //保存文件句柄
-            fileHandleMap.set(file.path, entry);
         } else if (entry.kind === 'directory') {
-            files.children.push(await processHandle(entry, files.path, fileHandleMap, dirHandleMap, level - 1));
+            files.children.push(await processHandle(entry, files.path, level - 1));
         }
     }
     files.children.sort((a, b) => {

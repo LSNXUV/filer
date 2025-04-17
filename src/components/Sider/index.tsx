@@ -5,25 +5,16 @@ import styles from './index.module.scss'
 import FileTree from './FileTree'
 import Title from './Title/Title'
 import { Expand } from '../Icons/Public/Close'
-import homeStyle from '../FileExploer/index.module.scss'
-
 
 export default function Sider() {
 
   const [expand, setExpand] = useState(true)
 
+  const [width, setWidth] = useState(240)
   const [hasWidthTransition, setHasWidthTransition] = useState(true)
 
   const toggleSider = useCallback((b?: boolean) => {
-    setExpand(s => {
-      const res = b ?? !s;
-      if (!res) {
-        document.documentElement.style.setProperty('--content-width', `calc(100vw - var(--sider-unexpand-width))`)
-      } else {
-        document.documentElement.style.setProperty('--content-width', 'calc(100vw - var(--sider-width))')
-      }
-      return res;
-    });
+    setExpand(s => b ?? !s);
   }, [])
 
   useEffect(() => {
@@ -43,19 +34,16 @@ export default function Sider() {
     setHasWidthTransition?.(false); // 禁用过渡动画
     const startX = e.clientX;
     const root = document.documentElement;
-    const initialWidth = parseInt(
-      getComputedStyle(root).getPropertyValue('--sider-width')
-    );
 
     const handleMouseMove = (e: MouseEvent) => {
       const delta = e.clientX - startX;
-      const newWidth = Math.max(200, initialWidth + delta); // 限制最小宽度
-      if (initialWidth + delta < 100) {
-        toggleSider?.(false);
+      const newWidth = Math.max(200, width + delta); // 限制最小宽度
+      if (width + delta < 100) {
+        toggleSider?.(false); // 过小则收起
       } else {
         toggleSider?.(true);
       }
-      root.style.setProperty('--sider-width', `${newWidth}px`);
+      setWidth(newWidth);
     };
 
     const handleMouseUp = () => {
@@ -73,6 +61,7 @@ export default function Sider() {
       <div
         className={`${styles.container} ${expand ? '' : styles.unexpandContainer}`}
         style={{
+          width,
           transition: hasWidthTransition ? 'width 0.2s ease-in-out' : 'none',
         }}
       >

@@ -80,7 +80,10 @@ export function useFileOp(): {
 
 
     const deleteFile = useCallback(async (file: Files, confirmShow: boolean = true) => {
-        const dirHandle = getDirHandle(backPath(file.path)) as FileSystemDirectoryHandle;
+        const dirHandle = await getDirHandle(backPath(file.path));
+        if (!dirHandle) { 
+            return true
+        }
         try {
             if (confirmShow && !(await confirm({
                 info: Lang.Lib.Hooks.useFileOp.deleteFile.confirm.tip,
@@ -106,11 +109,11 @@ export function useFileOp(): {
         if (name === file.name) return true;
         if (file.kind === 'file') {
             try {
-                const fileHandle = getFileHandle(file.path);
+                const fileHandle = await getFileHandle(file.path);
                 if (!fileHandle) {
                     return false;
                 }
-                const dirHandle = getDirHandle(backPath(file.path));
+                const dirHandle = await getDirHandle(backPath(file.path));
                 if (!dirHandle) {
                     return false;
                 }
@@ -142,7 +145,7 @@ export function useFileOp(): {
     }, [Lang, alert])
 
     const createFile = useCallback(async (name: string, path: string, type: FileSystemHandleKind): Promise<{ bool: boolean, reason?: string }> => {
-        const dirHandle = getDirHandle(path) as FileSystemDirectoryHandle;
+        const dirHandle = await getDirHandle(path);
         if (!dirHandle) {
             console.log('error', dirHandle)
             return {
@@ -170,7 +173,7 @@ export function useFileOp(): {
     }, [Lang, getDirHandle, loadFilesAndHandles])
 
     const getFile = useCallback(async (path: string): Promise<File | undefined> => {
-        const fileHandle = getFileHandle(path)
+        const fileHandle = await getFileHandle(path)
         // if(!fileHandle) return
         return await fileHandle?.getFile()
     }, [getFileHandle])
@@ -190,7 +193,7 @@ export function useFileOp(): {
     }, [getFile])
 
     const updateFile = useCallback(async (file: Files, text: string) => {
-        const fileHandle = getFileHandle(file.path)
+        const fileHandle = await getFileHandle(file.path)
         if (!fileHandle) return false
         try {
             const newFile = new File([text], file.name, {

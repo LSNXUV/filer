@@ -1,7 +1,6 @@
 .container {
     flex-shrink: 0;
 
-    width: var(--sider-width);
     background-color: #1B1E2B;
 
     display: flex;
@@ -12,7 +11,7 @@
     overflow: hidden;
 
     &.unexpandContainer {
-        width: var(--sider-unexpand-width);
+        width: var(--sider-unexpand-width) !important;
     }
 
     .expandIcon {
@@ -35,8 +34,8 @@
 .resizer {
     flex-shrink: 0;
     
-    width: 4px;
-    background-color: #2a2d3c;
+    width: var(--resizer-width);
+    background-color: #212533;
     cursor: col-resize;
     user-select: none;
     transition: background-color 0.2s;

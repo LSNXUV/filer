@@ -4,9 +4,7 @@ export const LANG_ZH: LangStruct = {
             File: {
                 loadFilesAndHandles: {
                     notExist: '在不存在根目录句柄的情况下,无法重新加载文件句柄',
-                    files: '文件夹Handle: ',
-                    fileHandles: '文件句柄Map: ',
-                    dirHandles: '文件夹句柄Map: '
+                    files: '文件夹Handle: '
                 },
                 openDirectoryPicker: {
                     notSupport: '暂不支持'

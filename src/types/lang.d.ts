@@ -4,9 +4,7 @@ interface LangStruct {
             File: {
                 loadFilesAndHandles: {
                     notExist: string,
-                    files: string,
-                    fileHandles: string,
-                    dirHandles: string
+                    files: string
                 },
                 openDirectoryPicker: {
                     notSupport: string

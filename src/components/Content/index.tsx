@@ -1,6 +1,6 @@
 
 import styles from './index.module.scss'
-import ShowFile from './Show/index'
+import Show from './Show/index'
 import BreadCrumbs from './BreadCrumbs/index'
 import Tabs from './Tabs/index'
 import InitContent from './InitContent'
@@ -55,13 +55,7 @@ export default function Content() {
             : <>
               <Tabs />
               <BreadCrumbs path={selectedFile.path} />
-              {
-                tabs.map((file, _) => {
-                  return (
-                    <ShowFile key={file.path} file={file} show={selectedFile.path === file.path} />
-                  )
-                })
-              }
+              <Show />
             </>
         }
 

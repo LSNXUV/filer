@@ -3,7 +3,7 @@
     flex-shrink: 0;
 
     padding: 6px;
-    background-color: #1E1E1E;
+    background-color: #292D3E;
     display: flex;
 
     align-items: center;
@@ -12,16 +12,17 @@
     overflow-x: auto;
     overflow-y: hidden;
 
-    height: fit-content;
+    // height: fit-content;
+    height: var(--content-breadcrumbs-height);
 
     &::-webkit-scrollbar {
         height: 4px;
         width: 6px;
-        background-color: #1E1E1E;
+        background-color: #292D3E;
     }
     
     &::-webkit-scrollbar-thumb {
-        background-color: #1E1E1E;
+        background-color: #292D3E;
         border-radius: 2px;
     }
     
@@ -42,7 +43,8 @@
         display: flex;
         align-items: center;
 
-        font-size: 0.9rem;
+        font-size: 14px;
+        line-height: 20px;
     }
 
     .route:hover {

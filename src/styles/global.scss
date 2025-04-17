@@ -1,10 +1,12 @@
 :root {
-  --file-tree-indent: calc((1rem + 4px) * 1.2);
+  --file-tree-indent: calc(1rem * 1.4); // 文件树的缩进
 
-  --sider-width: 240px;
-  --sider-unexpand-width: calc(16px + 12px * 2);
+  --resizer-width: 4px;   // 拖拽调整resizer的宽度
 
-  --content-width: calc(100vw - var(--sider-width));
+  --sider-unexpand-width: calc(16px + 12px * 2);    // sider未展开的宽度
+
+  --content-tabs-height: 40px;  // tabs的高度
+  --content-breadcrumbs-height: 32px; // breadcrumbs的高度
 
   --fileTree-item-height: 1.5rem;
   --fileTree-file-height: var(--fileTree-item-height);

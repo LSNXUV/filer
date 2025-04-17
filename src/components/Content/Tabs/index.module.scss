@@ -8,11 +8,12 @@
     overflow-y: hidden;
     transition: all 0.3s;
 
-    height: fit-content;
+    // height: fit-content;
+    height: var(--content-tabs-height);
 
     &::-webkit-scrollbar {
         height: 4px;
-        background-color: #1E1E1E;
+        background-color: #292D3E;
     }
 
     &::-webkit-scrollbar-thumb {
@@ -34,23 +35,24 @@
         gap: 4px;
         align-items: center;
         padding: 6px 8px;
-        background-color: #3d3d3d;
+        background-color: #3b3f51;
         cursor: pointer;
 
         width: fit-content;
         max-width: 200px;
-        border-top: 3px solid transparent;
-        border-right: 2px solid #4c4c4c;
         white-space: nowrap;
         line-height: 1.5rem;
+        
+        border-right: 2px solid #4c4c4c;
+        border-bottom: 3px solid transparent;
 
         &:hover {
-            background-color: #252525;
+            background-color: #292D3E;
         }
 
         &.active {
-            background-color: #1e1e1e;
-            border-top: 3px solid #0078D4;
+            background-color: #292D3E;
+            border-bottom: 3px solid #80CBC4;
         }
 
         .icon {

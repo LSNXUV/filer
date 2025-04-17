@@ -4,9 +4,10 @@
     justify-content: center;
 
     height: 100vh;
+    max-height: 100vh;
 
     background-color: #292D3E;
 
-    width: var(--content-width);
-
+    flex: 1;
+    overflow: auto;
 }
