@@ -45,6 +45,7 @@ export default function Tabs() {
             closeFile(index)
         }
     }
+    
     return (
         <div className={styles.container}>
             {
@@ -95,8 +96,8 @@ export default function Tabs() {
                                     getFileEditStatus(file.path).status === FileEditStatus.unSaved
                                         ? <div
                                             style={{
-                                                width: 16,
-                                                height: 16,
+                                                width: 14,
+                                                height: 14,
                                                 display: 'flex',
                                             }}
                                         >
@@ -110,7 +111,7 @@ export default function Tabs() {
                                             >
                                             </div>
                                         </div>
-                                        : <Close size={16} fill="#bfbfbf" />
+                                        : <Close size={14} fill="#bfbfbf" />
                                 }
                             </span>
                         </div>

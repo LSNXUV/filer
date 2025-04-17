@@ -1,0 +1,25 @@
+
+.btnContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        position: relative;
+        padding: 10px;
+        margin: 0 20px 20px;
+        background-color: #0078d4;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 1em;
+        width: 12rem;
+        line-height: 1.5rem;
+
+        &:hover {
+            background-color: #3fa0ea;
+            box-shadow: #317eb9 0 0 20px 2px;
+        }
+    }
+}

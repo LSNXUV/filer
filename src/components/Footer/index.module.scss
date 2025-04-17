@@ -1,0 +1,11 @@
+.container {
+    height: var(--footer-height);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: #1B1E2B;
+    border-top: 2px solid #2A2F44;
+
+    padding-inline: 20px;
+}

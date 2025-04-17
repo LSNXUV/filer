@@ -1,11 +1,11 @@
 
 export function formatFileSize(bytes: number | null | undefined) {
-    if (!bytes) return '0 Bytes';
-    
+    if (!bytes) return '0 B';
+
     const k = 1024;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
-    
+
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
@@ -34,4 +34,59 @@ export function backPath(path: string, level: number = 1): string {
         return '';
     }
     return path.replace(regex, '');
+}
+
+export async function verifyFileHandlePermission(fileHandle: FileSystemHandle, withWrite: boolean = false): Promise<boolean> {
+    const opts: {
+        mode?: "read" | "readwrite";
+    } = {};
+    if (withWrite) {
+        opts.mode = "readwrite";
+    }
+
+    // 检查是否已经拥有相应权限，如果是，返回 true。
+    if ((await fileHandle?.queryPermission(opts)) === "granted") {
+        return true;
+    }
+
+    // 为文件请求权限，如果用户授予了权限，返回 true。
+    if ((await fileHandle?.requestPermission(opts)) === "granted") {
+        return true;
+    }
+
+    // 用户没有授权，返回 false。
+    return false;
+}
+
+export async function queryFileHandlePermission(fileHandle: FileSystemHandle, withWrite: boolean = false): Promise<boolean> {
+    const opts: {
+        mode?: "read" | "readwrite";
+    } = {};
+    if (withWrite) {
+        opts.mode = "readwrite";
+    }
+
+    // 检查是否已经拥有相应权限，如果是，返回 true。
+    if ((await fileHandle?.queryPermission(opts)) === "granted") {
+        return true;
+    }
+    // 用户没有授权，返回 false。
+    return false;
+}
+
+
+export async function requestFileHandlePermission(fileHandle: FileSystemHandle, withWrite: boolean = false): Promise<boolean> {
+    const opts: {
+        mode?: "read" | "readwrite";
+    } = {};
+    if (withWrite) {
+        opts.mode = "readwrite";
+    }
+
+    if ((await fileHandle?.requestPermission(opts)) === "granted") {
+        return true;
+    }
+    
+    // 用户没有授权，返回 false。
+    return false;
 }

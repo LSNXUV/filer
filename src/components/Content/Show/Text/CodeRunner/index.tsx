@@ -91,7 +91,7 @@ function CodeRunner({ codeObject: { code }, isCurrent }: {
                 <Arrow className={`${styles.close} ${expand ? '' : styles.unexpand}`} onClick={() => onToggle()} />
                 {
                     expand &&
-                    <pre style={{ height: `${runnerHeight}px` }}>
+                    <pre style={{ height: `calc(${runnerHeight}px - var(--footer-height))` }}>
                         {result}
                     </pre>
                 }

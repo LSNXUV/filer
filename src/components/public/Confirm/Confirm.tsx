@@ -1,13 +1,14 @@
 import { useLang } from '@/lib/Context/Lang';
 import styles from './Confirm.module.scss'
 import { Close } from '@/components/Icons/Public/Close';
+import { ReactNode } from 'react';
 
 
 export type ConfirmType = 'confirm' | 'alert'
 
 export type ConfirmProps = {
-    title?: string;
-    info?: string;
+    title?: ReactNode;
+    info?: ReactNode;
     onConfirm?: () => any;
     onCancel?: () => any;
     closable?: boolean;

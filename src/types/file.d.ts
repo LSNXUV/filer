@@ -9,3 +9,8 @@ interface Files {
     children: Files[]
     loaded?: boolean // 针对dir，是否加载完成
 }
+
+interface FileSystemHandle {
+    queryPermission: (options?: { mode?: "read" | "readwrite" }) => Promise<PermissionState>
+    requestPermission: (options?: { mode?: "read" | "readwrite" }) => Promise<PermissionState>
+}

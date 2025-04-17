@@ -13,6 +13,9 @@ export const LANG_ZH: LangStruct = {
                     success: '加载成功！',
                     fail: '暂不支持...',
                     info: '用户取消！'
+                },
+                permission: {
+                    isLoadingSavedDirHandle: '是否加载上次的文件目录:',
                 }
             },
             Message: {

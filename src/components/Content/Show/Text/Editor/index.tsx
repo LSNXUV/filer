@@ -36,9 +36,7 @@ export const Editor = ({ file, setRunCode }: {
 
     const saveFile = useCallback(async (value: string = '') => {
         if (!await updateFile(file, value)) {
-            showMessage({
-                fail: Lang.FileExploer.Content.Show.Editor.log.updateError,
-            })
+            showMessage(Lang.FileExploer.Content.Show.Editor.log.updateError, 'fail')
         }
         oldValueRef.current = value;
     }, [file])

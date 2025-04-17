@@ -3,20 +3,21 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import FileTree from './FileTree'
-import Title from './Title/Title'
+import Title from './Title'
 import { Expand } from '../Icons/Public/Close'
+import Resizer from './Resizer'
 
 export default function Sider() {
 
   const [expand, setExpand] = useState(true)
-
-  const [width, setWidth] = useState(240)
+  const [width, setWidth] = useState(270)
   const [hasWidthTransition, setHasWidthTransition] = useState(true)
 
   const toggleSider = useCallback((b?: boolean) => {
     setExpand(s => b ?? !s);
   }, [])
 
+  // 快捷键展开/收起侧边栏
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.key.toLocaleLowerCase() === 'b') {
@@ -29,32 +30,6 @@ export default function Sider() {
     };
   }, [toggleSider])
 
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
-    e.preventDefault();
-    setHasWidthTransition?.(false); // 禁用过渡动画
-    const startX = e.clientX;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      const delta = e.clientX - startX;
-      const newWidth = Math.max(200, width + delta); // 限制最小宽度
-      if (width + delta < 100) {
-        toggleSider?.(false); // 过小则收起
-      } else {
-        toggleSider?.(true);
-      }
-      setWidth(newWidth);
-    };
-
-    const handleMouseUp = () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      setHasWidthTransition?.(true); // 恢复过渡动画
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseup', handleMouseUp);
-  }, [toggleSider, width])
-
   return (
     <>
       <div
@@ -65,19 +40,19 @@ export default function Sider() {
         }}
       >
         {
-          <div
+          <div className={styles.contentContainer}
             style={{
-              display: expand ? 'inherit' : 'none',
-              flexDirection: 'inherit',
-            }}>
+              display: expand ? '' : 'none',
+            }}
+          >
             <Title />
             <FileTree />
           </div>
         }
 
         <Expand className={`${styles.expandIcon} ${expand ? styles.expand : ''}`} onClick={() => toggleSider()} />
+        {expand && <Resizer width={width} toggleSider={toggleSider} setWidth={setWidth} setHasWidthTransition={setHasWidthTransition} />}
       </div>
-      <div className={styles.resizer} onMouseDown={handleMouseDown} />
     </>
   )
 }

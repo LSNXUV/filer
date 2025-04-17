@@ -14,6 +14,13 @@
         width: var(--sider-unexpand-width) !important;
     }
 
+    .contentContainer {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+
     .expandIcon {
         position: absolute;
         top: 12px;
@@ -28,23 +35,5 @@
         &.expand {
             transform: rotateY(180deg);
         }
-    }
-}
-
-.resizer {
-    flex-shrink: 0;
-    
-    width: var(--resizer-width);
-    background-color: #212533;
-    cursor: col-resize;
-    user-select: none;
-    transition: background-color 0.2s;
-
-    &:hover {
-        background-color: #5a5e6b;
-    }
-
-    &:active {
-        background-color: #878b99;
     }
 }

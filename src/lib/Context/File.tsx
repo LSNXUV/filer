@@ -2,7 +2,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { processHandle, showDirectoryPicker } from '@/lib/Utils/DirectoryPicker';
 import { useLang } from './Lang';
-import { backPath } from '@/lib/Utils/File';
+import { backPath, queryFileHandlePermission, requestFileHandlePermission, verifyFileHandlePermission } from '@/lib/Utils/File';
 import { useConfirm } from './Confirm';
 import { useMessage } from './Message';
 import { getRootDirectoryHandle, removeRootDirectoryHandle, saveRootDirectoryHandle } from '../Utils/IDB/fsHandle';
@@ -33,7 +33,7 @@ export function FilesProvider({ children }: {
     children: React.ReactNode | React.ReactNode[];
 }) {
     const { Lang } = useLang();
-    const { alert } = useConfirm()
+    const { alert, confirm } = useConfirm()
     const { showMessage } = useMessage()
 
     const [loading, setLoading] = useState(false)
@@ -53,7 +53,6 @@ export function FilesProvider({ children }: {
             handle = await handle.getDirectoryHandle(paths[i]);
             if (!handle) return;
         }
-        console.log(handle, path, rootDirHandle, 'handle');
         return handle;
     }, [rootDirHandle]);
 
@@ -164,43 +163,47 @@ export function FilesProvider({ children }: {
         (async () => {
             const rootDirHandle = await getRootDirectoryHandle();
             if (rootDirHandle) {
+                
+                // 如果没权限，需要强行引导交互，这样才能请求权限
+                if(!await queryFileHandlePermission(rootDirHandle) && !await confirm({
+                    info: <span>{Lang.Lib.Context.File.permission.isLoadingSavedDirHandle} <span style={{color: 'skyblue'}}>{rootDirHandle.name} </span>?</span>,
+                })) return;
+                // 如果没有权限，则请求权限
+                if (!await requestFileHandlePermission(rootDirHandle)) return;
+
                 setLoading(true);
-    
-                // 1. 保存根句柄
+                // 保存根句柄
                 setRootDirHandle(rootDirHandle);
-    
-                // 2. 加载文件树
+                // 加载文件树
                 const newFiles = await processHandle(rootDirHandle, '');
                 setFiles(newFiles);
-    
+
                 setLoading(false);
             }
         })();
-    }, []);    
+    }, []);
 
-useEffect(() => {
-    if (rootDirHandle) {
-        saveRootDirectoryHandle(rootDirHandle);
-    } else {
-        removeRootDirectoryHandle()
-    }
-}, [rootDirHandle])
+    useEffect(() => {
+        if (rootDirHandle) {
+            saveRootDirectoryHandle(rootDirHandle);
+        }
+    }, [rootDirHandle])
 
-return (
-    <FilesCtx value={{
-        hasFiles: !!files,
-        loading,
-        files,
-        tabs, setTabs,
-        select, setSelect,
-        getFileHandle,
-        getDirHandle,
-        loadFilesAndHandles,
-        openDirectoryPicker, resetDirectoryPicker,
-    }}>
-        {children}
-    </FilesCtx>
-)
+    return (
+        <FilesCtx value={{
+            hasFiles: !!files,
+            loading,
+            files,
+            tabs, setTabs,
+            select, setSelect,
+            getFileHandle,
+            getDirHandle,
+            loadFilesAndHandles,
+            openDirectoryPicker, resetDirectoryPicker,
+        }}>
+            {children}
+        </FilesCtx>
+    )
 }
 
 export function useFiles() {

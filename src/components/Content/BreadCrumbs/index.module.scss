@@ -2,7 +2,9 @@
 .container{
     flex-shrink: 0;
 
-    padding: 6px;
+    height: var(--content-breadcrumbs-height);
+    padding: calc(8px - var(--content-tabs-scrollbar-height)) 0 8px;
+
     background-color: #292D3E;
     display: flex;
 
@@ -11,9 +13,6 @@
     
     overflow-x: auto;
     overflow-y: hidden;
-
-    // height: fit-content;
-    height: var(--content-breadcrumbs-height);
 
     &::-webkit-scrollbar {
         height: 4px;

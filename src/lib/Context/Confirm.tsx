@@ -12,8 +12,8 @@ export const ConfirmProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     const [show, setShow] = useState(false);
 
-    const [title, setTitle] = useState(Lang.Lib.Context.Confirm.defaultTitle);
-    const [info, setInfo] = useState(Lang.Lib.Context.Confirm.defaultInfo);
+    const [title, setTitle] = useState<ReactNode>(Lang.Lib.Context.Confirm.defaultTitle);
+    const [info, setInfo] = useState<ReactNode>(Lang.Lib.Context.Confirm.defaultInfo);
     const [onConfirm, setOnConfirm] = useState(() => () => { });
     const [onCancel, setOnCancel] = useState(() => () => { });
     const [closable, setClosable] = useState(false);

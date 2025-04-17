@@ -13,6 +13,9 @@ interface LangStruct {
                     success: string,
                     fail: string,
                     info: string
+                },
+                permission: {
+                    isLoadingSavedDirHandle: string,
                 }
             },
             Message: {

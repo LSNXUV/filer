@@ -1,13 +1,12 @@
 .resizer {
     position: absolute;
-    width: 100%;
-    top: -1px;
+    height: 100%;
+    right: 0;
     flex-shrink: 0;
     
-    height: var(--resizer-width);
-    border-top: 1px solid #353a51;
-    // background-color: #212533;
-    cursor: row-resize;
+    width: var(--resizer-width);
+    border-right: 1px solid #353a51;
+    cursor: col-resize;
     user-select: none;
     transition: background-color 0.2s;
 

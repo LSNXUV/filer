@@ -1,0 +1,27 @@
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    .fileInfo {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 16px;
+        font-size: 14px;
+        color: #abaeb8;
+
+        > * {
+            height: 100%;
+            
+            &:hover {
+                cursor: pointer;
+                filter: brightness(1.3);
+            }
+
+        }
+    }
+}

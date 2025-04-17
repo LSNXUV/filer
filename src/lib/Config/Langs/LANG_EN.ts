@@ -13,6 +13,9 @@ export const LANG_EN: LangStruct = {
                     success: 'Loading Successed!',
                     fail: 'Not Support!',
                     info: 'Loading Cancelled!',
+                },
+                permission: {
+                    isLoadingSavedDirHandle: 'Would you like to restore the file directory from the last session:',
                 }
             },
             Message: {

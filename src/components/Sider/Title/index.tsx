@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import styles from './index.module.scss'
 import { useLang } from '@/lib/Context/Lang'
-import Menu from '../Menu'
+import Menu from './Menu'
 
 export default function Title() {
   const { Lang } = useLang()

@@ -1,7 +1,15 @@
-
-.home{
+.home {
   display: flex;
   height: 100vh;
   background-color: #292D3E;
   overflow: hidden;
+  flex-direction: column;
+
+  .center {
+    flex: 1;
+    overflow-y: hidden;
+    display: flex;
+    width: 100%;
+    
+  }
 }
