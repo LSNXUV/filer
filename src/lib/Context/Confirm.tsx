@@ -1,11 +1,15 @@
 import Confirm, { ConfirmProps, ConfirmType } from "@/components/public/Confirm/Confirm";
-import { ReactNode, createContext, useCallback, useContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { useLang } from "./Lang";
 
-const ConfirmContext = createContext<{
+type ConfirmContextType = {
+    /** 显示确认框 */
     confirm: (props: Omit<ConfirmProps, 'type'>) => Promise<boolean>;
+    /** 显示提示/警告框，只能通过“确认”关闭 */
     alert: (props: Omit<ConfirmProps, 'onCancel' | 'closable' | 'onClose' | 'type'>) => Promise<boolean>;
-} | null>(null);
+}
+
+const ConfirmContext = createContext<ConfirmContextType | null>(null);
 
 export const ConfirmProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     const { Lang } = useLang();
@@ -72,9 +76,13 @@ export const ConfirmProvider: React.FC<{ children: ReactNode }> = ({ children })
     }, [Lang.Lib.Context.Confirm])
 
 
-    // console.log('confirm render!!!')
+    const confirmContextValue = useMemo<ConfirmContextType>(() => ({
+        confirm,
+        alert,
+    }), [confirm, alert]);
+
     return (
-        <ConfirmContext value={{ confirm, alert }}>
+        <ConfirmContext value={confirmContextValue}>
             {children}
             <Confirm show={show}
                 title={title} info={info} type={type}

@@ -1,9 +1,15 @@
 import { useCallback, useMemo } from "react";
-import { FileTab, useTabs } from "../Context/Tab";
+import { FileTab, useTabs } from "../../Context/Tab";
 
 export function useFileTab() {
     const { tabs, addTab, closeTab, selectedTab, setSelect } = useTabs()
 
+    /** 选当前中的tab文件file */
+    const selectedFile = useMemo(() => {
+        return selectedTab?.type === 'file' ? selectedTab.content : null
+    }, [selectedTab]);
+
+    /** tabs里面的文件tabs */
     const fileTabs = useMemo(() => {
         return tabs.map((tab, index) => {
             if (tab.type === 'file')
@@ -11,14 +17,17 @@ export function useFileTab() {
         }).filter(Boolean) as { tab: FileTab, index: number }[];
     }, [tabs]);
 
+    /** 获取file的tabIndex */
     const findIndex = useCallback((file: Files) => {
         return fileTabs.findIndex(ft => ft.tab.id === file.path);
     }, [fileTabs]);
 
+    /** file是否已经在tab中 */
     const isFileInTab = useCallback((file: Files) => {
         return findIndex(file) !== -1;
     }, [findIndex]);
 
+    /** 选中文件并打开查看 */
     const selectFile = useCallback((file: Files) => {
         const index = findIndex(file);
         if (index !== -1) {     // 已经在查看队列中, 直接选中
@@ -31,13 +40,10 @@ export function useFileTab() {
             type: 'file',
             content: file
         });
-        setSelect(fileTabs.length); // 选中最后一个
+        setSelect(fileTabs.length); // 选中最后一个，旧的len就是新的len-1
     }, [fileTabs, addTab, setSelect]);
 
-    const selectedFile = useMemo(() => {
-        return selectedTab?.type === 'file' ? selectedTab.content : null
-    }, [selectedTab]);
-
+    /** 添加文件到查看队列末尾 */
     const addFileToTabsRear = useCallback((file: Files) => {
         if (isFileInTab(file)) {   //已经在查看队列中
             return;
@@ -50,6 +56,7 @@ export function useFileTab() {
         });
     }, [isFileInTab, addTab])
 
+    /** 关闭文件tab */
     const closeFile = useCallback((file: number | Files): void => {
         let index: number;
         if (typeof file === 'number') {
@@ -62,36 +69,17 @@ export function useFileTab() {
     }, [closeTab])
 
     const fileTabObject = useMemo<{
-        /**
-         * 选中文件并打开查看
-         * @param file 
-         * @returns 
-         */
+        /** 选中文件并打开查看*/
         selectFile: (file: Files) => void
-
-        /**
-         * 当前选中的文件
-         */
+        /** 当前选中的文件 */
         selectedFile: Files | null;
-        /**
-         * 当前选中的tab是否是文件
-         */
+        /** 当前选中的tab是否是文件 */
         hasSelectedFile: boolean;
-
+        /** 当前选中的tab是否是文件 */
         isFileInTab: (file: Files) => boolean;
-
-        /**
-         * 添加文件到查看队列末尾
-         * @param file 
-         * @returns 
-         */
+        /** 添加文件到查看队列末尾 */
         addFileToTabsRear: (file: Files) => void
-
-        /**
-         * 关闭文件
-         * @param param 文件在查看队列中的索引或者文件
-         * @returns 
-         */
+        /** 关闭文件tab */
         closeFile: (param: number | Files) => void
     }>(() => {
         return {

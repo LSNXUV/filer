@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import styles from './index.module.scss'
 import Image from "next/image"
-import { useFileOp } from "@/lib/Hooks/useFileOp"
+import { useFileOp } from "@/lib/Hooks/Tabs/useFileOp"
 
 export function ImageShow({ file: { path, name } }: {
   file: Files

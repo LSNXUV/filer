@@ -5,7 +5,6 @@ import { LANG_EN } from "@/lib/Config/Langs/LANG_EN";
 
 export type LangName = 'zh' | 'en';
 
-
 const Langs: {
     [key in LangName]: LangStruct
 } = {
@@ -14,7 +13,9 @@ const Langs: {
 }
 
 type LangCtx = {
+    /** 当前语言包 */
     Lang: LangStruct;
+    /** 切换语言 */
     changeLang: () => void;
 }
 
@@ -45,15 +46,19 @@ export function LangProvider({ children }: {
         })
     }, [])
 
+    const langValue = useMemo(() => {
+        return {
+            Lang,
+            changeLang
+        }
+    }, [Lang, changeLang])
+
     if (loading) {
         return <BalldanceLoading />
     }
 
     return (
-        <LangCtx value={{
-            Lang,
-            changeLang
-        }}>
+        <LangCtx value={langValue}>
             {children}
         </LangCtx>
     )

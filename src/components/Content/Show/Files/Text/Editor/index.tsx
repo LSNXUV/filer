@@ -1,7 +1,7 @@
 import { BeforeMount, Editor as MonacoEditor, OnMount } from '@monaco-editor/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from './index.module.scss';
-import { useFileOp } from '@/lib/Hooks/useFileOp';
+import { useFileOp } from '@/lib/Hooks/Tabs/useFileOp';
 import { FileEditStatus, useFileEditStatus } from '@/lib/Context/FIleEditStatus';
 import { useMessage } from '@/lib/Context/Message';
 import { useLang } from '@/lib/Context/Lang';

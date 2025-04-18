@@ -1,11 +1,11 @@
 import { useFiles } from '@/lib/Context/File'
 import { useLang } from '@/lib/Context/Lang'
 import { useMessage } from '@/lib/Context/Message'
-import { useFileOp } from '@/lib/Hooks/useFileOp'
+import { useFileOp } from '@/lib/Hooks/Tabs/useFileOp'
 
 import styles from './index.module.scss'
-import { JSX, memo, useCallback, useEffect } from 'react'
-import { useFileTab } from '@/lib/Hooks/useFileTab'
+import { memo, useCallback, useEffect } from 'react'
+import { useFileTab } from '@/lib/Hooks/Tabs/useFileTab'
 import { useSingleInput } from '@/lib/Context/SingleInput'
 import { backPath } from '@/lib/Utils/File'
 import FileIcon from '@/components/Icons/File/File'
@@ -17,12 +17,11 @@ const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
 }) {
     const { showMessage } = useMessage()
     const { Lang } = useLang();
-    
+
     const { showSingleInput } = useSingleInput()
 
     const { deleteFile, openFileInExplorer, renameFile } = useFileOp()
-    const { selectFile, closeFile, addFileToTabsRear, } = useFileTab()
-    const { isFileInTab } = useFileTab()
+    const { selectFile, closeFile, addFileToTabsRear, isFileInTab } = useFileTab()
 
     const handleSelectFile = useCallback(() => {
         selectFile(file)
@@ -73,80 +72,80 @@ const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
         toggle()
     }, [renameFile, file, showMessage, Lang, toggle])
 
-const handleDeleteFile = useCallback(async () => {
-    const res = await deleteFile(file)
-    showMessage(
-        Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.message.delete,
-        res ? 'success' : 'info',
-    )
-    toggle()
-}, [toggle, deleteFile, file, showMessage, Lang])
-
-const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-        handleSelectFile()
-    } else if (event.key === 'Escape') {
+    const handleDeleteFile = useCallback(async () => {
+        const res = await deleteFile(file)
+        showMessage(
+            Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.message.delete,
+            res ? 'success' : 'info',
+        )
         toggle()
-    } else if (event.shiftKey && event.altKey && ((event.key.toLowerCase() === 'e' || event.code === 'KeyE') || (event.key.toLowerCase() === 'x' || event.code === 'KeyX'))) {
-        handleOpenFileInExplorer()
-    } else if (event.key === 'Delete') {
-        handleDeleteFile()
-    } else if (event.key === 'F2') {
-        handleEditToggle()
-    }
-}, [toggle, handleSelectFile, handleDeleteFile, handleOpenFileInExplorer, handleEditToggle]);
+    }, [toggle, deleteFile, file, showMessage, Lang])
 
-useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-    };
-}, [handleKeyDown]);
+    const handleKeyDown = useCallback((event: KeyboardEvent) => {
+        if (event.key === 'Enter') {
+            handleSelectFile()
+        } else if (event.key === 'Escape') {
+            toggle()
+        } else if (event.shiftKey && event.altKey && ((event.key.toLowerCase() === 'e' || event.code === 'KeyE') || (event.key.toLowerCase() === 'x' || event.code === 'KeyX'))) {
+            handleOpenFileInExplorer()
+        } else if (event.key === 'Delete') {
+            handleDeleteFile()
+        } else if (event.key === 'F2') {
+            handleEditToggle()
+        }
+    }, [toggle, handleSelectFile, handleDeleteFile, handleOpenFileInExplorer, handleEditToggle]);
 
-return (
-    <div className={`bar ${styles.menu}`}
-        onClick={(e) => e.stopPropagation()}
-    >
-        <div onClick={handleSelectFile}>
-            {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.open}
-            <span>
-                Left
-            </span>
-        </div>
-        <div onClick={handleCloseFile} className={`${!isFileInTab(file) ? 'disabled' : ''}`}>
-            {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.close}
-            <span>
-                Mid
-            </span>
-        </div>
-        <div onClick={handleAddFileToShowsRear}>
-            {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.addToShowsRear}
-            <span>
-                Mid
-            </span>
-        </div>
-        <div onClick={handleOpenFileInExplorer}>
-            {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.openFileInExplorer}
-            <span>
-                Shift + Alt + E / X
-            </span>
-        </div>
-        <div
-            onClick={handleRenameFile}
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleKeyDown]);
+
+    return (
+        <div className={`bar ${styles.menu}`}
+            onClick={(e) => e.stopPropagation()}
         >
-            {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.rename}
-            <span>
-                F2
-            </span>
+            <div onClick={handleSelectFile}>
+                {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.open}
+                <span>
+                    Left
+                </span>
+            </div>
+            <div onClick={handleCloseFile} className={`${!isFileInTab(file) ? 'disabled' : ''}`}>
+                {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.close}
+                <span>
+                    Mid
+                </span>
+            </div>
+            <div onClick={handleAddFileToShowsRear}>
+                {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.addToShowsRear}
+                <span>
+                    Mid
+                </span>
+            </div>
+            <div onClick={handleOpenFileInExplorer}>
+                {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.openFileInExplorer}
+                <span>
+                    Shift + Alt + E / X
+                </span>
+            </div>
+            <div
+                onClick={handleRenameFile}
+            >
+                {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.rename}
+                <span>
+                    F2
+                </span>
+            </div>
+            <div onClick={handleDeleteFile}>
+                {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.delete}
+                <span>
+                    Delete
+                </span>
+            </div>
         </div>
-        <div onClick={handleDeleteFile}>
-            {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.delete}
-            <span>
-                Delete
-            </span>
-        </div>
-    </div>
-)
+    )
 })
 
 FileMenu.displayName = 'FileMenu'

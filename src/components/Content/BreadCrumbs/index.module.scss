@@ -3,7 +3,7 @@
     flex-shrink: 0;
 
     height: var(--content-breadcrumbs-height);
-    padding: calc(8px - var(--content-tabs-scrollbar-height)) 0 8px;
+    padding: calc(8px - var(--content-tabs-scrollbar-height)) 8px 8px;
 
     background-color: #292D3E;
     display: flex;
@@ -36,7 +36,6 @@
     
     .route {
         cursor: pointer;
-        color: #fff;
         position: relative;
 
         display: flex;
@@ -47,7 +46,8 @@
     }
 
     .route:hover {
-        color: #0091ff;
+        text-decoration: underline;
+        color: #159aff;
     }
 }
 
@@ -60,7 +60,7 @@
     top: 0.5em;
     padding: 3px;
     z-index: 9;
-    color: #fff;
+    color: white;
 
     border-radius: 5px;
     overflow: auto;

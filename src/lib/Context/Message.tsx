@@ -1,6 +1,6 @@
 // Message.tsx
 import { Message, MessageType } from '@/components/public/Message/Message';
-import React, { createContext, useContext, useState, ReactNode, useCallback, } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback, useMemo, } from 'react';
 import { useLang } from './Lang';
 
 type MessageContextType = {
@@ -66,8 +66,15 @@ export const MessageProvider: React.FC<{ children: ReactNode }> = ({ children })
     });
   }, [])
 
+  const messageValue = useMemo(() => {
+    return {
+      showMessage,
+      closeMessage
+    }
+  }, [showMessage, closeMessage])
+
   return (
-    <MessageContext value={{ showMessage, closeMessage }}>
+    <MessageContext value={messageValue}>
       {children}
       {
         Object.keys(messages).map((id) => {

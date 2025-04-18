@@ -1,15 +1,14 @@
 
-import React, { useEffect, useRef, useState } from 'react'
-import styles from './index.module.scss'
-import { useLang } from '@/lib/Context/Lang'
-import { useFileOp } from '@/lib/Hooks/useFileOp'
+import React, { useEffect, useState } from 'react'
+import { useFileOp } from '@/lib/Hooks/Tabs/useFileOp'
 import Waves from './Waves'
-import { useFileTab } from '@/lib/Hooks/useFileTab'
+import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
 
 export default function AudioShow({ file: { path } }: {
     file: Files
 }) {
-    const { selectedFile } = useFileTab()
+    const selectedFile = useSelectedFile()
+
     const { getFileUrl } = useFileOp()
 
     const [url, setUrl] = useState('');
@@ -38,9 +37,5 @@ export default function AudioShow({ file: { path } }: {
     if (!url) {
         return null;
     }
-    return (
-        <>
-            <Waves url={url} />
-        </>
-    );
+    return <Waves url={url} />;
 }

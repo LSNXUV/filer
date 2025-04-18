@@ -1,15 +1,14 @@
 import { SingleInput, SingleInputProps } from '@/components/public/SingleInput/SingleInput';
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useMemo, useState } from 'react';
 
-// 定义SingleInputContext的类型
 type SingleInputContextType = {
+    /** 调用弹出input输入框，回调函数能拿到value做你想做的事儿 */
     showSingleInput: ({ defaultValue, title, info, handle, cancel }: Omit<SingleInputProps, 'show'>) => void;
 };
 
-// 创建SingleInputContext
 const SingleInputContext = createContext<SingleInputContextType | null>(null);
 
-// 创建SingleInputProvider组件
+
 export const SingleInputProvider = ({ children }: {
     children: React.ReactNode;
 }) => {
@@ -50,8 +49,12 @@ export const SingleInputProvider = ({ children }: {
         reset()
     }
 
+    const singleInputContextValue = useMemo<SingleInputContextType>(() => ({
+        showSingleInput,
+    }), [showSingleInput]);
+    
     return (
-        <SingleInputContext value={{ showSingleInput }}>
+        <SingleInputContext value={singleInputContextValue}>
             {children}
             <SingleInput show={show} defaultValue={defaultValue} title={title} info={info} handle={handleClick} cancel={cancelClick} />
         </SingleInputContext>

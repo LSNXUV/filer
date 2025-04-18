@@ -1,76 +1,12 @@
-import { useCallback } from "react";
-import { useConfirm } from "../Context/Confirm";
-import { useFiles } from "../Context/File";
-import { useLang } from "../Context/Lang";
-import { backPath } from "../Utils/File";
+import { useCallback, useMemo } from "react";
+import { useConfirm } from "../../Context/Confirm";
+import { useFiles } from "../../Context/File";
+import { useLang } from "../../Context/Lang";
+import { backPath } from "../../Utils/File";
 
 import { useFileTab } from "./useFileTab";
 
-export function useFileOp(): {
-    /**
-     * 添加文件
-     * @param name 
-     * @param path
-     * @param {FileSystemHandleKind} type
-     */
-    createFile: (name: string, path: string, type: FileSystemHandleKind) => Promise<{
-        bool: boolean,
-        reason?: string
-    }>
-
-    /**
-     * 删除文件
-     * @param file 
-     * @returns 
-     */
-    deleteFile: (file: Files, confirmShow?: boolean) => Promise<boolean>
-
-    /**
-     * 更新文件
-     * @param file 
-     * @param text 
-     * @returns 
-     */
-    updateFile: (file: Files, text: string) => Promise<boolean>
-
-    /**
-     * 重命名文件
-     * @param file 
-     * @param name 
-     * @returns 
-     */
-    renameFile: (file: Files, name: string) => Promise<boolean>
-
-    /**
-     * 在资源管理器中打开文件
-     * ---因浏览器策略，暂不支持
-     * @param file 
-     * @returns 
-     */
-    openFileInExplorer: (file: Files) => void
-
-    /**
-     * 
-     * @param path 文件路径
-     * @returns File 文件File对象
-     */
-    getFile: (path: string) => Promise<File | undefined>
-
-    /**
-     * 
-     * @param path 文件路径
-     * @returns 文本内容
-     */
-    getFileText: (path: string) => Promise<string | undefined>
-
-    /**
-     * 
-     * @param path 文件路径
-     * @returns url 文件访问url
-     */
-    getFileUrl: (path: string) => Promise<string>
-
-} {
+export function useFileOp() {
     const { Lang } = useLang();
     const { confirm, alert } = useConfirm();
 
@@ -81,7 +17,7 @@ export function useFileOp(): {
 
     const deleteFile = useCallback(async (file: Files, confirmShow: boolean = true) => {
         const dirHandle = await getDirHandle(backPath(file.path));
-        if (!dirHandle) { 
+        if (!dirHandle) {
             return true
         }
         try {
@@ -212,13 +148,43 @@ export function useFileOp(): {
         }
     }, [Lang, getFileHandle]);
 
-    // console.log('useFileOp render!!!!!')
-    return {
-        createFile,
-        deleteFile,
-        updateFile,
-        renameFile,
-        openFileInExplorer,
-        getFile, getFileUrl, getFileText
-    }
+    const fileOp = useMemo<{
+        /** 新建文件/目录 */
+        createFile: (name: string, path: string, type: FileSystemHandleKind) => Promise<{ bool: boolean, reason?: string}>
+    
+        /** 删除文件/目录 */
+        deleteFile: (file: Files, confirmShow?: boolean) => Promise<boolean>
+    
+        /** 更新文件内容 */
+        updateFile: (file: Files, text: string) => Promise<boolean>
+    
+        /** 重命名文件 */
+        renameFile: (file: Files, name: string) => Promise<boolean>
+    
+        /**
+         * 在资源管理器中打开文件
+         * ---因浏览器策略，暂不支持
+        */
+        openFileInExplorer: (file: Files) => void
+    
+        /** 获取文件File对象 */
+        getFile: (path: string) => Promise<File | undefined>
+    
+        /** 获取文本文件内容 */
+        getFileText: (path: string) => Promise<string | undefined>
+    
+        /** 获取文件访问url */
+        getFileUrl: (path: string) => Promise<string>
+    
+    }>(() => {
+        return {
+            createFile,
+            deleteFile,
+            updateFile,
+            renameFile,
+            openFileInExplorer,
+            getFile, getFileUrl, getFileText
+        }
+    }, [createFile, deleteFile, updateFile, renameFile, openFileInExplorer, getFile, getFileUrl, getFileText])
+    return fileOp;
 }

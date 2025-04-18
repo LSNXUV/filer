@@ -7,6 +7,7 @@ import { MessageProvider } from './Message'
 import { SingleInputProvider } from './SingleInput'
 import { TabsProvider } from './Tab'
 
+/** 所有Context的集合 */
 const Context: FC<PropsWithChildren> = ({ children }) => {
     return (
         <LangProvider>

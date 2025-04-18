@@ -1,25 +1,29 @@
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { processHandle, showDirectoryPicker } from '@/lib/Utils/DirectoryPicker';
 import { useLang } from './Lang';
 import { backPath, queryFileHandlePermission, requestFileHandlePermission, verifyFileHandlePermission } from '@/lib/Utils/File';
 import { useConfirm } from './Confirm';
 import { useMessage } from './Message';
 import { getRootDirectoryHandle, removeRootDirectoryHandle, saveRootDirectoryHandle } from '../Utils/IDB/fsHandle';
-import { get } from 'http';
 
 type FilerCtx = {
+    /** 是否有根文件树 */
     hasFiles: boolean,
+    /** 是否正在加载文件树 */
     loading: boolean,
+    /** 根文件树 */
     files: Files | null;
-
+    /** 通过path获取文件句柄 */
     getFileHandle: (path: string) => Promise<FileSystemFileHandle | undefined>;
+    /** 通过path获取目录句柄 */
     getDirHandle: (path: string) => Promise<FileSystemDirectoryHandle | undefined>;
-
+    /** 加载文件树和句柄 */
     loadFilesAndHandles: (options?: { dirHandle?: FileSystemDirectoryHandle, path?: string }) => Promise<void>;
+    /** 打开用户本地文件目录选择器，选择以初始化 */
     openDirectoryPicker: () => Promise<void>;
+    /** 重置文件树 */
     resetDirectoryPicker: () => void;
-
 }
 
 const FilesCtx = createContext<FilerCtx | null>(null);
@@ -33,8 +37,10 @@ export function FilesProvider({ children }: {
 
     const [loading, setLoading] = useState(false)
 
-    const [files, setFiles] = useState<Files | null>(null); //文件列表
-    const [rootDirHandle, setRootDirHandle] = useState<FileSystemDirectoryHandle | null>(null); //根目录句柄
+    //文件树
+    const [files, setFiles] = useState<Files | null>(null); 
+    //根目录句柄
+    const [rootDirHandle, setRootDirHandle] = useState<FileSystemDirectoryHandle | null>(null); 
 
     // 获取目录句柄
     const getDirHandle = useCallback(async (path: string) => {
@@ -180,16 +186,19 @@ export function FilesProvider({ children }: {
         }
     }, [rootDirHandle])
 
+    const fileContextValue = useMemo<FilerCtx>(() => ({
+        hasFiles: !!files,
+        loading,
+        files,
+        getFileHandle,
+        getDirHandle,
+        loadFilesAndHandles,
+        openDirectoryPicker,
+        resetDirectoryPicker,
+    }), [files, loading, getFileHandle, getDirHandle, loadFilesAndHandles, openDirectoryPicker, resetDirectoryPicker])
+
     return (
-        <FilesCtx value={{
-            hasFiles: !!files,
-            loading,
-            files,
-            getFileHandle,
-            getDirHandle,
-            loadFilesAndHandles,
-            openDirectoryPicker, resetDirectoryPicker,
-        }}>
+        <FilesCtx value={fileContextValue}>
             {children}
         </FilesCtx>
     )

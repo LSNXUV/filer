@@ -6,17 +6,18 @@ import { FileEditStatus, useFileEditStatus } from '@/lib/Context/FIleEditStatus'
 import { useConfirm } from '@/lib/Context/Confirm'
 import { useLang } from '@/lib/Context/Lang'
 import { useTabs } from '@/lib/Context/Tab'
-import { useFileTab } from '@/lib/Hooks/useFileTab'
+import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
 
 
 export default function Tabs() {
     const { confirm } = useConfirm()
     const { Lang } = useLang()
     const { getFileEditStatus, setFileEditStatus } = useFileEditStatus()
-    
-    const { tabs, setTabs, select, setSelect, closeTab } = useTabs()
 
-    const { selectedFile } = useFileTab()
+    const { tabs, select, setSelect, closeTab, resortTabs } = useTabs()
+
+    const selectedFile = useSelectedFile()
+
 
     const onCloseFile = (file: Files, index: number) => {
         if (getFileEditStatus(file.path).status === FileEditStatus.unSaved) {
@@ -59,7 +60,6 @@ export default function Tabs() {
         <div className={styles.container}>
             {
                 tabs.map((tab, index) => {
-                    console.log(tab);
                     const file = tab.type === 'file' ? tab.content : null; // 如果是文件类型，获取文件对象
                     const isFile = tab.type === 'file'; // 判断是否是文件类型
                     return (
@@ -85,18 +85,19 @@ export default function Tabs() {
                                 e.preventDefault()
                                 let fromIndex = Number(e.dataTransfer.getData('index')) //获取拖拽的index
                                 console.log(fromIndex, index);
-                                if (fromIndex === index) return  //如果拖拽的index和放置的index相同，不做处理
-                                let newShowfiles = [...tabs]
+                                // if (fromIndex === index) return  //如果拖拽的index和放置的index相同，不做处理
+                                // let newShowfiles = [...tabs]
+                                // // console.log(newShowfiles, 'newShowfiles');
+                                // //将拖拽的index的元素插入到放置的index
+                                // console.log(structuredClone(newShowfiles), 'newShowfiles');
+                                // newShowfiles.splice(index, 0, newShowfiles.splice(fromIndex, 1)[0])
                                 // console.log(newShowfiles, 'newShowfiles');
-                                //将拖拽的index的元素插入到放置的index
-                                console.log(structuredClone(newShowfiles), 'newShowfiles');
-                                newShowfiles.splice(index, 0, newShowfiles.splice(fromIndex, 1)[0])
-                                console.log(newShowfiles, 'newShowfiles');
-                                setTabs(newShowfiles)
-                                // setSelect(index)
-                                if (fromIndex === select || index === select) {
-                                    setSelect(index)
-                                }
+                                // setTabs(newShowfiles)
+                                // // setSelect(index)
+                                // if (fromIndex === select || index === select) {
+                                //     setSelect(index)
+                                // }
+                                resortTabs(fromIndex, index) // 重新排序tabs
 
                             }}
                         >
@@ -134,7 +135,7 @@ export default function Tabs() {
                                                     margin: 'auto',
                                                     padding: 4,
                                                     borderRadius: '50%',
-                                                    backgroundColor: '#ffffff',
+                                                    backgroundColor: 'white',
                                                 }}
                                             >
                                             </div>

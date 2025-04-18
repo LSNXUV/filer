@@ -9,7 +9,7 @@ import Footer from "../Footer";
 export default function Filer() {
 
   return (
-    <div className={styles.home}>
+    <div className={styles.root}>
       <Context>
         <div className={styles.center}>
           <Sider />

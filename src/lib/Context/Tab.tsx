@@ -17,21 +17,31 @@ export type DefaultTab = {
 export type Tab = FileTab | DefaultTab
 
 type TabsContextType = {
+    /** tabs对象数组 */
     tabs: Tab[],
+    /** 当前选中的tab */
     selectedTab: Tab | null,
+    /** 设置整个tabs对象数组 */
     setTabs: (tabs: Tab[]) => void,
+    /** 添加tab */
     addTab: (newTab: Tab, index?: number) => void,
+    /** 关闭tab */
     closeTab: (index: number) => void,
+    /** 设置当前选中的tab索引 */
     select: number,
+    /** 设置当前选中的tab索引函数 */
     setSelect: (index: number) => void,
+    /** 拖拽重新排序tabs，index为当前拖动元素的索引，newIndex为拖动到目标位置的索引 */
     resortTabs: (index: number, newIndex: number) => void,
 }
 
 export const TabsContext = createContext<TabsContextType | null>(null);
 
 export const TabsProvider = ({ children }: { children: React.ReactNode }) => {
+    // tabs对象数组
     const [tabs, settabs] = useState<Tab[]>([])
-    const [select, setSelect] = useState<number>(-1) //当前选中的文件索引
+    //当前选中的文件索引
+    const [select, setSelect] = useState<number>(-1)
 
     // 添加tab到tabs中，index为插入位置，默认插入到最后
     const addTab: TabsContextType['addTab'] = useCallback((newTab, index = -1) => {
@@ -55,17 +65,22 @@ export const TabsProvider = ({ children }: { children: React.ReactNode }) => {
 
     // 关闭tab
     const closeTab = useCallback((index: number) => {
+        let len:number = 1;
         settabs(prevTabs => {
-            if (index < 0 || index >= prevTabs.length) return prevTabs;
+            len = prevTabs.length;
+            if (index < 0 || index >= prevTabs.length) return prevTabs; // 如果索引不合法，则不动
             const newTabs = [...prevTabs];
             newTabs.splice(index, 1);
             return newTabs;
         });
         setSelect(select => {
-            if (select === index) {         // 如果关闭的tab是当前选中的tab，则选中前一个tab
-                return index - 1;
-            } else if (select > index) {    // 如果关闭的tab在当前选中的tab之前，则选中当前选中的tab不变  
-                return select - 1;
+            // 如果关闭的tab是当前选中或者之后的tab，则不动，或者选中最后一个（len-2）
+            if (index >= select) {
+                return Math.min(select, len - 2); 
+            }
+            // 如果关闭的tab在当前选中的tab之前，则选中前一个tab
+            if (index < select) {        
+                return Math.max(select - 1, 0);
             }
             return select;
         });

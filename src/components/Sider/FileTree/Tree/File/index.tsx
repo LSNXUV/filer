@@ -5,12 +5,14 @@ import styles from './index.module.scss'
 import { useCallback, useRef, useState } from "react"
 import FileMenu from "@/components/Sider/FileTree/Tree/File/Menu"
 import FileDetail from "@/components/Sider/FileTree/Tree/File/Detail"
-import { useFileTab } from "@/lib/Hooks/useFileTab"
+import { useFileTab } from "@/lib/Hooks/Tabs/useFileTab"
 import VirtualShow from "@/components/public/VirtualShow/VirtualShow"
+import { useSelectedFile } from "@/lib/Hooks/Tabs/useSelectedFile"
 
 
 export function File({ file }: { file: Files }) {
-    const { selectedFile } = useFileTab()
+    
+    const selectedFile = useSelectedFile()
     const { selectFile, addFileToTabsRear } = useFileTab()
 
     const [isEditing, setIsEditing] = useState<boolean>(false)
