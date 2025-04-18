@@ -4,12 +4,12 @@ import styles from './index.module.scss'
 import { useLang } from '@/lib/Context/Lang'
 import { useFileOp } from '@/lib/Hooks/useFileOp'
 import Waves from './Waves'
-import { useTabOp } from '@/lib/Hooks/useTabOp'
+import { useFileTab } from '@/lib/Hooks/useFileTab'
 
 export default function AudioShow({ file: { path } }: {
     file: Files
 }) {
-    const { selectedFile } = useTabOp()
+    const { selectedFile } = useFileTab()
     const { getFileUrl } = useFileOp()
 
     const [url, setUrl] = useState('');
@@ -30,7 +30,7 @@ export default function AudioShow({ file: { path } }: {
     }, [getFileUrl])
 
     useEffect(() => {
-        if (selectedFile.path === path && initUrl) {
+        if (selectedFile && selectedFile.path === path && initUrl) {
             setUrl(initUrl)
         }
     }, [selectedFile, path, initUrl])

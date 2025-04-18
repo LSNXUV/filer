@@ -13,11 +13,6 @@ type FilerCtx = {
     loading: boolean,
     files: Files | null;
 
-    tabs: Files[];
-    setTabs: React.Dispatch<React.SetStateAction<Files[]>>;
-    select: number;
-    setSelect: React.Dispatch<React.SetStateAction<number>>;
-
     getFileHandle: (path: string) => Promise<FileSystemFileHandle | undefined>;
     getDirHandle: (path: string) => Promise<FileSystemDirectoryHandle | undefined>;
 
@@ -39,9 +34,7 @@ export function FilesProvider({ children }: {
     const [loading, setLoading] = useState(false)
 
     const [files, setFiles] = useState<Files | null>(null); //文件列表
-    const [tabs, setTabs] = useState<Files[]>([]) //内容展示区域的文件些
     const [rootDirHandle, setRootDirHandle] = useState<FileSystemDirectoryHandle | null>(null); //根目录句柄
-    const [select, setSelect] = useState<number>(-1) //当前选中的文件索引
 
     // 获取目录句柄
     const getDirHandle = useCallback(async (path: string) => {
@@ -153,8 +146,6 @@ export function FilesProvider({ children }: {
     // 重置文件选择器
     const resetDirectoryPicker = useCallback(function resetDirectoryPicker() {
         setFiles(null);
-        setTabs([]);
-        setSelect(-1);
         setRootDirHandle(null); // 重置根目录句柄
         removeRootDirectoryHandle(); // 删除根目录句柄
     }, [])
@@ -194,8 +185,6 @@ export function FilesProvider({ children }: {
             hasFiles: !!files,
             loading,
             files,
-            tabs, setTabs,
-            select, setSelect,
             getFileHandle,
             getDirHandle,
             loadFilesAndHandles,

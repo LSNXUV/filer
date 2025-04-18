@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import { useFileOp } from '@/lib/Hooks/useFileOp'
-import { useTabOp } from '@/lib/Hooks/useTabOp'
+import { useFileTab } from '@/lib/Hooks/useFileTab'
 import { formatFileSize } from '@/lib/Utils/File'
 
 function Right() {
-   const { selectedFile } = useTabOp()
+   const { selectedFile } = useFileTab()
    const { getFile } = useFileOp()
 
    const [file, setFile] = useState<File | null>(null)

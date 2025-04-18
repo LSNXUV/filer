@@ -33,7 +33,7 @@ export default function Confirm({
         >
             <div className={styles.content}
                 style={{
-                    animation: show ? `${styles.fadeIn} 0.3s ease-in-out` : '',
+                    animation: show ? `${styles.fadeIn} 0.3s cubic-bezier(.65, .05, .36, 1)` : '',
                 }}
             >
                 <div className={styles.title}>{title}</div>

@@ -28,7 +28,6 @@ export const SingleInput = ({ show = false, title = '', info = () => null, defau
                 style={{
                     animation: show ? `${styles.fadeIn} 0.3s ease-in-out` : '',
                 }}
-                draggable
             >
                 <div className={styles.title}>{title}</div>
                 <div className={`${styles.info}`}>

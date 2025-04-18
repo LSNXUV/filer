@@ -5,7 +5,7 @@ import { useFileOp } from '@/lib/Hooks/useFileOp'
 
 import styles from './index.module.scss'
 import { JSX, memo, useCallback, useEffect } from 'react'
-import { useTabOp } from '@/lib/Hooks/useTabOp'
+import { useFileTab } from '@/lib/Hooks/useFileTab'
 import { useSingleInput } from '@/lib/Context/SingleInput'
 import { backPath } from '@/lib/Utils/File'
 import FileIcon from '@/components/Icons/File/File'
@@ -21,8 +21,8 @@ const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
     const { showSingleInput } = useSingleInput()
 
     const { deleteFile, openFileInExplorer, renameFile } = useFileOp()
-    const { selectFile, closeFile, addFileToShowsRear, } = useTabOp()
-    const { isShowFile } = useTabOp()
+    const { selectFile, closeFile, addFileToTabsRear, } = useFileTab()
+    const { isFileInTab } = useFileTab()
 
     const handleSelectFile = useCallback(() => {
         selectFile(file)
@@ -35,9 +35,9 @@ const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
     }, [closeFile, file, toggle])
 
     const handleAddFileToShowsRear = useCallback(() => {
-        addFileToShowsRear(file)
+        addFileToTabsRear(file)
         toggle()
-    }, [addFileToShowsRear, file, toggle])
+    }, [addFileToTabsRear, file, toggle])
 
     const handleOpenFileInExplorer = useCallback(() => {
         openFileInExplorer(file)
@@ -113,7 +113,7 @@ return (
                 Left
             </span>
         </div>
-        <div onClick={handleCloseFile} className={`${!isShowFile(file) ? 'disabled' : ''}`}>
+        <div onClick={handleCloseFile} className={`${!isFileInTab(file) ? 'disabled' : ''}`}>
             {Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.close}
             <span>
                 Mid

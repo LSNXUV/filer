@@ -4,7 +4,7 @@ import { useFiles } from "../Context/File";
 import { useLang } from "../Context/Lang";
 import { backPath } from "../Utils/File";
 
-import { useTabOp } from "./useTabOp";
+import { useFileTab } from "./useFileTab";
 
 export function useFileOp(): {
     /**
@@ -74,7 +74,7 @@ export function useFileOp(): {
     const { Lang } = useLang();
     const { confirm, alert } = useConfirm();
 
-    const { closeFile } = useTabOp()
+    const { closeFile } = useFileTab()
 
     const { loadFilesAndHandles, getDirHandle, getFileHandle } = useFiles()
 

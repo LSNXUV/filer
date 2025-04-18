@@ -4,18 +4,18 @@ import Show from './Show/index'
 import BreadCrumbs from './BreadCrumbs/index'
 import Tabs from './Tabs/index'
 import InitContent from './InitContent'
-import { useTabOp } from '@/lib/Hooks/useTabOp'
-import { useFiles } from '@/lib/Context/File'
-import { useCallback, useEffect, useState } from 'react'
+import { useFileTab } from '@/lib/Hooks/useFileTab'
+import { useCallback, useState } from 'react'
 import { FileEditStatus, FileEditStatusCtx, FileEditStatusCtxType, FileEditStatusObject } from '@/lib/Context/FIleEditStatus'
+import { useTabs } from '@/lib/Context/Tab'
 
 type FileEditStatusType = {
   [key: string]: FileEditStatusObject
 }
 
 export default function Content() {
-  const { tabs } = useFiles()
-  const { selectedFile } = useTabOp()
+  const { selectedFile } = useFileTab()
+  const { select } = useTabs()
 
   // 文件编辑状态
   const [fileEditStatus, setfileEditStatus] = useState<FileEditStatusType>({})
@@ -50,11 +50,11 @@ export default function Content() {
     <FileEditStatusCtx value={{ getFileEditStatus, setFileEditStatus }}>
       <div className={styles.container}>
         {
-          !selectedFile
+          select === -1 // 如果没有选中的tab
             ? <InitContent />
             : <>
               <Tabs />
-              <BreadCrumbs path={selectedFile.path} />
+              {selectedFile && <BreadCrumbs path={selectedFile.path} />}
               <Show />
             </>
         }

@@ -5,14 +5,13 @@ import styles from './index.module.scss'
 import { useCallback, useRef, useState } from "react"
 import FileMenu from "@/components/Sider/FileTree/Tree/File/Menu"
 import FileDetail from "@/components/Sider/FileTree/Tree/File/Detail"
-import Rename from "@/components/Sider/FileTree/Tree/File/Rename"
-import { useTabOp } from "@/lib/Hooks/useTabOp"
+import { useFileTab } from "@/lib/Hooks/useFileTab"
 import VirtualShow from "@/components/public/VirtualShow/VirtualShow"
 
 
 export function File({ file }: { file: Files }) {
-    const { selectedFile } = useTabOp()
-    const { selectFile, addFileToShowsRear } = useTabOp()
+    const { selectedFile } = useFileTab()
+    const { selectFile, addFileToTabsRear } = useFileTab()
 
     const [isEditing, setIsEditing] = useState<boolean>(false)
 
@@ -49,7 +48,7 @@ export function File({ file }: { file: Files }) {
                 onMouseDown={(e) => {
                     e.preventDefault();
                     if (e.button === 1) {
-                        addFileToShowsRear(file);
+                        addFileToTabsRear(file);
                     }
                 }}
                 //鼠标移入显示文件详情，移出隐藏

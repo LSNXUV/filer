@@ -99,10 +99,10 @@ const IconMatch = [
 ]
 
 const FileIcon = memo(function FileIcon({ name }: {
-    name: string
+    name?: string
 }) {
 
-    const ext = name.split('.').pop()?.toLowerCase() || ''
+    const ext = name?.split('.').pop()?.toLowerCase() || ''
     const Icon = IconMatch.find(item => item.exts.includes(ext))?.icon || Code
     return <Icon />
 })

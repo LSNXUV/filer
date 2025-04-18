@@ -81,10 +81,15 @@
             transition: all 0.2s ease;
             font-size: 0.8rem;
             line-height: 1.5rem;
-            background-color: #0078d4;
+            $bg-color: #0078d4;
+            background-color: $bg-color;
             &:hover {
-                background-color: #3fa0ea;
+                background-color: lighten($bg-color, 10%);
                 box-shadow: #317eb9 0 0 20px 2px;
+            }
+            &:active {
+                background-color: darken($bg-color, 5%);
+                box-shadow: none;
             }
         }
         .cancel {

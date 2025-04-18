@@ -5,6 +5,7 @@ import { FilesProvider } from './File'
 import { LangProvider } from './Lang'
 import { MessageProvider } from './Message'
 import { SingleInputProvider } from './SingleInput'
+import { TabsProvider } from './Tab'
 
 const Context: FC<PropsWithChildren> = ({ children }) => {
     return (
@@ -12,9 +13,11 @@ const Context: FC<PropsWithChildren> = ({ children }) => {
             <ConfirmProvider>
                 <SingleInputProvider>
                     <MessageProvider>
-                        <FilesProvider>
-                            {children}
-                        </FilesProvider>
+                        <TabsProvider>
+                            <FilesProvider>
+                                {children}
+                            </FilesProvider>
+                        </TabsProvider>
                     </MessageProvider>
                 </SingleInputProvider>
             </ConfirmProvider>

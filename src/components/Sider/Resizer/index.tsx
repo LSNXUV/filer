@@ -10,18 +10,6 @@ export default function Resizer({ width, toggleSider, setWidth, setHasWidthTrans
     setHasWidthTransition?: (b: boolean) => void
 }) {
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.ctrlKey && e.key.toLocaleLowerCase() === 'b') {
-                toggleSider()
-            }
-        };
-        document.addEventListener('keydown', handleKeyDown);
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown);
-        };
-    }, [toggleSider])
-
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
         setHasWidthTransition?.(false); // 禁用过渡动画

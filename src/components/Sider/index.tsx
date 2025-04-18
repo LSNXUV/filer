@@ -50,8 +50,19 @@ export default function Sider() {
           </div>
         }
 
-        <Expand className={`${styles.expandIcon} ${expand ? styles.expand : ''}`} onClick={() => toggleSider()} />
-        {expand && <Resizer width={width} toggleSider={toggleSider} setWidth={setWidth} setHasWidthTransition={setHasWidthTransition} />}
+        {/* 右上展开图标 */}
+        <Expand
+          className={`${styles.expandIcon} ${expand ? styles.expand : ''}`}
+          onClick={() => toggleSider()}
+        />
+        {
+          expand &&
+          <Resizer
+            width={width} setWidth={setWidth}
+            toggleSider={toggleSider}
+            setHasWidthTransition={setHasWidthTransition}
+          />
+        }
       </div>
     </>
   )

@@ -1,52 +1,33 @@
+import ShowFile from './Files'
 import styles from './index.module.scss'
-import { memo } from "react"
-import { notSupportOpenExt } from "@/lib/Config/File/notSupportOpenExt"
-import { ImageShow } from "./Image"
-import TextShow from "./Text"
-import NotSupport from "./NotSupport"
-import VideoShow from "./Video"
-import AudioShow from "./Audio"
-import { useFiles } from '@/lib/Context/File'
-import { useTabOp } from '@/lib/Hooks/useTabOp'
-
-const showFileMap: {
-  [key: string]: React.FC<{
-    file: Files
-  }>
-} = {
-  'image': ImageShow, // 图片
-  'video': VideoShow, // 视频
-  'audio': AudioShow, // 音频
-  'default': TextShow, // 文本或代码
-}
-
-const ShowFile = ({ file }: { file: Files }) => {
-  const ext = file.name.split('.').pop() || 'not'
-
-  const ShowFileComponent = notSupportOpenExt.includes(ext)
-    ? NotSupport
-    : showFileMap[file.type.split('/')[0]] || showFileMap['default']
-
-  return <ShowFileComponent file={file} />
-}
+import { useTabs } from '@/lib/Context/Tab'
 
 const Show = () => {
-  const { tabs } = useFiles()
-  const { selectedFile } = useTabOp()
+  const { tabs, select } = useTabs()
 
   return (
     <div className={styles.container}>
       {
-        tabs.map((file, _) => (
-          <div key={file.path}
-            className={styles.showContainer}
-            style={{
-              display: selectedFile.path === file.path ? '' : 'none',
-            }}
-          >
-            <ShowFile file={file} />
-          </div>
-        ))
+        tabs.map((tab, index) => {
+          const file = tab.type === 'file' ? tab.content : null; // 如果是文件类型，获取文件对象
+          return (
+            <div
+              key={tab.id}
+              className={styles.showContainer}
+              style={{
+                display: index === select ? '' : 'none',
+              }}
+            >
+              {
+                tab.type === 'file' ? (
+                  file && <ShowFile file={file} />
+                ) : (
+                  tab.content
+                )
+              }
+            </div>
+          )
+        })
       }
     </div >
   )

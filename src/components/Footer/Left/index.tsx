@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
-import { useTabOp } from '@/lib/Hooks/useTabOp'
+import { useFileTab } from '@/lib/Hooks/useFileTab'
 import { useFileOp } from '@/lib/Hooks/useFileOp'
 import { formatFileSize } from '@/lib/Utils/File'
 import { useLang } from '@/lib/Context/Lang'
 
 function Left() {
   const { Lang } = useLang()
-  const { selectedFile } = useTabOp()
+  const { selectedFile } = useFileTab()
   const { getFile } = useFileOp()
 
   const [file, setFile] = useState<File | null>(null)
 
   useEffect(() => {
-    if (!selectedFile) return;
+    if (!selectedFile) {
+      setFile(null)
+      return;
+    }
     (async () => {
       const fetchedFile = await getFile(selectedFile.path)
       if (!fetchedFile) return;

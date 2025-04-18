@@ -40,30 +40,45 @@
         .btnContainer {
             display: flex;
             justify-content: flex-end;
-            gap: 1rem;
+            gap: 12px;
             button {
                 width: 4rem;
                 padding: 5px;
-                margin: 0 5px 5px 0;
+                // margin: 0 5px 5px 0;
                 border-radius: 10px;
                 border: none;
                 cursor: pointer;
                 transition: all 0.2s ease;
                 font-size: 0.8rem;
                 line-height: 1.5rem;
+                
+                $confirm-bg-color: #0078d4;
+                $cancel-bg-color: #8e8e8e;
                 &:nth-child(1) {
-                    background-color: #0078d4;
+                    background-color: $confirm-bg-color;
                 }
                 &:nth-child(1):hover {
-                    background-color: #3fa0ea;
+                    transform: translateY(-2px);
+                    background-color: lighten($confirm-bg-color, 10%);
                     box-shadow: #317eb9 0 0 20px 2px;
                 }
+                &:nth-child(1):active {
+                    transform: none;
+                    background-color: darken($confirm-bg-color, 5%);
+                    box-shadow: transparent 0 0 20px 2px;
+                }
                 &:nth-child(2) {
-                    background-color: #8e8e8e;
+                    background-color: $cancel-bg-color;
                 }
                 &:nth-child(2):hover {
-                    background-color: #9f9f9f;
+                    transform: translateY(-2px);
+                    background-color: lighten($cancel-bg-color, 10%);
                     box-shadow: #878787 0 0 20px 2px;
+                }
+                &:nth-child(2):active {
+                    transform: none;
+                    background-color: darken($cancel-bg-color, 5%);
+                    box-shadow: transparent 0 0 20px 2px;
                 }
             }
         }
