@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react"
 import styles from './index.module.scss'
 import Image from "next/image"
-import { useFileOp } from "@/lib/Hooks/Tabs/useFileOp"
+import { useFileEntry } from "@/lib/Hooks/Files/useFileEntry"
 
 export function ImageShow({ file: { path, name } }: {
   file: Files
 }) {
 
-  const { getFileUrl } = useFileOp()
+  const { getFileUrl } = useFileEntry()
 
   const [url, setUrl] = useState('');
 

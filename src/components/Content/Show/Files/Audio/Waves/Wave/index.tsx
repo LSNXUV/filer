@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { getRandomByArray } from '@/lib/Utils/Random/array'
 import { waveBarRandomColorArray } from '@/lib/Config/Content/Audio'
@@ -12,14 +12,14 @@ const getWaveBarColor = () => {
     return getRandomByArray(waveBarRandomColorArray)
 }
 
-export default function Wave({ url, draw }: {
+const Wave = memo(({ url, draw }: {
     url: string
     draw: (options: {
         dataArray: Uint8Array
         cvsCtx: CanvasRenderingContext2D | null
         waveBarColor: string
     }) => any
-}) {
+}) => {
 
     const cvsRef = useRef<HTMLCanvasElement | null>(null)
     const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -28,42 +28,36 @@ export default function Wave({ url, draw }: {
     const [isInit, setIsInit] = useState(false)
     const [isPlay, setIsPlay] = useState(false)
 
-    //获取canvas上下文
-    const getCanvasCtx = useCallback(() => {
-        return cvsRef.current?.getContext('2d') || null
-    }, [])
-
-    //清除画布
-    const clearCvs = useCallback(() => {
-        const cvsCtx = getCanvasCtx()
-        if (!cvsCtx) {
-            return;
-        }
-        cvsCtx.clearRect(0, 0, cvsCtx.canvas.width, cvsCtx.canvas.height)
-    }, [getCanvasCtx])
-
-
-    //初始化canvas
-    const initCvs = useCallback(() => {
+    //音频切换或者绘画函数变化时，重新初始化
+    useEffect(() => {
         const cvs = cvsRef.current
         if (!cvs) return;
         const rect = cvs.getBoundingClientRect()
         cvs.width = rect.width * DPR
         cvs.height = rect.height * DPR
 
-        const ctx = getCanvasCtx()
-        if (ctx) {
-            ctx.setTransform(1, 0, 0, 1, 0, 0) // 重置
-            ctx.scale(DPR, DPR) // 缩放坐标系统
+        const ctx = cvs.getContext('2d')
+        if (!ctx) {
+            console.error('Canvas context not found')
+            return;
         }
 
-        clearCvs()
-    }, [getCanvasCtx])
+        ctx.setTransform(1, 0, 0, 1, 0, 0) // 重置
+        ctx.scale(DPR, DPR) // 缩放坐标系统
 
-    //音频切换或者绘画函数变化时，重新初始化
-    useEffect(() => {
-        initCvs()
+        // 清除画布
+        ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
+
+        console.log('initCvs',url);
     }, [url, draw])
+    
+    useEffect(() => {
+        console.log('urlchange: ',url);
+    }, [url])
+
+    useEffect(() => {
+        console.log('drawchange: ',draw);
+    },[draw])
 
     //Audio API,上下文，事件
     useEffect(() => {
@@ -129,10 +123,9 @@ export default function Wave({ url, draw }: {
                     return;
                 }
                 analyserRef.current.getByteFrequencyData(dataArray)
-
                 //绘画
                 draw({
-                    cvsCtx: getCanvasCtx(),
+                    cvsCtx: cvsRef.current?.getContext('2d') || null,
                     waveBarColor: getWaveBarColor(),
                     dataArray
                 })
@@ -142,7 +135,7 @@ export default function Wave({ url, draw }: {
         return () => {
             cancelAnimationFrame(animationId)
         }
-    }, [isInit, isPlay, draw, getCanvasCtx])
+    }, [isInit, isPlay, draw])
 
     return (
         <div className={styles.container}>
@@ -153,4 +146,6 @@ export default function Wave({ url, draw }: {
             </audio>
         </div>
     )
-}
+})
+
+export default Wave

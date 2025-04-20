@@ -38,7 +38,6 @@ export function Dir({ dir, level }: {
     const dirToggle = useCallback(async (is?: boolean) => {
         if (!dir.loaded) {
             setLoading(true)
-            console.log(dir);
             await loadFilesAndHandles({
                 path: dir.path,
             })

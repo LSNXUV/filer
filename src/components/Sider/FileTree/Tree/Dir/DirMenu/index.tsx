@@ -2,7 +2,7 @@
 import { useLang } from '@/lib/Context/Lang'
 import { useMessage } from '@/lib/Context/Message'
 import { useSingleInput } from '@/lib/Context/SingleInput'
-import { useFileOp } from '@/lib/Hooks/Tabs/useFileOp'
+import { useFileOp } from '@/lib/Hooks/Files/useFileOp'
 
 import styles from './index.module.scss'
 import { memo, useCallback, useEffect } from 'react'

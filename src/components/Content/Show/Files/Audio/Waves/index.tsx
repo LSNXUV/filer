@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { memo, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import Wave from './Wave'
 import { drawPlainWave } from './Plain'
@@ -12,7 +12,7 @@ const drawMap = {
 
 type Wavekey = keyof typeof drawMap
 
-export default function Waves({ url }: {
+const Waves = memo(function Waves({ url }: {
     url: string
 }) {
     const { Lang } = useLang()
@@ -41,4 +41,6 @@ export default function Waves({ url }: {
             <Wave url={url} draw={drawMap[draw]} />
         </div>
     )
-}
+})
+
+export default Waves

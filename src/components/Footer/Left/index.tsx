@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
-import { useFileOp } from '@/lib/Hooks/Tabs/useFileOp'
 import { formatFileSize } from '@/lib/Utils/File'
 import { useLang } from '@/lib/Context/Lang'
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
+import { useFileEntry } from '@/lib/Hooks/Files/useFileEntry'
 
 function Left() {
   const { Lang } = useLang()
 
   const selectedFile = useSelectedFile()
 
-  const { getFile } = useFileOp()
+  const { getFile } = useFileEntry()
 
   const [file, setFile] = useState<File | null>(null)
 

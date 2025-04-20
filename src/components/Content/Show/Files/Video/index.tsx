@@ -1,18 +1,18 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { useLang } from '@/lib/Context/Lang'
-import { useFileOp } from '@/lib/Hooks/Tabs/useFileOp'
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
+import { useFileEntry } from '@/lib/Hooks/Files/useFileEntry'
 
 export default function VideoShow({ file: { path } }: {
     file: Files
 }) {
     const { Lang } = useLang()
-    
+
     const selectedFile = useSelectedFile()
 
-    const { getFileUrl } = useFileOp()
+    const { getFileUrl } = useFileEntry()
 
     const [url, setUrl] = useState('');
     const [initUrl, setInitUrl] = useState('');
@@ -44,8 +44,7 @@ export default function VideoShow({ file: { path } }: {
 
     return (
         <>
-            <video className={styles.video} controls src={url}>
-            </video>
+            <video className={styles.video} controls src={url}></video>
         </>
     );
 }

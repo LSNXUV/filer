@@ -5,6 +5,7 @@ interface Files {
     size: number | null
     type: string    // MIME type
     kind: FileSystemHandleKind
+    /** 作为tab的id */
     path: string
     children: Files[]
     loaded?: boolean // 针对dir，是否加载完成

@@ -14,43 +14,38 @@ export default function Tabs() {
     const { Lang } = useLang()
     const { getFileEditStatus, setFileEditStatus } = useFileEditStatus()
 
-    const { tabs, select, setSelect, closeTab, resortTabs } = useTabs()
+    const { tabs, selectId, setSelectId, closeTab, resortTabs } = useTabs()
 
     const selectedFile = useSelectedFile()
 
-
-    const onCloseFile = (file: Files, index: number) => {
-        if (getFileEditStatus(file.path).status === FileEditStatus.unSaved) {
-            confirm({
-                title: Lang.FileExploer.Content.Tabs.onCloseFile.title,
-                info: Lang.FileExploer.Content.Tabs.onCloseFile.info,
-                onConfirm() {
-                    setFileEditStatus(file.path, {
-                        status: FileEditStatus.saved,   // 标记为已保存，状态改变里面自动执行保存操作
-                    })
-                    closeTab(index)
-                },
-                onCancel() {
-                    setFileEditStatus(file.path, {
-                        status: FileEditStatus.notSave, // 标记为不保存，状态改变里面不执行保存操作
-                    })
-                    //不保存直接关闭
-                    closeTab(index)
-                },
-                closable: true,
-                onClose() {
-                    // 啥操作都不做
-                }
-            })
-
-        } else {
-            closeTab(index)
-        }
-    }
-
     const onCloseTab = (index: number) => {
         if (selectedFile) {     //如果当前选中的tab是文件
-            onCloseFile(selectedFile, index)
+            if (getFileEditStatus(selectedFile.path).status === FileEditStatus.unSaved) {
+                confirm({
+                    title: Lang.FileExploer.Content.Tabs.onCloseFile.title,
+                    info: Lang.FileExploer.Content.Tabs.onCloseFile.info,
+                    onConfirm() {
+                        setFileEditStatus(selectedFile.path, {
+                            status: FileEditStatus.saved,   // 标记为已保存，状态改变里面自动执行保存操作
+                        })
+                        closeTab(index)
+                    },
+                    onCancel() {
+                        setFileEditStatus(selectedFile.path, {
+                            status: FileEditStatus.notSave, // 标记为不保存，状态改变里面不执行保存操作
+                        })
+                        //不保存直接关闭
+                        closeTab(index)
+                    },
+                    closable: true,
+                    onClose() {
+                        // 啥操作都不做
+                    }
+                })
+    
+            } else {
+                closeTab(index)
+            }
         } else {
             closeTab(index); // 执行关闭操作
         }
@@ -63,9 +58,9 @@ export default function Tabs() {
                     const file = tab.type === 'file' ? tab.content : null; // 如果是文件类型，获取文件对象
                     const isFile = tab.type === 'file'; // 判断是否是文件类型
                     return (
-                        <div key={index} className={`${styles.tab} ${index === select ? styles.active : ''}`}
+                        <div key={tab.id} className={`${styles.tab} ${tab.id === selectId ? styles.active : ''}`}
                             onClick={() => {
-                                setSelect(index)
+                                setSelectId(tab.id)
                             }}
                             // 鼠标中键关闭标签
                             onMouseDown={(e) => {
@@ -76,29 +71,20 @@ export default function Tabs() {
                             }}
                             draggable
                             onDragStart={(e) => {
-                                e.dataTransfer.setData('index', index.toString())    //传递当前拖拽的index
+                                e.dataTransfer.setData('index', index.toString()); // 设置拖动数据
                             }}
                             onDragOver={(e) => {
                                 e.preventDefault()
                             }}
                             onDrop={(e) => {
                                 e.preventDefault()
-                                let fromIndex = Number(e.dataTransfer.getData('index')) //获取拖拽的index
-                                console.log(fromIndex, index);
-                                // if (fromIndex === index) return  //如果拖拽的index和放置的index相同，不做处理
-                                // let newShowfiles = [...tabs]
-                                // // console.log(newShowfiles, 'newShowfiles');
-                                // //将拖拽的index的元素插入到放置的index
-                                // console.log(structuredClone(newShowfiles), 'newShowfiles');
-                                // newShowfiles.splice(index, 0, newShowfiles.splice(fromIndex, 1)[0])
-                                // console.log(newShowfiles, 'newShowfiles');
-                                // setTabs(newShowfiles)
-                                // // setSelect(index)
-                                // if (fromIndex === select || index === select) {
-                                //     setSelect(index)
-                                // }
-                                resortTabs(fromIndex, index) // 重新排序tabs
-
+                                const fromIndexStr = e.dataTransfer.getData('index');
+                                if (!fromIndexStr) {
+                                    console.error('drag over error: fromIndexStr is an empty string');
+                                    return;
+                                }
+                                const fromIndex = Number(fromIndexStr);
+                                resortTabs(fromIndex, index);
                             }}
                         >
                             <div className={styles.icon}>

@@ -11,13 +11,12 @@ import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
 
 export default function Content() {
   const selectedFile = useSelectedFile()
-  const { select } = useTabs()
-
+  const { selectId } = useTabs()
   return (
     <FileEditStatusProvider>
       <div className={styles.container}>
         {
-          select === -1 // 如果没有选中的tab
+          !selectId // 如果没有选中的tab
             ? <InitContent />
             : <>
               <Tabs />

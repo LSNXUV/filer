@@ -1,20 +1,21 @@
 
 import React, { useEffect, useState } from 'react'
-import { useFileOp } from '@/lib/Hooks/Tabs/useFileOp'
 import Waves from './Waves'
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
+import { useFileEntry } from '@/lib/Hooks/Files/useFileEntry'
 
 export default function AudioShow({ file: { path } }: {
     file: Files
 }) {
     const selectedFile = useSelectedFile()
 
-    const { getFileUrl } = useFileOp()
+    const { getFileUrl } = useFileEntry()
 
     const [url, setUrl] = useState('');
     const [initUrl, setInitUrl] = useState('');
 
     useEffect(() => {
+        if (initUrl) return;
         let fileUrl = '';
         (async () => {
             fileUrl = await getFileUrl(path)
@@ -22,14 +23,14 @@ export default function AudioShow({ file: { path } }: {
         })()
 
         return () => {
-            if (fileUrl) {
-                URL.revokeObjectURL(fileUrl);
-            }
+            // if (fileUrl) {
+            //     URL.revokeObjectURL(fileUrl);
+            // }
         };
-    }, [getFileUrl])
+    }, [getFileUrl, initUrl])
 
     useEffect(() => {
-        if (selectedFile && selectedFile.path === path && initUrl) {
+        if (selectedFile?.path === path && initUrl) {
             setUrl(initUrl)
         }
     }, [selectedFile, path, initUrl])

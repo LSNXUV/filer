@@ -1,7 +1,7 @@
 import styles from './index.module.scss';
 import { Editor } from './Editor';
 import CodeRunner from './CodeRunner';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile';
 
 export type Code = {
@@ -16,12 +16,16 @@ export const TextShow = ({ file }: {
 
     const [runCode, setrunCode] = useState<Code>({ code: '' })    //对象,每次改变引用以再次运行代码
 
-    const setRunCode = ({ code }: Code) => {
+    const setRunCode = useCallback(({ code }: Code) => {
         if (['js', 'ts', 'jsx', 'tsx'].includes(file.name.split('.').pop() || '')) {
             setrunCode({ code });
         }
-    }
-
+    }, [file]);
+    
+    useEffect(() => {
+        console.log('TextShow', file.path, runCode.code, isCurrent);
+    }, [file])
+    
     return (
         <div className={styles.container}>
             <Editor file={file} setRunCode={setRunCode} />

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import styles from './index.module.scss'
-import { useFileOp } from '@/lib/Hooks/Tabs/useFileOp'
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
+import { useFileEntry } from '@/lib/Hooks/Files/useFileEntry'
 
 function Right() {
    const selectedFile = useSelectedFile()
 
-   const { getFile } = useFileOp()
+   const { getFile } = useFileEntry()
 
    const [file, setFile] = useState<File | null>(null)
 

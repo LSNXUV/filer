@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo, useEffect } from 'react'
 import { notSupportOpenExt } from "@/lib/Config/File/notSupportOpenExt"
 import { ImageShow } from "./Image"
 import TextShow from "./Text"
@@ -17,14 +17,18 @@ const showFileMap: {
   'default': TextShow, // 文本或代码
 }
 
-const ShowFile = ({ file }: { file: Files }) => {
+const ShowFile = memo(({ file }: { file: Files }) => {
   const ext = file.name.split('.').pop() || 'not'
 
   const ShowFileComponent = notSupportOpenExt.includes(ext)
     ? NotSupport
     : showFileMap[file.type.split('/')[0]] || showFileMap['default']
 
+  // useEffect(() => {
+  //   console.log('render!',file.name);
+  // }, [file])
+  
   return <ShowFileComponent file={file} />
-}
+})
 
 export default ShowFile
