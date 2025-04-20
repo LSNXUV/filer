@@ -103,7 +103,7 @@ export function useFileOp() {
     const createFile: FileOp['createFile'] = useCallback(async (name, path, type) => {
         const dirHandle = await getDirHandle(path);
         if (!dirHandle) {
-            console.log('createFile error: dirHandle is null')
+            console.error('createFile error: dirHandle is null')
             return {
                 bool: false,
                 reason: Lang.Lib.Hooks.useFileOp.createFile.reason.handleNotExist

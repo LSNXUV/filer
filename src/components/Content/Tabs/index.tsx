@@ -8,6 +8,7 @@ import { useLang } from '@/lib/Context/Lang'
 import { useTabs } from '@/lib/Context/Tab'
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
 
+let dragDataStr = 'index' // 用于存储拖动数据的字符串
 
 export default function Tabs() {
     const { confirm } = useConfirm()
@@ -71,14 +72,14 @@ export default function Tabs() {
                             }}
                             draggable
                             onDragStart={(e) => {
-                                e.dataTransfer.setData('index', index.toString()); // 设置拖动数据
+                                e.dataTransfer.setData(dragDataStr, index.toString()); // 设置拖动数据
                             }}
                             onDragOver={(e) => {
                                 e.preventDefault()
                             }}
                             onDrop={(e) => {
                                 e.preventDefault()
-                                const fromIndexStr = e.dataTransfer.getData('index');
+                                const fromIndexStr = e.dataTransfer.getData(dragDataStr);
                                 if (!fromIndexStr) {
                                     console.error('drag over error: fromIndexStr is an empty string');
                                     return;

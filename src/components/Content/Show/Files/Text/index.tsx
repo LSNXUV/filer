@@ -22,10 +22,6 @@ export const TextShow = ({ file }: {
         }
     }, [file]);
     
-    useEffect(() => {
-        console.log('TextShow', file.path, runCode.code, isCurrent);
-    }, [file])
-    
     return (
         <div className={styles.container}>
             <Editor file={file} setRunCode={setRunCode} />

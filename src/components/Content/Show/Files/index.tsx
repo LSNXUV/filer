@@ -23,10 +23,6 @@ const ShowFile = memo(({ file }: { file: Files }) => {
   const ShowFileComponent = notSupportOpenExt.includes(ext)
     ? NotSupport
     : showFileMap[file.type.split('/')[0]] || showFileMap['default']
-
-  // useEffect(() => {
-  //   console.log('render!',file.name);
-  // }, [file])
   
   return <ShowFileComponent file={file} />
 })

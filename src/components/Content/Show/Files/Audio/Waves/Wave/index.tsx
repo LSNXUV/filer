@@ -47,17 +47,7 @@ const Wave = memo(({ url, draw }: {
 
         // 清除画布
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-
-        console.log('initCvs',url);
     }, [url, draw])
-    
-    useEffect(() => {
-        console.log('urlchange: ',url);
-    }, [url])
-
-    useEffect(() => {
-        console.log('drawchange: ',draw);
-    },[draw])
 
     //Audio API,上下文，事件
     useEffect(() => {
