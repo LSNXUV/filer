@@ -13,6 +13,8 @@ const Langs: {
 }
 
 type LangCtx = {
+    /** 当前语言名称 */
+    langName: LangName;
     /** 当前语言包 */
     Lang: LangStruct;
     /** 切换语言 */
@@ -49,9 +51,10 @@ export function LangProvider({ children }: {
     const langValue = useMemo(() => {
         return {
             Lang,
-            changeLang
+            changeLang,
+            langName
         }
-    }, [Lang, changeLang])
+    }, [Lang, changeLang, langName])
 
     if (loading) {
         return <BalldanceLoading />

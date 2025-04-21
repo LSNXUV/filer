@@ -18,6 +18,13 @@
 
         scrollbar-gutter: stable;
 
+        &::first-line {
+            font-size: 1.1em;
+            line-height: 2em;
+            font-weight: bold;
+            color: #69db7c;
+        }
+
         &::-webkit-scrollbar-thumb {
             background-color: #383c4f;
 

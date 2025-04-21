@@ -211,6 +211,10 @@ export const LANG_EN: LangStruct = {
                 Editor: {
                     log: {
                         updateError: 'User Refused!',
+                    },
+                    Action: {
+                        saveFile: 'Save',
+                        runCode: 'Run',
                     }
                 },
                 Audio: {

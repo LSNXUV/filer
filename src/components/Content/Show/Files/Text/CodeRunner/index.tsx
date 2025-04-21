@@ -49,7 +49,7 @@ const captureConsoleLog = (run: () => void): string => {
 };
 
 
-function CodeRunner({ codeObject: { code }, isCurrent }: {
+function CodeRunner({ codeObject, isCurrent }: {
     codeObject: {
         code: string
     },
@@ -61,19 +61,19 @@ function CodeRunner({ codeObject: { code }, isCurrent }: {
     const [runnerHeight, setRunnerHeight] = useState(0); // 运行器的内容高度
 
     useEffect(() => {
-        if (code) {
+        if (codeObject.code) {
             setExpand(true)
             if (runnerHeight === 0) {
-                setRunnerHeight(100); // 设置初始高度为100px
+                setRunnerHeight(172) // 设置初始高度
             }
             const result = captureConsoleLog(() => {
-                runCode(code);
+                runCode(codeObject.code);
             });
 
-            setResult(result);
+            setResult(`${new Date().toLocaleString()}: \n${result}`);
         } else {
         }
-    }, [code])
+    }, [codeObject])
 
     const onToggle = (b?: boolean) => {
         setExpand((s) => {

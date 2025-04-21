@@ -208,6 +208,10 @@ interface LangStruct {
                 Editor: {
                     log: {
                         updateError: string
+                    },
+                    Action: {
+                        saveFile: string,
+                        runCode: string
                     }
                 },
                 Audio:{

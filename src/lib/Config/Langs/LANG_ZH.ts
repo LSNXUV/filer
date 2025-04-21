@@ -210,6 +210,10 @@ export const LANG_ZH: LangStruct = {
                 Editor: {
                     log: {
                         updateError: '用户拒绝！'
+                    },
+                    Action: {
+                        saveFile: '保存',
+                        runCode: '运行'
                     }
                 },
                 Audio: {

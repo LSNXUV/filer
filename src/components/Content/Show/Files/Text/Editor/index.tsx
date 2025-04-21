@@ -52,21 +52,39 @@ export const Editor = ({ file, setRunCode }: {
     const handleEditorMount: OnMount = (editor, monaco) => {
         editorRef.current = editor;
 
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, async () => {
-            const value = editor.getValue();
-            await saveFile(value);
-            setFileEditStatus(file.path, {
-                status: FileEditStatus.saved,
-            });
+        editor.addAction({
+            id: 'save-file',
+            label: Lang.FileExploer.Content.Show.Editor.Action.saveFile,
+            contextMenuGroupId: 'cus',
+            contextMenuOrder: 0, // 顺序，越小越靠前
+            run: async (editor) => {
+                const value = editor.getValue();
+                await saveFile(value);
+                setFileEditStatus(file.path, {
+                    status: FileEditStatus.saved,
+                });
+            },
+            'keybindings': [
+                monaco.KeyMod.CtrlCmd | monaco.KeyCode.KeyS, // 快捷键
+            ],
         });
 
-        editor.addCommand(monaco.KeyMod.Alt | monaco.KeyCode.KeyC, async () => {
-            const value = editor.getValue();
-            setRunCode({
-                code: value
-            });
+        // 👇 添加右键菜单项：运行代码
+        editor.addAction({
+            id: 'run-code',
+            label: Lang.FileExploer.Content.Show.Editor.Action.runCode,
+            contextMenuGroupId: 'cus', // 放在哪个分组下
+            contextMenuOrder: 0, // 顺序，越小越靠前
+            run: async (editor) => {
+                const value = editor.getValue();
+                setRunCode({
+                    code: value
+                });
+            },
+            'keybindings': [
+                monaco.KeyMod.Alt | monaco.KeyCode.KeyC, // 快捷键
+            ],
         });
-
     };
 
     return (
