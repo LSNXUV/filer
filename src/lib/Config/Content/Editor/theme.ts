@@ -1,10 +1,8 @@
 import { IStandaloneThemeData } from "@/types/editor";
-import nightOwl from "./theme/night-owl";
-import CusNightOwl from "./theme/cus-night-owl";
+import PalenightHighContrast from "./theme/Material-Theme-Palenight-High-Contrast";
 
 export const theme: {
     [key: string]: IStandaloneThemeData
 } = {
-    'night-owl': nightOwl,
-    'cus-night-owl': CusNightOwl
+    'palenight-high-contrast': PalenightHighContrast
 }

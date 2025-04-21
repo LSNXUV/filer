@@ -7,6 +7,7 @@ import { useConfirm } from '@/lib/Context/Confirm'
 import { useLang } from '@/lib/Context/Lang'
 import { useTabs } from '@/lib/Context/Tab'
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
+import UnsavedDot from './UnsavedDot'
 
 let dragDataStr = 'index' // 用于存储拖动数据的字符串
 
@@ -95,14 +96,20 @@ export default function Tabs() {
                                         : tab.icon
                                 }
                             </div>
-                            <span className={styles.name}>
+                            <div className={styles.name}>
                                 {
                                     isFile
                                         ? file?.name
                                         : tab.name
                                 }
-                            </span>
-                            <span className={styles.close}
+                            </div>
+                            <div className={
+                                `${styles.close} ${tab.id === selectId ? styles.active : ''} ${
+                                    file && getFileEditStatus(file.path).status === FileEditStatus.unSaved
+                                        ? styles.unsaved
+                                        : ''
+                                }`
+                            }
                                 onClick={(e) => {
                                     e.stopPropagation()
                                     onCloseTab(index)
@@ -110,26 +117,10 @@ export default function Tabs() {
                             >
                                 {
                                     file && getFileEditStatus(file.path).status === FileEditStatus.unSaved
-                                        ? <div
-                                            style={{
-                                                width: 14,
-                                                height: 14,
-                                                display: 'flex',
-                                            }}
-                                        >
-                                            <div
-                                                style={{
-                                                    margin: 'auto',
-                                                    padding: 4,
-                                                    borderRadius: '50%',
-                                                    backgroundColor: 'white',
-                                                }}
-                                            >
-                                            </div>
-                                        </div>
-                                        : <Close size={14} fill="#bfbfbf" />
+                                        ? <UnsavedDot />
+                                        : <Close size={14} />
                                 }
-                            </span>
+                            </div>
                         </div>
                     )
                 })

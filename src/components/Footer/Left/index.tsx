@@ -34,7 +34,7 @@ function Left() {
             <div className={styles.fileDate}>{Lang.FileExploer.Sider.FileTree.Tree.File.FileDetail.lastModified} {new Date(file.lastModified).toLocaleString()}</div>
             <div className={styles.fileSize}>{formatFileSize(file.size)}</div>
             <div className={styles.fileName}>{file.name}</div>
-            <div className={styles.fileType}>{file.type || file.name.split('.').pop()}</div>
+            {file.type && <div className={styles.fileType}>{file.type}</div>}
           </div>
         )
       }

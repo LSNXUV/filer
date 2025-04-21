@@ -2,8 +2,8 @@ import { useCallback, useRef, useState } from "react"
 import styles from './index.module.scss'
 import { DirArrowIcon, DirCloseIcon, DirLoadingIcon, DirOpenIcon } from "@/components/Icons/File/Dir"
 import { Floating } from "@/components/public/Floating/Floating"
-import DirDetail from "@/components/Sider/FileTree/Tree/Dir/DirDetail/index"
-import DirMenu from "@/components/Sider/FileTree/Tree/Dir/DirMenu/index"
+import DirDetail from "@/components/Sider/FileTree/Tree/Dir/Detail/index"
+import DirMenu from "@/components/Sider/FileTree/Tree/Dir/Menu/index"
 import { useFiles } from "@/lib/Context/File"
 import VirtualShow from "@/components/public/VirtualShow/VirtualShow"
 import Children from "./Children"
@@ -68,7 +68,7 @@ export function Dir({ dir, level }: {
                             left: e.clientX,
                         });
                         setIsDetailShow(true);
-                    }, 1200);
+                    }, 2000);
                 }}
                 onMouseMove={(e) => {
                     if (isDetailShow) {

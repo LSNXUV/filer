@@ -72,10 +72,16 @@
             font-size: 0.8rem;
         }
 
+        
+
         .close {
+            &:not(.active):not(.unsaved) {
+                scale: 0;
+            }
+            scale: 1;
             margin-left: 10px;
             position: relative;
-
+            transition: all 0.2s ease-in-out;
             &:hover {
                 background-color: #545252;
             }
@@ -83,6 +89,10 @@
             svg {
                 display: block;
             }
+        }
+
+        &:hover .close {
+            scale: 1 !important;
         }
     }
 }

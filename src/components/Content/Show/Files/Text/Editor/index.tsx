@@ -66,13 +66,14 @@ export const Editor = ({ file, setRunCode }: {
                 code: value
             });
         });
+
     };
 
     return (
         <>
             <MonacoEditor
                 className={styles.editor}
-                theme="cus-night-owl"
+                theme={Object.keys(theme)[0]}
                 path={file.path}
                 value={editorText}
                 onChange={(value = '') => {
