@@ -240,6 +240,20 @@ export const LANG_ZH: LangStruct = {
                     forceShowTip: '强行查看可能会导致浏览器崩溃，是否继续？'
                 }
             }
+        },
+        Footer: {
+            Right: {
+                position: {
+                    lineNumber: '行',
+                    column: '列'
+                }
+            }
+        }
+    },
+    Global: {
+        copy: {
+            success: '复制成功',
+            fail: '复制失败!'
         }
     }
 }

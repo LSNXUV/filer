@@ -1,12 +1,14 @@
 import { memo } from "react"
-import { CSSCode, Code, HTMLCode, JSCode, JSONCode, ReactCode, TSCode } from "./Code"
+import { CSSCode, GitCode, HTMLCode, JSCode, JSONCode, MDCode, ReactCode, TSCode, TextCode, YMLCode } from "./Code"
 import { getIcon } from "../svg"
+import { getFileExtension } from "@/lib/Utils/File"
+import { supportAudioExt, supportImageExt, supportVideoExt } from "@/lib/Config/File/ext"
 
 export const Img = getIcon(
     <>
-        <path d="M779.01824 107.56096a115.22048 115.22048 0 0 1 115.22048 115.22048v537.6a115.22048 115.22048 0 0 1-115.22048 115.22048H241.41824a115.22048 115.22048 0 0 1-115.22048-115.22048V222.8224a115.22048 115.22048 0 0 1 115.22048-115.22048h537.6z" fill="#D1EBC6"></path><path d="M779.01824 107.56096a115.22048 115.22048 0 0 1 115.22048 115.22048v537.6a115.22048 115.22048 0 0 1-115.22048 115.22048H241.41824a115.22048 115.22048 0 0 1-115.22048-115.22048V222.8224a115.22048 115.22048 0 0 1 115.22048-115.22048h537.6z m0 57.58976H241.41824c-31.82592 0-57.63072 25.8048-57.63072 57.63072v537.6c0 31.82592 25.8048 57.58976 57.63072 57.58976h537.6c31.82592 0 57.58976-25.8048 57.58976-57.58976V222.8224c0-31.82592-25.8048-57.63072-57.58976-57.63072z" fill="#569C39"></path><path d="M310.23104 430.08a28.79488 28.79488 0 0 1 39.60832 0.57344l323.13344 315.92448a28.79488 28.79488 0 0 1-40.26368 41.20576L348.5696 509.99296a28.79488 28.79488 0 0 0-39.60832-0.6144l-126.85312 116.65408-19.49696-21.21728a28.79488 28.79488 0 0 1 1.72032-40.67328l145.8176-134.144z" fill="#569C39"></path><path d="M693.53472 498.4832L886.3744 667.648l-38.01088 43.29472-152.86272-134.18496-103.79264 100.59776-40.09984-41.3696 141.96736-137.54368zM560.08704 403.29216a65.29024 65.29024 0 1 0 0-130.58048 65.29024 65.29024 0 0 0 0 130.58048z m0 57.63072a122.88 122.88 0 1 0 0-245.84192 122.88 122.88 0 0 0 0 245.84192z" fill="#569C39">
-        </path>
+        <path d="M896 64 128 64C64 64 0 124.032 0 188.032L0 832c0 64 64 128 128 128l768 0c64 0 128-64 128-128L1024 188.032C1024 124.032 960 64 896 64zM296 227.968c70.72 0 128 57.28 128 128 0 70.72-57.28 128-128 128s-128-57.28-128-128C168 285.312 225.28 227.968 296 227.968zM971.008 615.744l-126.976-126.976L580.8 752l155.328 155.328-73.536 0-258.56-258.56-258.56 258.56c0 0-11.392 0.64-28.416-5.312-13.952-4.928-23.872-15.872-23.872-15.872l310.912-310.912L544 715.2l299.968-300.032 126.976 126.976L970.944 615.744z"></path>
     </>
+    , { fill: '#24BC77' }
 )
 
 export const Video = getIcon(
@@ -37,17 +39,17 @@ export const Binary = getIcon(
 const IconMatch = [
     {
         name: 'image',
-        exts: ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp', 'svg', 'ico'],
+        exts: supportImageExt,
         icon: Img
     },
     {
         name: 'video',
-        exts: ['mp4', 'webm', 'ogg', 'flv', 'avi', 'mov', 'wmv', 'rmvb', 'mkv'],
+        exts: supportVideoExt,
         icon: Video
     },
     {
         name: 'audio',
-        exts: ['mp3', 'wav', 'flac', 'ape', 'ogg', 'aac', 'wma'],
+        exts: supportAudioExt,
         icon: Audio
     },
     {
@@ -57,7 +59,7 @@ const IconMatch = [
     },
     {
         name: 'binary',
-        exts: ['exe', 'dmg', 'iso', 'apk', 'dll', 'deb', 'rpm', 'msi', 'bin', 'sh', 'bat', 'cmd', 'com', 'vbs', 'app', 'jar', 'apk', 'msu', 'cab', 'run', 'pkg', 'dmg', 'iso', 'appimage', 'xapk', 'msix'],
+        exts: ['exe', 'dmg', 'iso', 'apk', 'dll', 'deb', 'rpm', 'msi', 'bin', 'bat', 'com', 'vbs', 'app', 'jar', 'apk', 'msu', 'cab', 'run', 'pkg', 'dmg', 'iso', 'appimage', 'xapk', 'msix'],
         icon: Binary
     },
     {
@@ -91,9 +93,24 @@ const IconMatch = [
         icon: JSONCode
     },
     {
+        name: 'md',
+        exts: ['md', 'markdown'],
+        icon: MDCode
+    },
+    {
+        name: 'yml',
+        exts: ['yaml', 'yml',],
+        icon: YMLCode
+    },
+    {
+        name: 'git',
+        exts: ['gitignore', 'dockerignore', 'npmignore', 'yarnignore', 'eslintignore', 'prettierignore', 'stylelintignore'],
+        icon: GitCode
+    },
+    {
         name: 'code',
-        exts: ['yaml', 'yml', 'md', 'markdown', 'txt', 'log', 'gitignore', 'env', 'ini', 'properties', 'conf', 'config', 'htaccess', 'htpasswd', 'htgroups', 'htpasswd', 'htgroups', 'htaccess', 'htpasswd', 'htgroups'],
-        icon: Code
+        exts: ['txt', 'log', 'env', 'ini', 'properties', 'conf', 'config', 'htaccess', 'htpasswd', 'htgroups', 'htpasswd', 'htgroups', 'htaccess', 'htpasswd', 'htgroups'],
+        icon: TextCode
     },
 
 ]
@@ -102,8 +119,8 @@ const FileIcon = memo(function FileIcon({ name }: {
     name?: string
 }) {
 
-    const ext = name?.split('.').pop()?.toLowerCase() || ''
-    const Icon = IconMatch.find(item => item.exts.includes(ext))?.icon || Code
+    const ext = getFileExtension(name || '')
+    const Icon = IconMatch.find(item => item.exts.includes(ext))?.icon || TextCode
     return <Icon />
 })
 

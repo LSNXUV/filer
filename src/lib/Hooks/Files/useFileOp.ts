@@ -34,6 +34,53 @@ export function useFileOp() {
 
     const { loadFilesAndHandles, getDirHandle, getFileHandle } = useFiles()
 
+    const createFile: FileOp['createFile'] = useCallback(async (name, path, type) => {
+        const dirHandle = await getDirHandle(path);
+        if (!dirHandle) {
+            console.error('createFile error: dirHandle is null')
+            return {
+                bool: false,
+                reason: Lang.Lib.Hooks.useFileOp.createFile.reason.handleNotExist
+            };
+        }
+        try {
+            if (type === 'directory') {
+                await dirHandle.getDirectoryHandle(name, { create: true });
+            } else {
+                await dirHandle.getFileHandle(name, { create: true });
+            }
+        } catch (error) {
+            console.error(Lang.Lib.Hooks.useFileOp.log.createFileError, error);
+            return {
+                bool: false,
+                reason: Lang.Lib.Hooks.useFileOp.createFile.reason.repeat
+            }
+        }
+        await loadFilesAndHandles({ path });
+        return {
+            bool: true
+        }
+    }, [Lang, getDirHandle, loadFilesAndHandles])
+
+    const updateFile: FileOp['updateFile'] = useCallback(async (file, text) => {
+        const fileHandle = await getFileHandle(file.path)
+        if (!fileHandle) return false
+        try {
+            const newFile = new File([text], file.name, {
+                type: file.type,
+                lastModified: Date.now()
+            });
+
+            const writable = await fileHandle.createWritable({ keepExistingData: false });
+            await writable.write(newFile);
+            await writable.close();
+
+            return true
+        } catch (error) {
+            console.error(Lang.FileExploer.Content.Show.Editor.log.updateError, error);
+            return false
+        }
+    }, [Lang, getFileHandle]);
 
     const deleteFile: FileOp['deleteFile'] = useCallback(async (file, confirmShow = true) => {
         const dirHandle = await getDirHandle(backPath(file.path));
@@ -52,7 +99,7 @@ export function useFileOp() {
             )
             closeFile(file);
             //重新加载文件
-            await loadFilesAndHandles({ dirHandle, path: backPath(file.path) });
+            await loadFilesAndHandles({ path: backPath(file.path) });
 
             return true;
         } catch (error) {
@@ -92,61 +139,13 @@ export function useFileOp() {
             // 需要递归新建所有子文件夹和文件，太麻烦，难得做了
         }
         return true;
-    }, [deleteFile, getFileHandle, getDirHandle, loadFilesAndHandles])
+    }, [deleteFile, getFileHandle, getDirHandle])
 
     const openFileInExplorer: FileOp['openFileInExplorer'] = useCallback((file) => {
         alert({
             info: Lang.Lib.Hooks.useFileOp.openFileInExplorer.notSupport
         });
     }, [Lang, alert])
-
-    const createFile: FileOp['createFile'] = useCallback(async (name, path, type) => {
-        const dirHandle = await getDirHandle(path);
-        if (!dirHandle) {
-            console.error('createFile error: dirHandle is null')
-            return {
-                bool: false,
-                reason: Lang.Lib.Hooks.useFileOp.createFile.reason.handleNotExist
-            };
-        }
-        try {
-            if (type === 'directory') {
-                await dirHandle.getDirectoryHandle(name, { create: true });
-            } else {
-                await dirHandle.getFileHandle(name, { create: true });
-            }
-        } catch (error) {
-            console.error(Lang.Lib.Hooks.useFileOp.log.createFileError, error);
-            return {
-                bool: false,
-                reason: Lang.Lib.Hooks.useFileOp.createFile.reason.repeat
-            }
-        }
-        await loadFilesAndHandles({ dirHandle, path });
-        return {
-            bool: true
-        }
-    }, [Lang, getDirHandle, loadFilesAndHandles])
-
-    const updateFile: FileOp['updateFile'] = useCallback(async (file, text) => {
-        const fileHandle = await getFileHandle(file.path)
-        if (!fileHandle) return false
-        try {
-            const newFile = new File([text], file.name, {
-                type: file.type,
-                lastModified: Date.now()
-            });
-
-            const writable = await fileHandle.createWritable({ keepExistingData: false });
-            await writable.write(newFile);
-            await writable.close();
-
-            return true
-        } catch (error) {
-            console.error(Lang.FileExploer.Content.Show.Editor.log.updateError, error);
-            return false
-        }
-    }, [Lang, getFileHandle]);
 
     const fileOp = useMemo<FileOp>(() => {
         return {

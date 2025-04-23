@@ -1,10 +1,11 @@
 import React, { memo, useEffect } from 'react'
-import { notSupportOpenExt } from "@/lib/Config/File/notSupportOpenExt"
+import { supportAudioExt, supportExt, supportImageExt, supportVideoExt } from "@/lib/Config/File/ext"
 import { ImageShow } from "./Image"
 import TextShow from "./Text"
 import NotSupport from "./NotSupport"
 import VideoShow from "./Video"
 import AudioShow from "./Audio"
+import { getFileExtension } from '@/lib/Utils/File'
 
 const showFileMap: {
   [key: string]: React.FC<{
@@ -17,13 +18,34 @@ const showFileMap: {
   'default': TextShow, // 文本或代码
 }
 
-const ShowFile = memo(({ file }: { file: Files }) => {
-  const ext = file.name.split('.').pop() || 'not'
+const getTypeFromFile = (file: Files) => {
+  const mimeType = file.type
+  if (mimeType) {
+    const baseType = mimeType.split('/')[0]
+    if (showFileMap[baseType]) {
+      return baseType
+    }
+  }
 
-  const ShowFileComponent = notSupportOpenExt.includes(ext)
-    ? NotSupport
-    : showFileMap[file.type.split('/')[0]] || showFileMap['default']
-  
+  const ext = getFileExtension(file.name);
+  if (supportImageExt.includes(ext)) return 'image'
+  if (supportVideoExt.includes(ext)) return 'video'
+  if (supportAudioExt.includes(ext)) return 'audio'
+  return 'default'
+}
+
+const ShowFile = memo(({ file }: { file: Files }) => {
+
+  const ext = getFileExtension(file.name);
+  // 没有扩展名,直接使用文本查看器
+  if (ext === file.name) {
+    return <TextShow file={file} />
+  }
+  // 有扩展名，判断
+  const ShowFileComponent = supportExt.includes(ext)
+    ? showFileMap[getTypeFromFile(file)]
+    : NotSupport
+
   return <ShowFileComponent file={file} />
 })
 

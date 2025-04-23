@@ -241,6 +241,20 @@ export const LANG_EN: LangStruct = {
                     forceShowTip: 'Force show may cause the browser to crash, do you want to continue?'
                 }
             }
+        },
+        Footer: {
+            Right: {
+                position: {
+                    lineNumber: 'Line',
+                    column: 'Column'
+                }
+            }
+        }
+    },
+    Global: {
+        copy: {
+            success: 'Copy success',
+            fail: 'Copy fail!'
         }
     }
 }

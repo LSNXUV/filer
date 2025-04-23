@@ -235,6 +235,20 @@ interface LangStruct {
                     forceShowTip: string
                 }
             }
+        },
+        Footer: {
+            Right: {
+                position: {
+                    lineNumber: string,
+                    column: string
+                }
+            }
+        }
+    },
+    Global: {
+        copy: {
+            success: string,
+            fail: string
         }
     }
 }

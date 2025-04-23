@@ -8,6 +8,9 @@ import { useLang } from '@/lib/Context/Lang';
 import { theme } from '@/lib/Config/Content/Editor/theme';
 import { Code } from '..';
 import { useFileEntry } from '@/lib/Hooks/Files/useFileEntry';
+import { useEditorStatus } from '@/lib/Context/EditorStatus';
+import { IEditor } from '@/types/editor';
+import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile';
 
 export const Editor = ({ file, setRunCode }: {
     file: Files,
@@ -16,12 +19,15 @@ export const Editor = ({ file, setRunCode }: {
     const { Lang } = useLang()
     const { showMessage } = useMessage()
     const { setFileEditStatus } = useFileEditStatus()
+    const { init } = useEditorStatus()
+    const selectedFile = useSelectedFile()
 
     const { getFileText } = useFileEntry();
     const { updateFile } = useFileOp();
+
     const [editorText, setEditorText] = useState('');
 
-    const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
+    const editorRef = useRef<IEditor | null>(null);
 
     // 初始时或者上一次保存的值
     const oldValueRef = useRef<string | null>(null);
@@ -85,7 +91,16 @@ export const Editor = ({ file, setRunCode }: {
                 monaco.KeyMod.Alt | monaco.KeyCode.KeyC, // 快捷键
             ],
         });
+
+        init(editor); // 初始化编辑器、绑定事件等等
     };
+
+    useEffect(() => {
+        if (selectedFile?.path !== file.path || !editorRef.current){
+            return;
+        }
+        init(editorRef.current); // 重新初始化编辑器、绑定事件等等
+    }, [selectedFile, file, init]);
 
     return (
         <>

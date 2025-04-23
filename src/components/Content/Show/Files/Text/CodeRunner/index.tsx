@@ -49,11 +49,10 @@ const captureConsoleLog = (run: () => void): string => {
 };
 
 
-function CodeRunner({ codeObject, isCurrent }: {
+function CodeRunner({ codeObject }: {
     codeObject: {
         code: string
-    },
-    isCurrent: boolean
+    }
 }) {
 
     const [result, setResult] = useState<string | null>(null);  // 运行结果

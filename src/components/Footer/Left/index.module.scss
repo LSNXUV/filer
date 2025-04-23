@@ -3,24 +3,18 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 16px;
+    color: #abaeb8;
+    
+    >* {
+        padding-inline: 4px;
+    }
 
     .fileInfo {
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 16px;
-        color: #abaeb8;
-
-        > * {
-            height: 100%;
-            
-            &:hover {
-                cursor: pointer;
-                filter: brightness(1.3);
-            }
-
-        }
+        gap: inherit;
     }
 }

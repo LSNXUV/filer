@@ -30,12 +30,11 @@ export function LangProvider({ children }: {
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        // 只在客户端上执行
         const lang = localStorage.getItem('filer-lang') as LangName || 'zh';
         setLangName(lang);
         setTimeout(() => {
             setLoading(false)
-        }, 1000)
+        }, 1500)
     }, []);
 
     const Lang = useMemo(() => Langs[langName], [langName])
@@ -58,6 +57,7 @@ export function LangProvider({ children }: {
 
     if (loading) {
         return <BalldanceLoading />
+        return null;
     }
 
     return (

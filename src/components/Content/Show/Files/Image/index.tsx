@@ -26,8 +26,8 @@ export function ImageShow({ file: { path, name } }: {
   }, [path, getFileUrl]);
 
   return (
-    <>
+    <div className={styles.container}>
       {url ? <Image fill className={styles.img} src={url || ''} alt={name} /> : null}
-    </>
+    </div>
   )
 }

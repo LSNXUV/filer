@@ -3,19 +3,60 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 6px;
+    gap: 16px;
+    color: #abaeb8;
 
-    .fileInfo {
+    .editor {
+        height: 100%;
+        display: flex;
+        gap: 16px;
+
+        >* {
+            padding-inline: 4px;
+
+            &:hover {
+                background-color: #222534;
+                cursor: pointer;
+                filter: brightness(1.3);
+            }
+        }
+
+        .position {
+            height: 100%;
+            white-space: nowrap;
+            white-space-collapse: preserve;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .indent {
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: inherit;
+        }
+    }
+
+
+    .file {
         height: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 16px;
-        color: #abaeb8;
+        gap: inherit;
 
-        > * {
-            height: 100%;
-            vertical-align: middle;
+        >* {
+
+            &:hover {
+                cursor: pointer;
+                filter: brightness(1.3);
+            }
+        }
+
+        .name {
+            cursor: copy;
         }
     }
 }

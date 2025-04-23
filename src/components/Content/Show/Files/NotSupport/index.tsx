@@ -6,6 +6,7 @@ import FileIcon from '@/components/Icons/File/File'
 import TextShow from '../Text'
 import { useLang } from '@/lib/Context/Lang'
 import { useConfirm } from '@/lib/Context/Confirm'
+import { getFileExtension } from '@/lib/Utils/File'
 
 const typeMap: {
     [key: string]: string
@@ -18,7 +19,7 @@ export default function NotShow({ file }: {
     const { Lang } = useLang()
     const { confirm } = useConfirm()
 
-    const ext = file.name.split('.').pop() ?? ''
+    const ext = getFileExtension(file.name)
     const extType = typeMap[ext] ?? Lang.FileExploer.Content.Show.NotShow.unknownType
     const [isForcible, setisForcible] = useState(false) //是否强制查看
     return (
