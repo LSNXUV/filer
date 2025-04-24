@@ -207,6 +207,11 @@ export const LANG_ZH: LangStruct = {
                 onCloseFile: {
                     title: '保存',
                     info: '文件未保存，是否保存？',
+                },
+                Menu: {
+                    closeAllLeft: '关闭左侧全部',
+                    closeAllRight: '关闭右侧全部',
+                    closeAll: '关闭全部',
                 }
             },
             BreadCrumbs: {

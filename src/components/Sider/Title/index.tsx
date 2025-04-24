@@ -19,8 +19,7 @@ export default function Title() {
           setIsMenuShow(false)
         }}
       >
-        <span
-        >
+        <span>
           {Lang.FileExploer.Sider.Title.title}
         </span>
         <Menu show={isMenuShow} />

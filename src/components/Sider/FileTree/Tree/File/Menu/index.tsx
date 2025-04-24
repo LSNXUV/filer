@@ -11,10 +11,9 @@ import { backPath } from '@/lib/Utils/File'
 import FileIcon from '@/components/Icons/File/File'
 import { fileNamePattern } from '@/lib/Config/File/regex'
 
-const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
+const FileMenu = memo(function FileMenu({ file, toggle }: {
     file: Files,
-    toggle: () => void,
-    editToggle: () => void
+    toggle: () => void
 }) {
     const { showMessage } = useMessage()
     const { Lang } = useLang();
@@ -43,11 +42,6 @@ const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
         openFileInExplorer(file)
         toggle()
     }, [openFileInExplorer, file, toggle])
-
-    const handleEditToggle = useCallback(() => {
-        editToggle()
-        toggle()
-    }, [editToggle, toggle])
 
     const handleRenameFile = useCallback(() => {
         const rename = async (value: string) => {
@@ -93,9 +87,9 @@ const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
         } else if (event.key === 'Delete') {
             handleDeleteFile()
         } else if (event.key === 'F2') {
-            handleEditToggle()
+            handleRenameFile()
         }
-    }, [toggle, handleSelectFile, handleDeleteFile, handleOpenFileInExplorer, handleEditToggle]);
+    }, [toggle, handleSelectFile, handleDeleteFile, handleOpenFileInExplorer, handleRenameFile]);
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);

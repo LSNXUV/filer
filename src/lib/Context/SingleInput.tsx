@@ -15,29 +15,15 @@ export const SingleInputProvider = ({ children }: {
     const [show, setShow] = useState(false)
 
     const [config, setConfig] = useState<Omit<SingleInputProps, 'show'> | null>(null)
-    // const [title, setTitle] = useState('')
-    // const [info, setInfo] = useState<SingleInputProps['info']>()
-    // const [defaultValue, setDefaultValue] = useState('');
-    // const [handle, setHandle] = useState<SingleInputProps['handle'] | null>(null)
-    // const [cancel, setCancel] = useState<SingleInputProps['cancel'] | null>(null)
 
     const showSingleInput = (config: Omit<SingleInputProps, 'show'>) => {
-        // defaultValue && setDefaultValue(defaultValue)
-        // title && setTitle(title)
-        // info && setInfo(() => info)
-        // handle && setHandle(() => handle)
-        // cancel && setCancel(() => cancel)
         setConfig(config)
         setShow(true)
     }
 
     const reset = useCallback(() => {
         setShow(false)
-        // setTitle('')
-        // setInfo(undefined)
-        // setDefaultValue('')
-        // setHandle(null)
-        // setCancel(null)
+        
         setConfig(null)
     }, []);
 

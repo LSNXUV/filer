@@ -1,0 +1,29 @@
+.menu {
+	position: absolute;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	padding: 5px;
+	border-radius: 5px;
+	background-color: #292D3E;
+	box-shadow: 0 0 5px 0px #4b4f62;
+	transition: all 0.2s;
+
+	div {
+		width: 300px;
+		padding: 5px;
+		cursor: pointer;
+		display: flex;
+		justify-content: space-between;
+
+		span {
+			color: #cecece;
+			font-size: 14px;
+			font-weight: 500;
+		}
+    
+		&:hover {
+			background-color: #1C1F2B;
+		}
+	}
+}

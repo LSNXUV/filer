@@ -15,8 +15,6 @@ export function File({ file }: { file: Files }) {
     const selectedFile = useSelectedFile()
     const { selectFile, addFileToTabsRear } = useFileTab()
 
-    const [isEditing, setIsEditing] = useState<boolean>(false)
-
     //文件详情和菜单显示位置
     const [detailPosition, setDetailPosition] = useState<{ top: number, left: number }>({ top: 0, left: 0 });
     const [isDetailShow, setIsDetailShow] = useState<boolean>(false)
@@ -32,16 +30,11 @@ export function File({ file }: { file: Files }) {
         setIsMenuShow((prev) => !prev);
     }, [])
 
-    const editToggle = useCallback(() => {
-        setIsEditing((prev) => !prev);
-    }, [])
-
     return (
         <>
             <VirtualShow
                 file-id={file.path} //用于scrolIntoView
                 className={`${styles.file} ${selectedFile?.path === file.path ? styles.active : ''}`}
-                style={{ display: isEditing ? 'none' : '' }}
                 // 单击选中文件并显示
                 onClick={() => {
                     setIsDetailShow(false); //隐藏详情
@@ -109,7 +102,7 @@ export function File({ file }: { file: Files }) {
                 {
                     isMenuShow &&
                     <Floating position={menuPosition} zIndex={1000}>
-                        <FileMenu file={file} toggle={menuToggle} editToggle={editToggle} />
+                        <FileMenu file={file} toggle={menuToggle} />
                     </Floating>
                 }
             </VirtualShow>

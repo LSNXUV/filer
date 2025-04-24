@@ -21,6 +21,8 @@ type TabsContextType = {
     tabs: Tab[],
     /** 当前选中的tab */
     selectedTab: Tab | null,
+    /** 设置tabs */
+    setTabs: React.Dispatch<React.SetStateAction<Tab[]>>,
     /** 添加tab */
     addTab: (newTab: Tab, index?: number) => void,
     /** 关闭tab */
@@ -41,6 +43,14 @@ export const TabsProvider = ({ children }: { children: React.ReactNode }) => {
     //当前选中的文件索引
     // const [select, setSelect] = useState<number>(-1)
     const [selectId, setSelectId] = useState<string>('')
+
+    useEffect(() => {
+        if (tabs.length === 1) {
+            setSelectId(tabs[0].id); // 设置选中tab的id
+        } else if (tabs.length === 0) {
+            setSelectId(''); // 清空选中tab的id
+        }
+    }, [tabs])
 
     const select = useMemo(() => {
         return tabs.findIndex(tab => tab.id === selectId)
@@ -110,24 +120,17 @@ export const TabsProvider = ({ children }: { children: React.ReactNode }) => {
         });
     }, [select])
 
-    useEffect(() => {
-        if (tabs.length === 1) {
-            setSelectId(tabs[0].id); // 设置选中tab的id
-        } else if (tabs.length === 0) {
-            setSelectId(''); // 清空选中tab的id
-        }
-    }, [tabs])
-
     const selectedTab = useMemo(() => {
         if (select < 0 || select >= tabs.length) return null;
         return tabs[select];
     }, [select, tabs])
 
+
     const contextValue = useMemo<TabsContextType>(() => ({
-        tabs,
+        tabs,setTabs,
         addTab,
         resortTabs,
-        closeTab,
+        closeTab, 
         selectId, setSelectId,
         selectedTab,
     }), [tabs, addTab, resortTabs, closeTab, selectId, selectedTab]);

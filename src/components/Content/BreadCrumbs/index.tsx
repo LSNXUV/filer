@@ -4,6 +4,7 @@ import { Floating } from '@/components/public/Floating/Floating'
 import { useFiles } from '@/lib/Context/File'
 import styles from './index.module.scss'
 import { memo, useEffect, useMemo, useRef, useState } from 'react'
+import { useEditorStatus } from '@/lib/Context/EditorStatus'
 
 const BreadCrumbs = memo(({ path }: {
     path: string
@@ -15,6 +16,8 @@ const BreadCrumbs = memo(({ path }: {
     const containerRef = useRef<HTMLDivElement>(null)
     const floatingTreeRef = useRef<HTMLDivElement>(null)
     const [treePosition, setTreePosition] = useState({ top: 0, left: 0 });
+
+    const { openCommand } = useEditorStatus()
 
     // 生成路径树
     const pathTree = useMemo(() => {
@@ -51,7 +54,10 @@ const BreadCrumbs = memo(({ path }: {
                     return (
                         <div key={index} className={styles.route}
                             onClick={(e) => {
-                                if (index === paths.length - 1) return
+                                if (index === paths.length - 1) {
+                                    openCommand('@');
+                                    return;
+                                }
                                 const rect = e.currentTarget.getBoundingClientRect();
                                 setTreePosition({
                                     top: rect.bottom,

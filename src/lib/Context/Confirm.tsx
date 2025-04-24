@@ -16,65 +16,65 @@ export const ConfirmProvider: React.FC<{ children: ReactNode }> = ({ children })
 
     const [show, setShow] = useState(false);
 
-    const [title, setTitle] = useState<ReactNode>(Lang.Lib.Context.Confirm.defaultTitle);
-    const [info, setInfo] = useState<ReactNode>(Lang.Lib.Context.Confirm.defaultInfo);
-    const [onConfirm, setOnConfirm] = useState(() => () => { });
-    const [onCancel, setOnCancel] = useState(() => () => { });
-    const [closable, setClosable] = useState(false);
-    const [onClose, setOnClose] = useState(() => () => { });
-    const [type, setType] = useState<ConfirmType>('confirm')
+    const [config, setConfig] = useState<ConfirmProps | null>(null);
+    // const [title, setTitle] = useState<ReactNode>(Lang.Lib.Context.Confirm.defaultTitle);
+    // const [info, setInfo] = useState<ReactNode>(Lang.Lib.Context.Confirm.defaultInfo);
+    // const [onConfirm, setOnConfirm] = useState(() => () => { });
+    // const [onCancel, setOnCancel] = useState(() => () => { });
+    // const [closable, setClosable] = useState(false);
+    // const [onClose, setOnClose] = useState(() => () => { });
+    // const [type, setType] = useState<ConfirmType>('confirm')
 
-    const confirm = useCallback(({ title, info, onConfirm, onCancel, type, closable, onClose }: ConfirmProps) => {
-        title && setTitle(title);
-        info && setInfo(info);
-        type && setType(type);
-        closable && setClosable(closable);
-        onClose && setOnClose(() => onClose);
+    const confirm = useCallback((config: ConfirmProps) => {
+        // title && setTitle(title);
+        // info && setInfo(info);
+        // type && setType(type);
+        // closable && setClosable(closable);
+        // onClose && setOnClose(() => onClose);
+        setConfig(config);
 
         setShow(true);
 
         return new Promise<boolean>((resolve, _) => {
-            setOnConfirm(() => () => {
-                onConfirm?.();
-                setShow(false);
-                resolve(true);
-            });
-            setOnCancel(() => () => {
-                onCancel?.();
-                setShow(false);
-                resolve(false);
-            });
+            // setOnConfirm(() => () => {
+            //     onConfirm?.();
+            //     setShow(false);
+            //     resolve(true);
+            // });
+            // setOnCancel(() => () => {
+            //     onCancel?.();
+            //     setShow(false);
+            //     resolve(false);
+            // });
+            setConfig({
+                type: 'confirm',
+                ...config,
+                onConfirm: () => {
+                    config.onConfirm?.();
+                    setShow(false);
+                    resolve(true);
+                },
+                onCancel: () => {
+                    config.onCancel?.();
+                    setShow(false);
+                    resolve(false);
+                },
+                onClose: () => {
+                    setShow(false);
+                    config.onClose?.();
+                    resolve(false);
+                },
+            })
         });
     }, [])
 
-    const alert = useCallback(({ title, info, onConfirm }: Omit<ConfirmProps, 'onCancel' | 'closable' | 'onClose' | 'type'>) => {
+    const alert = useCallback((config: Omit<ConfirmProps, 'onCancel' | 'closable' | 'onClose' | 'type'>) => {
 
         return confirm({
-            title, info, onConfirm,
+            ...config,
             type: 'alert',
         })
     }, [confirm])
-
-    const confirmHandle = useCallback(() => {
-        onConfirm();
-        setShow(false);
-    }, [onConfirm])
-
-    const cancelHandle = useCallback(() => {
-        onCancel();
-        setShow(false);
-    }, [onCancel])
-
-    const onCloseHandle = useCallback(() => {
-        setShow(false);
-        onClose();
-    }, [onClose])
-
-    useEffect(() => {
-        setTitle(Lang.Lib.Context.Confirm.defaultTitle);
-        setInfo(Lang.Lib.Context.Confirm.defaultInfo);
-    }, [Lang.Lib.Context.Confirm])
-
 
     const confirmContextValue = useMemo<ConfirmContextType>(() => ({
         confirm,
@@ -85,9 +85,7 @@ export const ConfirmProvider: React.FC<{ children: ReactNode }> = ({ children })
         <ConfirmContext value={confirmContextValue}>
             {children}
             <Confirm show={show}
-                title={title} info={info} type={type}
-                onConfirm={confirmHandle} onCancel={cancelHandle}
-                closable={closable} onClose={onCloseHandle}
+                {...config}
             />
         </ConfirmContext>
     );

@@ -6,6 +6,7 @@ import { backPath, queryFileHandlePermission, requestFileHandlePermission, verif
 import { useConfirm } from './Confirm';
 import { useMessage } from './Message';
 import { getRootDirectoryHandle, removeRootDirectoryHandle, saveRootDirectoryHandle } from '../Utils/IDB/fsHandle';
+import { useTabs } from './Tab';
 
 type FilerCtx = {
     /** 是否有根文件树 */
@@ -31,6 +32,7 @@ const FilesCtx = createContext<FilerCtx | null>(null);
 export function FilesProvider({ children }: {
     children: React.ReactNode | React.ReactNode[];
 }) {
+    const { closeAllTabs } = useTabs()
     const { Lang } = useLang();
     const { alert, confirm } = useConfirm()
     const { showMessage } = useMessage()
@@ -38,9 +40,9 @@ export function FilesProvider({ children }: {
     const [loading, setLoading] = useState(false)
 
     //文件树
-    const [files, setFiles] = useState<Files | null>(null); 
+    const [files, setFiles] = useState<Files | null>(null);
     //根目录句柄
-    const [rootDirHandle, setRootDirHandle] = useState<FileSystemDirectoryHandle | null>(null); 
+    const [rootDirHandle, setRootDirHandle] = useState<FileSystemDirectoryHandle | null>(null);
 
     // 获取目录句柄
     const getDirHandle = useCallback(async (path: string) => {
@@ -150,20 +152,21 @@ export function FilesProvider({ children }: {
     }, [Lang, alert, loadFilesAndHandles])
 
     // 重置文件选择器
-    const resetDirectoryPicker = useCallback(function resetDirectoryPicker() {
+    const resetDirectoryPicker: FilerCtx['resetDirectoryPicker'] = useCallback(() => {
         setFiles(null);
         setRootDirHandle(null); // 重置根目录句柄
         removeRootDirectoryHandle(); // 删除根目录句柄
-    }, [])
+        closeAllTabs(); // 关闭所有tab
+    }, [closeAllTabs])
 
     useEffect(() => {
         (async () => {
             const rootDirHandle = await getRootDirectoryHandle();
             if (rootDirHandle) {
-                
+
                 // 如果没权限，需要强行引导交互，这样才能请求权限
-                if(!await queryFileHandlePermission(rootDirHandle) && !await confirm({
-                    info: <span>{Lang.Lib.Context.File.permission.isLoadingSavedDirHandle} <span style={{color: 'skyblue'}}>{rootDirHandle.name} </span>?</span>,
+                if (!await queryFileHandlePermission(rootDirHandle) && !await confirm({
+                    info: <span>{Lang.Lib.Context.File.permission.isLoadingSavedDirHandle} <span style={{ color: 'skyblue' }}>{rootDirHandle.name} </span>?</span>,
                 })) return;
                 // 如果没有权限，则请求权限
                 if (!await requestFileHandlePermission(rootDirHandle)) return;

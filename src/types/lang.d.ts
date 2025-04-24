@@ -205,6 +205,11 @@ interface LangStruct {
                 onCloseFile: {
                     title: string,
                     info: string
+                },
+                Menu: {
+                    closeAllLeft: string,
+                    closeAllRight: string,
+                    closeAll: string,
                 }
             },
             BreadCrumbs: {

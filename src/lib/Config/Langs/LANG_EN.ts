@@ -208,6 +208,11 @@ export const LANG_EN: LangStruct = {
                 onCloseFile: {
                     title: 'Save',
                     info: 'File not saved, do you want to save?',
+                },
+                Menu: {
+                    closeAllLeft: 'Close All Left',
+                    closeAllRight: 'Close All Right',
+                    closeAll: 'Close All',
                 }
             },
             BreadCrumbs: {
