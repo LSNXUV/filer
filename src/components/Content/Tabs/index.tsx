@@ -8,6 +8,7 @@ import { useLang } from '@/lib/Context/Lang'
 import { useTabs } from '@/lib/Context/Tab'
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
 import UnsavedDot from './UnsavedDot'
+import { useEffect } from 'react'
 
 let dragDataStr = 'index' // 用于存储拖动数据的字符串
 
@@ -44,7 +45,7 @@ export default function Tabs() {
                         // 啥操作都不做
                     }
                 })
-    
+
             } else {
                 closeTab(index)
             }
@@ -53,6 +54,18 @@ export default function Tabs() {
         }
     }
 
+    // 选中标签时，自动滚动到视口
+    useEffect(() => {
+        const tab = document.querySelector(`[tab-id="${selectId}"]`) as HTMLDivElement
+        if (tab) {
+            tab?.scrollIntoView({
+                behavior: 'smooth', // 平滑滚动
+                block: 'center', // 滚动到最近的边界
+                inline: 'center' // 滚动到最近的边界
+            })
+        }
+    }, [selectId])
+
     return (
         <div className={styles.container}>
             {
@@ -60,9 +73,16 @@ export default function Tabs() {
                     const file = tab.type === 'file' ? tab.content : null; // 如果是文件类型，获取文件对象
                     const isFile = tab.type === 'file'; // 判断是否是文件类型
                     return (
-                        <div key={tab.id} className={`${styles.tab} ${tab.id === selectId ? styles.active : ''}`}
+                        <div key={tab.id} tab-id={tab.id} className={`${styles.tab} ${tab.id === selectId ? styles.active : ''}`}
                             onClick={() => {
                                 setSelectId(tab.id)
+                                // 选中标签时，文件树也自动滚动到视口
+                                const fileEle = document.querySelector(`[file-id="${file?.path}"]`) as HTMLDivElement
+                                fileEle?.scrollIntoView({
+                                    behavior: 'smooth', // 平滑滚动
+                                    block: 'center', // 滚动到最近的边界
+                                    inline: 'center' // 滚动到最近的边界
+                                })
                             }}
                             // 鼠标中键关闭标签
                             onMouseDown={(e) => {
@@ -104,10 +124,9 @@ export default function Tabs() {
                                 }
                             </div>
                             <div className={
-                                `${styles.close} ${tab.id === selectId ? styles.active : ''} ${
-                                    file && getFileEditStatus(file.path).status === FileEditStatus.unSaved
-                                        ? styles.unsaved
-                                        : ''
+                                `${styles.close} ${tab.id === selectId ? styles.active : ''} ${file && getFileEditStatus(file.path).status === FileEditStatus.unSaved
+                                    ? styles.unsaved
+                                    : ''
                                 }`
                             }
                                 onClick={(e) => {

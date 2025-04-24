@@ -12,8 +12,8 @@ const Children = memo(({ expand, children, level }: {
         <TransitiveHeightContainer
             expanded={expand}
         >
-            {children.map((file, index) => (
-                <Tree key={index} files={file} level={level + 1} />
+            {children.map((file, _) => (
+                <Tree key={file.path} files={file} level={level + 1} />
             ))}
         </TransitiveHeightContainer>
     )

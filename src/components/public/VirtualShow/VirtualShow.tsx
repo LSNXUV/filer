@@ -29,7 +29,17 @@ const VirtualShow: FC<VirtualShowProps> = ({ children, ...props }) => {
 
   return (
     <div
-      {...(isVisible ? props : {})}
+      {...(
+        isVisible
+          ? props
+          // 保留以 file- 开头的属性
+          : Object.entries(props)
+            .filter(([key]) => key.startsWith('file-'))
+            .reduce((acc, [key, value]) => {
+              acc[key] = value;
+              return acc;
+            }, {} as Record<string, any>)
+      )}
       ref={ref}
       className={isVisible ? props.className : undefined}
       style={

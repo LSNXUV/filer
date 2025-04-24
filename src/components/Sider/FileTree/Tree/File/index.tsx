@@ -38,7 +38,9 @@ export function File({ file }: { file: Files }) {
 
     return (
         <>
-            <VirtualShow className={`${styles.file} ${selectedFile?.path === file.path ? styles.active : ''}`}
+            <VirtualShow
+                file-id={file.path} //用于scrolIntoView
+                className={`${styles.file} ${selectedFile?.path === file.path ? styles.active : ''}`}
                 style={{ display: isEditing ? 'none' : '' }}
                 // 单击选中文件并显示
                 onClick={() => {
