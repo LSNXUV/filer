@@ -9,6 +9,7 @@ import { useFileTab } from '@/lib/Hooks/Tabs/useFileTab'
 import { useSingleInput } from '@/lib/Context/SingleInput'
 import { backPath } from '@/lib/Utils/File'
 import FileIcon from '@/components/Icons/File/File'
+import { fileNamePattern } from '@/lib/Config/File/regex'
 
 const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
     file: Files,
@@ -57,6 +58,7 @@ const FileMenu = memo(function FileMenu({ file, toggle, editToggle }: {
             )
         }
         showSingleInput({
+            pattern: fileNamePattern,
             defaultValue: file.name,
             title: Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.handleRenameFile.singleInput.title,
             info: (value) => {

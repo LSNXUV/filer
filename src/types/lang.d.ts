@@ -29,6 +29,12 @@ interface LangStruct {
                 defaultInfo: string,
                 confirm: string,
                 cancel: string
+            },
+            SingleInput: {
+                confirm: string,
+                invalid: {
+                    pattern: string
+                }
             }
         },
         Fun: {
@@ -212,6 +218,11 @@ interface LangStruct {
                     Action: {
                         saveFile: string,
                         runCode: string
+                    },
+                    CodeRunner: {
+                        notSupportToRun: string,
+                        stdinTitle: string,
+                        stdinInfo: string,
                     }
                 },
                 Audio:{
@@ -241,6 +252,10 @@ interface LangStruct {
                 position: {
                     lineNumber: string,
                     column: string
+                },
+                indent: {
+                    space: string,
+                    tab: string,
                 }
             }
         }
@@ -249,6 +264,7 @@ interface LangStruct {
         copy: {
             success: string,
             fail: string
-        }
+        },
+        confirm: string
     }
 }

@@ -8,6 +8,7 @@ import styles from './index.module.scss'
 import { memo, useCallback, useEffect } from 'react'
 import FileIcon from '@/components/Icons/File/File'
 import { backPath } from '@/lib/Utils/File'
+import { dirNamePattern, fileNamePattern } from '@/lib/Config/File/regex'
 
 const DirMenu = memo(function DirMenu({ isTop, file, toggle, dirToggle }: {
     isTop: boolean, //是否为顶层目录
@@ -34,6 +35,8 @@ const DirMenu = memo(function DirMenu({ isTop, file, toggle, dirToggle }: {
 
     const handleCreateFile = useCallback(() => {
         showSingleInput({
+            pattern: fileNamePattern,
+            max: 20,
             defaultValue: '',
             title: Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.handleCreateFile.singleInput.title,
             info: (value) => {
@@ -52,6 +55,7 @@ const DirMenu = memo(function DirMenu({ isTop, file, toggle, dirToggle }: {
 
     const handleCreateDir = useCallback(() => {
         showSingleInput({
+            pattern: dirNamePattern,
             defaultValue: '',
             title: Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.handleCreateDir.singleInput.title,
             info: (value) => {

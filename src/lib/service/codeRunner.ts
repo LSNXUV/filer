@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { extToJudge0LanguageId } from '../Config/CodeRunner/language';
-const authToken = 'b8fa60f1cemshe8305b797ac5c6cp1d5f0ejsn6e5ee67b5901';
+import { decodeFromBase64, encodeToBase64 } from '../Utils/CodeRunner/to';
+
+const authToken = '416b6ea3damsh9222f375ad59827p148abejsne69daf21eb3c';
+
 type CreateSubmissionResponse = {
     token: string
 }
@@ -29,14 +32,14 @@ export async function createSubmission(
             fields: '*'
         },
         headers: {
-            'X-Auth-Token': authToken,
+            'x-rapidapi-key': authToken,
             'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
             'Content-Type': 'application/json'
         },
         data: {
             language_id,
-            source_code: btoa(code),
-            stdin: btoa(stdin),
+            source_code: encodeToBase64(code),
+            stdin: encodeToBase64(stdin),
         }
     };
 
@@ -57,13 +60,14 @@ export async function createSubmission(
 
 type GetSubmissionResultResponse = {
     stdout: string,
-    stderr: string,
+    stderr: string | null,
     compile_output: string,
     message: string,
     exit_code: number,
     time: number,
     memory: number,
     token: string,
+    status_id: number,
     status: {
         id: number,
         description: string,
@@ -71,7 +75,10 @@ type GetSubmissionResultResponse = {
         color: string
     }
 }
-export async function getSubmissionResult(token: string) {
+export async function getSubmissionResult(
+    token: string,
+    err: (err: any) => void = () => { },
+) {
     const options = {
         method: 'GET',
         url: `https://judge0-ce.p.rapidapi.com/submissions/${token}`,
@@ -80,7 +87,7 @@ export async function getSubmissionResult(token: string) {
             fields: '*'
         },
         headers: {
-            'X-Auth-Token': authToken,
+            'x-rapidapi-key': authToken,
             'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
             'Content-Type': 'application/json'
         }
@@ -88,9 +95,15 @@ export async function getSubmissionResult(token: string) {
 
     try {
         const response = await axios.request<GetSubmissionResultResponse>(options);
-        return response.data;
+        return {
+            ...response.data,
+            stdout: decodeFromBase64(response.data.stdout),
+            stderr: response.data.stderr ? decodeFromBase64(response.data.stderr) : null,
+            compile_output: response.data.compile_output ? decodeFromBase64(response.data.compile_output) : null,
+        };
     } catch (error) {
         console.error(error);
+        err(error);
         return null
     }
 }

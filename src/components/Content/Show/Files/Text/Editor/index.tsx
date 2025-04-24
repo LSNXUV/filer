@@ -6,7 +6,6 @@ import { FileEditStatus, useFileEditStatus } from '@/lib/Context/FIleEditStatus'
 import { useMessage } from '@/lib/Context/Message';
 import { useLang } from '@/lib/Context/Lang';
 import { theme } from '@/lib/Config/Content/Editor/theme';
-import { Code } from '..';
 import { useFileEntry } from '@/lib/Hooks/Files/useFileEntry';
 import { useEditorStatus } from '@/lib/Context/EditorStatus';
 import { IEditor } from '@/types/editor';
@@ -14,7 +13,7 @@ import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile';
 
 export const Editor = ({ file, setRunCode }: {
     file: Files,
-    setRunCode: (code: Code) => void
+    setRunCode: (code: string) => void
 }) => {
     const { Lang } = useLang()
     const { showMessage } = useMessage()
@@ -83,9 +82,7 @@ export const Editor = ({ file, setRunCode }: {
             contextMenuOrder: 0, // 顺序，越小越靠前
             run: async (editor) => {
                 const value = editor.getValue();
-                setRunCode({
-                    code: value
-                });
+                setRunCode(value);
             },
             'keybindings': [
                 monaco.KeyMod.Alt | monaco.KeyCode.KeyC, // 快捷键

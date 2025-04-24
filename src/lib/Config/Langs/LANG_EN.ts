@@ -29,6 +29,12 @@ export const LANG_EN: LangStruct = {
                 defaultInfo: 'Are you sure you want to do this?',
                 confirm: 'Confirm',
                 cancel: 'Cancel'
+            },
+            SingleInput: {
+                confirm: 'Confirm',
+                invalid: {
+                    pattern: 'please enter a valid value!',
+                },
             }
         },
         Fun: {
@@ -215,6 +221,11 @@ export const LANG_EN: LangStruct = {
                     Action: {
                         saveFile: 'Save',
                         runCode: 'Run',
+                    },
+                    CodeRunner: {
+                        notSupportToRun: 'Not support to run!',
+                        stdinTitle: 'Input stdin',
+                        stdinInfo: 'Please Enter the stdin if needed:',
                     }
                 },
                 Audio: {
@@ -247,6 +258,10 @@ export const LANG_EN: LangStruct = {
                 position: {
                     lineNumber: 'Line',
                     column: 'Column'
+                },
+                indent: {
+                    space: 'Space',
+                    tab: 'Tab',
                 }
             }
         }
@@ -255,6 +270,7 @@ export const LANG_EN: LangStruct = {
         copy: {
             success: 'Copy success',
             fail: 'Copy fail!'
-        }
+        },
+        confirm: 'Confirm'
     }
 }

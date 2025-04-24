@@ -1,7 +1,7 @@
 .resultContainer {
     display: flex;
     flex-direction: column;
-    padding-top: 4px;
+    padding-top: 6px;
     padding-right: 4px;
 
     position: relative;
@@ -10,50 +10,15 @@
         height: 26px;
     }
 
-    pre {
-        padding: 10px;
-        padding-left: 20px;
-        font-family: 'Courier New', Courier, monospace;
-        overflow: auto;
-
-        scrollbar-gutter: stable;
-
-        &::first-line {
-            font-size: 1.1em;
-            line-height: 2em;
-            font-weight: bold;
-            color: #69db7c;
-        }
-
-        &::-webkit-scrollbar-thumb {
-            background-color: #383c4f;
-
-            &:hover {
-                background-color: #5a5e6b;
-            }
-
-            &:active {
-                background-color: #878b99;
-            }
-        }
-
-        &::-webkit-scrollbar-corner {
-            background-color: transparent;
-        }
-
-        &::-webkit-scrollbar {
-            height: 8px;
-            width: 8px;
-        }
-    }
-
     .close {
         position: absolute;
         top: 6px;
-        right: 6px + 8px + 4px;
+        right: 6px;
         cursor: pointer;
         transform: rotate(90deg);
         transition: all 0.2s ease;
+
+        z-index: 99;
 
         &:hover {
             filter: brightness(1.3);
@@ -61,6 +26,62 @@
 
         &.unexpand {
             transform: rotate(-90deg);
+        }
+    }
+
+    .result {
+        display: flex;
+        flex-direction: column;
+
+        // flex: 1;
+
+        padding: 0 6px 0 20px;
+        font-family: 'Courier New', Courier, monospace;
+        // overflow: auto;
+
+        position: relative;
+
+        .time {
+            font-size: 1.1em;
+            line-height: 1.3em;
+            font-weight: bold;
+            color: #69db7c;
+
+            border-bottom: 1px solid #2b2e3f;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        pre {
+            overflow: auto;
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            scrollbar-gutter: stable;
+
+            &::-webkit-scrollbar-thumb {
+                background-color: #383c4f;
+
+                &:hover {
+                    background-color: #5a5e6b;
+                }
+
+                &:active {
+                    background-color: #878b99;
+                }
+            }
+
+            &::-webkit-scrollbar-corner {
+                background-color: transparent;
+            }
+
+            &::-webkit-scrollbar {
+                height: 8px;
+                width: 8px;
+            }
         }
     }
 }

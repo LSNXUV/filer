@@ -22,8 +22,21 @@ function Right() {
                {
                   isText &&
                   <div className={styles.editor}>
-                     {position && <div onClick={gotoPosition} className={styles.position}>{`${Lang.FileExploer.Footer.Right.position.lineNumber} ${position.lineNumber},  ${Lang.FileExploer.Footer.Right.position.column} ${position.column}`}</div>}
-                     <div className={styles.indent} onClick={() => openCommand('>indent')}>{tabSize > 0 ? '空格：' : '制表符：'}{Math.abs(tabSize)}</div>
+                     {
+                        position &&
+                        <div onClick={gotoPosition} className={styles.position}>
+                           {`${Lang.FileExploer.Footer.Right.position.lineNumber} ${position.lineNumber},  ${Lang.FileExploer.Footer.Right.position.column} ${position.column}`}
+                        </div>
+                     }
+                     <div className={styles.indent}
+                        onClick={() => openCommand('>indent')}
+                     >
+                        {
+                           tabSize > 0
+                              ? Lang.FileExploer.Footer.Right.indent.space
+                              : Lang.FileExploer.Footer.Right.indent.tab}：{Math.abs(tabSize)
+                        }
+                     </div>
                   </div>
                }
                <div className={styles.file}>

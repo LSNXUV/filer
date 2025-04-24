@@ -1,5 +1,5 @@
 import { SingleInput, SingleInputProps } from '@/components/public/SingleInput/SingleInput';
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 type SingleInputContextType = {
     /** 调用弹出input输入框，回调函数能拿到value做你想做的事儿 */
@@ -14,40 +14,42 @@ export const SingleInputProvider = ({ children }: {
 }) => {
     const [show, setShow] = useState(false)
 
-    const [title, setTitle] = useState('')
-    const [info, setInfo] = useState<SingleInputProps['info']>()
-    const [defaultValue, setDefaultValue] = useState('');
-    const [handle, setHandle] = useState<SingleInputProps['handle'] | null>(null)
-    const [cancel, setCancel] = useState<SingleInputProps['cancel'] | null>(null)
+    const [config, setConfig] = useState<Omit<SingleInputProps, 'show'> | null>(null)
+    // const [title, setTitle] = useState('')
+    // const [info, setInfo] = useState<SingleInputProps['info']>()
+    // const [defaultValue, setDefaultValue] = useState('');
+    // const [handle, setHandle] = useState<SingleInputProps['handle'] | null>(null)
+    // const [cancel, setCancel] = useState<SingleInputProps['cancel'] | null>(null)
 
-    const showSingleInput = ({ defaultValue, title, info, handle, cancel }: Omit<SingleInputProps, 'show'>) => {
-        defaultValue && setDefaultValue(defaultValue)
-        title && setTitle(title)
-        info && setInfo(() => info)
-        handle && setHandle(() => handle)
-        cancel && setCancel(() => cancel)
-
+    const showSingleInput = (config: Omit<SingleInputProps, 'show'>) => {
+        // defaultValue && setDefaultValue(defaultValue)
+        // title && setTitle(title)
+        // info && setInfo(() => info)
+        // handle && setHandle(() => handle)
+        // cancel && setCancel(() => cancel)
+        setConfig(config)
         setShow(true)
     }
 
-    const reset = () => {
+    const reset = useCallback(() => {
         setShow(false)
-        setTitle('')
-        setInfo(undefined)
-        setDefaultValue('')
-        setHandle(null)
-        setCancel(null)
-    }
+        // setTitle('')
+        // setInfo(undefined)
+        // setDefaultValue('')
+        // setHandle(null)
+        // setCancel(null)
+        setConfig(null)
+    }, []);
 
-    const handleClick = async (value: string) => {
-        handle && await handle(value);
-        reset()
-    };
+    const handleClick = useCallback(async (value: string) => {
+        config?.handle && await config.handle(value);
+        reset();
+    }, [config, reset]);
 
-    const cancelClick = async (value: string) => {
-        cancel && await cancel(value);
-        reset()
-    }
+    const cancelClick = useCallback(async (value: string) => {
+        config?.cancel && await config.cancel(value);
+        reset();
+    }, [config, reset]);
 
     const singleInputContextValue = useMemo<SingleInputContextType>(() => ({
         showSingleInput,
@@ -56,7 +58,10 @@ export const SingleInputProvider = ({ children }: {
     return (
         <SingleInputContext value={singleInputContextValue}>
             {children}
-            <SingleInput show={show} defaultValue={defaultValue} title={title} info={info} handle={handleClick} cancel={cancelClick} />
+            <SingleInput show={show}
+                {...config}
+                handle={handleClick} cancel={cancelClick}
+            />
         </SingleInputContext>
     );
 };

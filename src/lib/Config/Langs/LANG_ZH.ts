@@ -29,6 +29,12 @@ export const LANG_ZH: LangStruct = {
                 defaultInfo: '您确定要执行此操作吗?',
                 confirm: '确认',
                 cancel: '取消'
+            },
+            SingleInput: {
+                confirm: '确认',
+                invalid: {
+                    pattern: '格式不合法!'
+                }
             }
         },
         Fun: {
@@ -214,6 +220,11 @@ export const LANG_ZH: LangStruct = {
                     Action: {
                         saveFile: '保存',
                         runCode: '运行'
+                    },
+                    CodeRunner: {
+                        notSupportToRun: '不支持运行',
+                        stdinTitle: '输入stdin',
+                        stdinInfo: '请输入代码运行的stdin：',
                     }
                 },
                 Audio: {
@@ -246,6 +257,10 @@ export const LANG_ZH: LangStruct = {
                 position: {
                     lineNumber: '行',
                     column: '列'
+                },
+                indent: {
+                    space: '空格',
+                    tab: '制表符',
                 }
             }
         }
@@ -254,6 +269,7 @@ export const LANG_ZH: LangStruct = {
         copy: {
             success: '复制成功',
             fail: '复制失败!'
-        }
+        },
+        confirm: '确认',
     }
 }

@@ -6,7 +6,8 @@ function Icon({ size = 16, fill = "#bfbfbf", className = '', style, children, ..
             className={`icon ${className}`}
             style={style}
             fill={fill}
-            {...props}>
+            {...props}
+        >
             {children}
         </svg>
     )

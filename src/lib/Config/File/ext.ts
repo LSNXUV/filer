@@ -41,8 +41,8 @@ export const supportAudioExt = [
 export const supportTextExt = [
     // 常见的文本类型
     'txt', 'md', 'markdown', 'log', 'json', 'xml', 'html', 'htm', 'css', 'scss', 'sass', 'less',
-    'js', 'jsx', 'ts', 'tsx', 'c', 'cpp', 'h', 'hpp', 'java', 'py', 'go', 'php', 'rb', 'swift',
-    'yaml', 'yml', 'toml', 'ini', 'csv', 'tsv', 'sql', 'bat', 'sh', 'zsh', 'ps1',
+    'js', 'jsx', 'ts', 'tsx', 'c', 'cpp', 'h', 'hpp', 'java', 'py', 'go', 'php', 'rs', 'cs', 'kt', 'rb', 'swift',
+    'yaml', 'yml', 'toml', 'ini', 'csv', 'tsv', 'sql', 'bat', 'sh', 'zsh', 'ps1','lua', 'r', 'dart', 'scala',
     'env', 'properties', 'conf', 'config', 'cmd',
     // ignore 和特殊文件
     'gitignore', 'dockerignore', 'npmignore', 'yarnignore', 'eslintignore', 'prettierignore', 'stylelintignore',

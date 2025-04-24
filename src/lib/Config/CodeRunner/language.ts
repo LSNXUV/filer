@@ -278,14 +278,13 @@
         "name": "Visual Basic.Net (vbnc 0.0.0.5943)"
     }
 ] */
+/** Judge0支持运行的语言各个最新 */
 export const extToJudge0LanguageId: Record<string, number> = {
-    'js': 102,        // JavaScript (Node.js 22.08.0)
-    'ts': 101,        // TypeScript (5.6.2)
     'py': 100,        // Python (3.12.5)
     'java': 91,       // Java (JDK 17.0.6)
     'c': 103,         // C (GCC 14.1.0)
     'cpp': 105,       // C++ (GCC 14.1.0)
-    'cs': 51,         // C# (Mono)
+    'cs': 51,         // C# (Mono 6.6.0.161)
     'rb': 72,         // Ruby
     'php': 98,        // PHP (8.3.11)
     'go': 106,        // Go (1.22.0)

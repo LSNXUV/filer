@@ -1,75 +1,130 @@
-import React, { useEffect, useState } from 'react'
-import * as Babel from '@babel/standalone';
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import Resizer from '../Resizer';
 import { Arrow } from '@/components/Icons/Public/Close';
+import { CodeObject } from '..';
+import { runCodeByBabel, BabelRunner } from '@/lib/Utils/CodeRunner/babel';
+import { createSubmission, getSubmissionResult } from '@/lib/service/codeRunner';
+import TextFill from '@/components/public/Loading/TextFill';
+import { MessageType } from '@/components/public/Message/Message';
+import { useConfirm } from '@/lib/Context/Confirm';
+import { useSingleInput } from '@/lib/Context/SingleInput';
+import { useLang } from '@/lib/Context/Lang';
 
-export const runCode = (code: string) => {
-    try {
-        const transformed = Babel.transform(code, {
-            presets: ['env', 'typescript'], // 支持 TS
-            filename: 'file.ts',
-        }).code;
-        const fn = new Function(transformed || 'no code to run!');
-        fn(); // 直接运行
-    } catch (err) {
-        console.error('运行错误:', err);
-    }
-};
-
-const captureConsoleLog = (run: () => void): string => {
-    const logs: string[] = [];
-    const originalLog = console.log;
-    const originalWarn = console.warn;
-    const originalError = console.error;
-
-    console.log = (...args) => {    // 拦截 console.log
-        logs.push(args.map(String).join(' '));
-        originalLog(...args);
-    };
-    console.warn = (...args) => {   // 拦截 console.warn
-        logs.push(`⚠️ Warning: ${args.map(String).join(' ')}`);
-        originalWarn(...args);
-    };
-    console.error = (...args) => {  // 拦截 console.error
-        logs.push(`❌ Error: ${args.map(String).join(' ')}`);
-        originalError(...args);
-    };
-
-    try {
-        run();
-    } catch (err) {
-        logs.push(`❌ Error: ${err}`);
-    }
-
-    console.log = originalLog;
-    console.warn = originalWarn;
-    console.error = originalError;
-    return logs.join('\n');
-};
-
+const initExpandHeight = 172; // 初始高度
 
 function CodeRunner({ codeObject }: {
-    codeObject: {
-        code: string
-    }
+    codeObject: CodeObject
 }) {
+    const { Lang } = useLang()
+    const { confirm } = useConfirm()
+    const { showSingleInput } = useSingleInput()
 
-    const [result, setResult] = useState<string | null>(null);  // 运行结果
+    const [result, setResult] = useState<{
+        type: MessageType
+        result: string
+    } | null>(null);  // 运行结果
     const [expand, setExpand] = useState(false); // 运行器的展开状态
+    const [loading, setLoading] = useState(false); // 运行器的加载状态
     const [runnerHeight, setRunnerHeight] = useState(0); // 运行器的内容高度
+
+    const didFetch = useRef(false);
+    const babelRunner = useRef<BabelRunner>(new BabelRunner({ timeout: 20000 })); // babel 运行器
 
     useEffect(() => {
         if (codeObject.code) {
-            setExpand(true)
             if (runnerHeight === 0) {
-                setRunnerHeight(172) // 设置初始高度
+                setRunnerHeight(initExpandHeight) // 设置初始高度
             }
-            const result = captureConsoleLog(() => {
-                runCode(codeObject.code);
-            });
 
-            setResult(`${new Date().toLocaleString()}: \n${result}`);
+            // 使用babel运行js/ts代码
+            if (codeObject.type === 'babel') {
+                if (babelRunner.current.getStatus() === 'running') {
+                    return;
+                }
+                setExpand(true);
+                setLoading(true);
+                babelRunner.current.run(codeObject.code).then((res) => {
+                    setResult({
+                        type: 'success',
+                        result: `${res}`
+                    });
+                }).catch((err) => {
+                    console.log('err', err);
+                    setResult({
+                        type: 'error',
+                        result: `${err}`
+                    });
+                }).finally(() => {
+                    setLoading(false);
+                });
+
+            } else if (codeObject.type === 'other') {
+                // 其他类型的代码运行
+                if (didFetch.current) return;
+                showSingleInput({
+                    required: false,
+                    type: 'textarea',
+                    title: Lang.FileExploer.Content.Show.Editor.CodeRunner.stdinTitle,
+                    info: Lang.FileExploer.Content.Show.Editor.CodeRunner.stdinInfo,
+                    handle(value) {
+                        didFetch.current = true; // 防止开发环境多次请求
+                        setExpand(true);
+                        setLoading(true);
+                        createSubmission({  // 创建代码提交
+                            code: codeObject.code,
+                            ext: codeObject.ext,
+                            stdin: value
+                        }, (err) => {
+                            console.error(err);
+                            setLoading(false);
+                        }).then((res) => {
+                            if (!res) {
+                                setLoading(false);
+                                return;
+                            }
+                            const { token } = res;
+                            let timer = setInterval(() => { // 轮询获取结果
+                                getSubmissionResult(token, (err) => {
+                                    console.error(err);
+                                    setLoading(false);
+                                }).then((res) => {
+                                    if (!res) {
+                                        setLoading(false);
+                                        clearInterval(timer);
+                                        return;
+                                    }
+                                    if (res.status_id === 3) {
+                                        setResult({
+                                            type: 'success',
+                                            result: `${res.stdout}`
+                                        });
+                                        setLoading(false);
+                                        clearInterval(timer);
+                                        didFetch.current = false;
+                                    }
+                                    if (res.status_id > 3) {
+                                        setResult({
+                                            type: 'error',
+                                            result: `${res.status?.description}: ${res.compile_output ? `\n${res.compile_output}` : ''}${res.stderr ? `\n${res.stderr}` : ''}`
+                                        });
+                                        setLoading(false);
+                                        clearInterval(timer);
+                                        didFetch.current = false;
+                                    }
+                                });
+                            }, 1000);
+                        })
+                    },
+                    cancel(_) {
+                    },
+                })
+
+            } else {
+                // 完全类型检查
+                let a: never = codeObject;
+            }
+
         } else {
         }
     }, [codeObject])
@@ -90,9 +145,14 @@ function CodeRunner({ codeObject }: {
                 <Arrow className={`${styles.close} ${expand ? '' : styles.unexpand}`} onClick={() => onToggle()} />
                 {
                     expand &&
-                    <pre style={{ height: `calc(${runnerHeight}px - var(--footer-height))` }}>
-                        {result}
-                    </pre>
+                    <div className={styles.result} style={{ height: `calc(${runnerHeight}px - var(--footer-height))` }}>
+                        <div className={styles.time}>{`${new Date().toLocaleString()}: \n`}</div>
+                        {
+                            loading
+                                ? <TextFill className={styles.loading} bgColor={'transparent'} />
+                                : <pre>{result?.result}</pre>
+                        }
+                    </div>
                 }
             </div>
         </>
