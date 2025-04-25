@@ -37,11 +37,13 @@ export default function Menu({ show }: {
       <div className={`${styles.menuItem} ${hasFiles ? '' : 'disabled'}`}
         onClick={() => {
           if (!hasFiles) return;
-          resetDirectoryPicker()
-          showMessage(
-            Lang.FileExploer.Sider.Title.Menu.message.reset,
-            'success'
-          )
+          resetDirectoryPicker(() => {
+            // 重置完成才显示消息
+            showMessage(
+              Lang.FileExploer.Sider.Title.Menu.message.reset,
+              'success'
+            )
+          })
         }}
       >
         {Lang.FileExploer.Sider.Title.Menu.close}

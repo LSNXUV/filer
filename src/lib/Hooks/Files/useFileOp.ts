@@ -89,7 +89,7 @@ export function useFileOp() {
         }
         try {
             if (confirmShow && !(await confirm({
-                info: Lang.Lib.Hooks.useFileOp.deleteFile.confirm.tip,
+                description: Lang.Lib.Hooks.useFileOp.deleteFile.confirm.tip,
             }))) {
                 return false;
             }
@@ -143,7 +143,7 @@ export function useFileOp() {
 
     const openFileInExplorer: FileOp['openFileInExplorer'] = useCallback((file) => {
         alert({
-            info: Lang.Lib.Hooks.useFileOp.openFileInExplorer.notSupport
+            description: Lang.Lib.Hooks.useFileOp.openFileInExplorer.notSupport
         });
     }, [Lang, alert])
 

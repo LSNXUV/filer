@@ -12,7 +12,7 @@ const TabMenu = memo(function FileMenu({ tabId, toggle }: {
 }) {
     const { Lang } = useLang();
     const { closeTab } = useTabs()
-    const { closeAllLeft, closeAllRight, closeAllTabs } = useCloseTabs()
+    const { closeAllLeft, closeAllLeftSaved, closeAllRight, closeAllRightSaved, closeAll, closeAllSaved } = useCloseTabs()
 
     const getHandle = useCallback(<T extends (...args: any[]) => Promise<void> | void>(handle: T): T => {
         return (async (...args: any[]) => {
@@ -21,13 +21,19 @@ const TabMenu = memo(function FileMenu({ tabId, toggle }: {
         }) as T
     }, [toggle])
 
-    const handleCloseAll = useMemo(() => getHandle(closeAllTabs), [getHandle, closeAllTabs])
-
     const handleCloseTab = useMemo(() => getHandle(closeTab), [getHandle, closeTab])
+
+    const handleCloseAll = useMemo(() => getHandle(closeAll), [getHandle, closeAll])
+
+    const handleCloseAllSaved = useMemo(() => getHandle(closeAllSaved), [getHandle, closeAllSaved])
 
     const handleCloseLeft = useMemo(() => getHandle(closeAllLeft), [getHandle, closeAllLeft])
 
+    const handleCloseLeftSaved = useMemo(() => getHandle(closeAllLeftSaved), [getHandle, closeAllLeftSaved])
+
     const handleCloseRight = useMemo(() => getHandle(closeAllRight), [getHandle, closeAllRight])
+
+    const handleCloseRightSaved = useMemo(() => getHandle(closeAllRightSaved), [getHandle, closeAllRightSaved])
 
     return (
         <div className={`bar ${styles.menu}`}
@@ -43,17 +49,35 @@ const TabMenu = memo(function FileMenu({ tabId, toggle }: {
             <div onClick={() => handleCloseLeft(tabId)}>
                 {Lang.FileExploer.Content.Tabs.Menu.closeAllLeft}
                 <span>
+                    {`Shift + Ctrl + Alt + [`}
+                </span>
+            </div>
+            <div onClick={() => handleCloseLeftSaved(tabId)}>
+                {Lang.FileExploer.Content.Tabs.Menu.closeAllLeftSaved}
+                <span>
                     {`Ctrl + Alt + [`}
                 </span>
             </div>
             <div onClick={() => handleCloseRight(tabId)}>
                 {Lang.FileExploer.Content.Tabs.Menu.closeAllRight}
                 <span>
+                    {`Shift + Ctrl + Alt + ]`}
+                </span>
+            </div>
+            <div onClick={() => handleCloseRightSaved(tabId)}>
+                {Lang.FileExploer.Content.Tabs.Menu.closeAllRightSaved}
+                <span>
                     {`Ctrl + Alt + ]`}
                 </span>
             </div>
-            <div onClick={handleCloseAll}>
+            <div onClick={() => handleCloseAll()}>
                 {Lang.FileExploer.Content.Tabs.Menu.closeAll}
+                <span>
+                    {`Shift + Ctrl + Alt + \\`}
+                </span>
+            </div>
+            <div onClick={handleCloseAllSaved}>
+                {Lang.FileExploer.Content.Tabs.Menu.closeAllSaved}
                 <span>
                     {`Ctrl + Alt + \\`}
                 </span>

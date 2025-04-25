@@ -2,11 +2,11 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { processHandle, showDirectoryPicker } from '@/lib/Utils/DirectoryPicker';
 import { useLang } from './Lang';
-import { backPath, queryFileHandlePermission, requestFileHandlePermission, verifyFileHandlePermission } from '@/lib/Utils/File';
+import { backPath, queryFileHandlePermission, requestFileHandlePermission } from '@/lib/Utils/File';
 import { useConfirm } from './Confirm';
 import { useMessage } from './Message';
 import { getRootDirectoryHandle, removeRootDirectoryHandle, saveRootDirectoryHandle } from '../Utils/IDB/fsHandle';
-import { useTabs } from './Tab';
+import { useCloseTabs } from '../Hooks/Tabs/useCloseTabs';
 
 type FilerCtx = {
     /** 是否有根文件树 */
@@ -23,8 +23,8 @@ type FilerCtx = {
     loadFilesAndHandles: (options?: { dirHandle?: FileSystemDirectoryHandle, path?: string }) => Promise<void>;
     /** 打开用户本地文件目录选择器，选择以初始化 */
     openDirectoryPicker: () => Promise<void>;
-    /** 重置文件树 */
-    resetDirectoryPicker: () => void;
+    /** 重置文件树, callback最后执行 */
+    resetDirectoryPicker: (callback?: () => void) => void;
 }
 
 const FilesCtx = createContext<FilerCtx | null>(null);
@@ -32,7 +32,7 @@ const FilesCtx = createContext<FilerCtx | null>(null);
 export function FilesProvider({ children }: {
     children: React.ReactNode | React.ReactNode[];
 }) {
-    const { closeAllTabs } = useTabs()
+    const { closeAll } = useCloseTabs()
     const { Lang } = useLang();
     const { alert, confirm } = useConfirm()
     const { showMessage } = useMessage()
@@ -132,7 +132,7 @@ export function FilesProvider({ children }: {
             async (dirHandle) => {
                 if (typeof dirHandle === 'boolean') {
                     alert({
-                        info: Lang.Lib.Context.File.openDirectoryPicker.notSupport,
+                        description: Lang.Lib.Context.File.openDirectoryPicker.notSupport,
                     });
                 } else {
                     if (!dirHandle) return;  // 用户取消
@@ -152,12 +152,16 @@ export function FilesProvider({ children }: {
     }, [Lang, alert, loadFilesAndHandles])
 
     // 重置文件选择器
-    const resetDirectoryPicker: FilerCtx['resetDirectoryPicker'] = useCallback(() => {
-        setFiles(null);
-        setRootDirHandle(null); // 重置根目录句柄
-        removeRootDirectoryHandle(); // 删除根目录句柄
-        closeAllTabs(); // 关闭所有tab
-    }, [closeAllTabs])
+    const resetDirectoryPicker: FilerCtx['resetDirectoryPicker'] = useCallback((callback) => {
+        // 关闭所有tab
+        closeAll(function closeCallback() {
+            // 关闭所有tab之后才:
+            setFiles(null);
+            setRootDirHandle(null); // 重置根目录句柄
+            removeRootDirectoryHandle(); // 删除根目录句柄
+            callback?.();
+        });
+    }, [closeAll]);
 
     useEffect(() => {
         (async () => {
@@ -166,7 +170,7 @@ export function FilesProvider({ children }: {
 
                 // 如果没权限，需要强行引导交互，这样才能请求权限
                 if (!await queryFileHandlePermission(rootDirHandle) && !await confirm({
-                    info: <span>{Lang.Lib.Context.File.permission.isLoadingSavedDirHandle} <span style={{ color: 'skyblue' }}>{rootDirHandle.name} </span>?</span>,
+                    description: <span>{Lang.Lib.Context.File.permission.isLoadingSavedDirHandle} <span style={{ color: '#45aeff' }}>{rootDirHandle.name} </span>?</span>,
                 })) return;
                 // 如果没有权限，则请求权限
                 if (!await requestFileHandlePermission(rootDirHandle)) return;

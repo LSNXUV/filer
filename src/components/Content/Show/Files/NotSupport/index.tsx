@@ -36,7 +36,7 @@ export default function NotShow({ file }: {
                 <button
                     onClick={() => {
                         confirm({
-                            info: Lang.FileExploer.Content.Show.NotShow.forceShowTip,
+                            description: Lang.FileExploer.Content.Show.NotShow.forceShowTip,
                             onConfirm: () => {
                                 setisForcible(true)
                             }

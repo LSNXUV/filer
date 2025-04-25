@@ -11,11 +11,13 @@ function Action() {
     const { resetDirectoryPicker, openDirectoryPicker, hasFiles } = useFiles()
 
     const onReset = () => {
-        resetDirectoryPicker()
-        showMessage(
-            Lang.FileExploer.Sider.FileTree.topActions.message.reset,
-            'success'
-        )
+        resetDirectoryPicker(() => {
+            // 重置完之后才
+            showMessage(
+                Lang.FileExploer.Sider.FileTree.topActions.message.reset,
+                'success'
+            )
+        })
     }
 
     const handle = hasFiles ? onReset : openDirectoryPicker

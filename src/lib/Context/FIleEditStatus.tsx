@@ -14,8 +14,10 @@ export type FileEditStatusObject = {
 export type FileEditStatusCtxType = {
   /** 获取文件编辑状态 */
   getFileEditStatus: (filePath: string) => FileEditStatusObject,
-  /** 设置文件编辑状态 */
+  /** 设置文件编辑状态, 添加新状态只能是未保存 */
   setFileEditStatus: (filePath: string, statusObject: FileEditStatusObject) => void
+  /** 清除所有文件编辑状态 */
+  clearFileEditStatus: () => void,
 }
 
 export const FileEditStatusCtx = createContext<FileEditStatusCtxType>({
@@ -23,6 +25,7 @@ export const FileEditStatusCtx = createContext<FileEditStatusCtxType>({
     status: FileEditStatus.saved
   }),
   setFileEditStatus: () => { },
+  clearFileEditStatus: () => { },
 })
 
 type FileEditStatusType = {
@@ -36,6 +39,10 @@ export const FileEditStatusProvider = ({ children }: { children: React.ReactNode
   const setFileEditStatus: FileEditStatusCtxType['setFileEditStatus'] = useCallback((filePath, statusObject) => {
     setfileEditStatus(prevStatus => {
       const prev = prevStatus[filePath];
+      // 添加新状态只能是未保存
+      if (!prev && statusObject.status !== FileEditStatus.unSaved) {
+        return prevStatus;  
+      }
       // 状态为未保存 -> 已保存：调用保存函数并移除该文件状态
       if (prev?.status === FileEditStatus.unSaved && statusObject.status === FileEditStatus.saved) {
         prev.save?.();
@@ -58,10 +65,15 @@ export const FileEditStatusProvider = ({ children }: { children: React.ReactNode
     return fileEditStatus[filePath] || { status: FileEditStatus.saved }
   }, [fileEditStatus])
 
+  const clearFileEditStatus = useCallback(() => {
+    setfileEditStatus({})
+  }, [])
+
   const fileEditStatusValue = useMemo<FileEditStatusCtxType>(() => ({
     getFileEditStatus,
     setFileEditStatus,
-  }), [getFileEditStatus, setFileEditStatus])
+    clearFileEditStatus,
+  }), [getFileEditStatus, setFileEditStatus, clearFileEditStatus])
 
   return (
     <FileEditStatusCtx.Provider value={fileEditStatusValue}>

@@ -64,7 +64,10 @@ export const LANG_ZH: LangStruct = {
                 openFileInExplorer: {
                     notSupport: '因浏览器策略，暂不支持打开资源管理器!'
                 }
-            }
+            },
+            useCloseTabs: {
+                isCloseNeedSave: '是否自动保存？',
+            } 
         }
     },
     FileExploer: {
@@ -210,8 +213,11 @@ export const LANG_ZH: LangStruct = {
                 },
                 Menu: {
                     closeAllLeft: '关闭左侧全部',
+                    closeAllLeftSaved: '关闭左侧全部已保存',
                     closeAllRight: '关闭右侧全部',
+                    closeAllRightSaved: '关闭右侧全部已保存',
                     closeAll: '关闭全部',
+                    closeAllSaved: '关闭全部已保存',
                 }
             },
             BreadCrumbs: {
@@ -276,5 +282,6 @@ export const LANG_ZH: LangStruct = {
             fail: '复制失败!'
         },
         confirm: '确认',
+        close: '关闭',
     }
 }

@@ -3,11 +3,10 @@ import styles from './index.module.scss'
 import Resizer from '../Resizer';
 import { Arrow } from '@/components/Icons/Public/Close';
 import { CodeObject } from '..';
-import { runCodeByBabel, BabelRunner } from '@/lib/Utils/CodeRunner/babel';
+import { BabelRunner } from '@/lib/Utils/CodeRunner/babel';
 import { createSubmission, getSubmissionResult } from '@/lib/service/codeRunner';
 import TextFill from '@/components/public/Loading/TextFill';
 import { MessageType } from '@/components/public/Message/Message';
-import { useConfirm } from '@/lib/Context/Confirm';
 import { useSingleInput } from '@/lib/Context/SingleInput';
 import { useLang } from '@/lib/Context/Lang';
 
@@ -17,7 +16,6 @@ function CodeRunner({ codeObject }: {
     codeObject: CodeObject
 }) {
     const { Lang } = useLang()
-    const { confirm } = useConfirm()
     const { showSingleInput } = useSingleInput()
 
     const [result, setResult] = useState<{

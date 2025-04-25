@@ -1,26 +1,3 @@
-import * as Babel from '@babel/standalone';
-import { captureConsoleLog } from './console';
-
-// 同步运行代码
-const run = (code: string) => {
-    try {
-        const transformed = Babel.transform(code, {
-            presets: ['env', 'typescript'], // 支持 TS
-            filename: 'file.ts',
-        }).code;
-        const fn = new Function(transformed || 'no code to run!');
-        fn(); // 直接运行
-    } catch (err) {
-        console.error('运行错误:', err);
-    }
-};
-// 同步运行代码
-export function runCodeByBabel(code: string): string {
-    return captureConsoleLog(() => run(code));
-}
-
-
-// worker异步运行代码
 export class BabelRunner {
     private config: {
         timeout: number,
@@ -28,7 +5,7 @@ export class BabelRunner {
     private worker: Worker | null = null;
 
     constructor(config: { timeout: number }) {
-        this.config = config
+        this.config = config;
     }
 
     getStatus() {
@@ -42,19 +19,11 @@ export class BabelRunner {
             this.worker = null;
         }
         return new Promise((resolve, reject) => {
-            // resolve = (res) => {
-            //     this.status = 'idle';
-            //     resolve(res);
-            // };
-            // reject = (err) => {
-            //     this.status = 'idle';
-            //     reject(err);
-            // };
             const workerCode = `
                 self.onmessage = function(e) {
                     const [code] = e.data;
                     try {
-                        importScripts('https://unpkg.com/@babel/standalone/babel.min.js');
+                        importScripts('https://cdn.jsdelivr.net/npm/@babel/standalone/babel.min.js');
                         const result = Babel.transform(code, {
                             presets: ['env', 'typescript'],
                             filename: 'file.ts',
@@ -65,13 +34,31 @@ export class BabelRunner {
                             logs.push(\`\${prefix}: \${args.map(String).join(' ')}\`);
                         };
 
+                        // 保存原始的 console 方法
+                        const originalLog = console.log;
+                        const originalWarn = console.warn;
+                        const originalError = console.error;
+                        const originalInfo = console.info;
+                        const originalDebug = console.debug;
+
+                        // 重写 console 方法来捕获日志
                         console.log = (...args) => capture('📘 Log', args);
                         console.warn = (...args) => capture('⚠️ Warn', args);
                         console.error = (...args) => capture('❌ Error', args);
                         console.info = (...args) => capture('ℹ️ Info', args);
                         console.debug = (...args) => capture('🐞 Debug', args);
 
+                        // 执行转换后的代码
                         new Function(result)();
+
+                        // 恢复原始的 console 方法
+                        console.log = originalLog;
+                        console.warn = originalWarn;
+                        console.error = originalError;
+                        console.info = originalInfo;
+                        console.debug = originalDebug;
+
+                        // 返回捕获到的日志
                         self.postMessage({ logs: logs.join('\\n') });
                     } catch (err) {
                         self.postMessage({ error: err.message });

@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 export type FileTab = {
+    /** 文件path */
     id: string,
     type: 'file',
     content: Files,
@@ -38,10 +39,7 @@ type TabsContextType = {
 export const TabsContext = createContext<TabsContextType | null>(null);
 
 export const TabsProvider = ({ children }: { children: React.ReactNode }) => {
-    // tabs对象数组
     const [tabs, setTabs] = useState<Tab[]>([])
-    //当前选中的文件索引
-    // const [select, setSelect] = useState<number>(-1)
     const [selectId, setSelectId] = useState<string>('')
 
     useEffect(() => {
@@ -55,6 +53,15 @@ export const TabsProvider = ({ children }: { children: React.ReactNode }) => {
     const select = useMemo(() => {
         return tabs.findIndex(tab => tab.id === selectId)
     }, [tabs, selectId])
+
+    const selectedTab = useMemo(() => {
+        // 如果没有选中tab，则选中第一个tab
+        if (select < 0 || select >= tabs.length) {
+            setSelectId(tabs[0]?.id || ''); 
+            return tabs[0] || null;
+        }
+        return tabs[select];
+    }, [select, tabs])
 
     // 添加tab到tabs中，index为插入位置，默认插入到最后
     const addTab: TabsContextType['addTab'] = useCallback((newTab, index = -1) => {
@@ -120,10 +127,6 @@ export const TabsProvider = ({ children }: { children: React.ReactNode }) => {
         });
     }, [select])
 
-    const selectedTab = useMemo(() => {
-        if (select < 0 || select >= tabs.length) return null;
-        return tabs[select];
-    }, [select, tabs])
 
 
     const contextValue = useMemo<TabsContextType>(() => ({

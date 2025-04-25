@@ -8,7 +8,7 @@ export type ConfirmType = 'confirm' | 'alert'
 
 export type ConfirmProps = {
     title?: ReactNode;
-    info?: ReactNode;
+    description?: ReactNode;
     onConfirm?: () => any;
     onCancel?: () => any;
     closable?: boolean;
@@ -17,7 +17,7 @@ export type ConfirmProps = {
 }
 
 export default function Confirm({
-    show, title, info,
+    show, title, description,
     onConfirm, onCancel,
     closable = false, onClose,
     type = 'confirm'
@@ -36,8 +36,8 @@ export default function Confirm({
                     animation: show ? `${styles.fadeIn} 0.3s cubic-bezier(.65, .05, .36, 1)` : '',
                 }}
             >
-                <div className={styles.title}>{title}</div>
-                <div className={styles.info}>{info}</div>
+                {title && <div className={styles.title}>{title}</div>}
+                <div className={styles.description}>{description}</div>
                 <div className={styles.btnContainer}>
                     <button className={styles.confirm} onClick={onConfirm}>
                         {Lang.Lib.Context.Confirm.confirm}

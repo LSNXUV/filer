@@ -65,6 +65,9 @@ interface LangStruct {
                     notSupport: string
                 }
             },
+            useCloseTabs: {
+                isCloseNeedSave: string,
+            } 
         }
     }
     FileExploer: {
@@ -208,8 +211,11 @@ interface LangStruct {
                 },
                 Menu: {
                     closeAllLeft: string,
+                    closeAllLeftSaved: string,
                     closeAllRight: string,
+                    closeAllRightSaved: string,
                     closeAll: string,
+                    closeAllSaved: string,
                 }
             },
             BreadCrumbs: {
@@ -270,6 +276,7 @@ interface LangStruct {
             success: string,
             fail: string
         },
-        confirm: string
+        confirm: string,
+        close: string,
     }
 }

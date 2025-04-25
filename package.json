@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@babel/standalone": "^7.27.0",
     "@monaco-editor/react": "4.7.0-rc.0",
     "axios": "^1.8.4",
     "idb": "^8.0.2",

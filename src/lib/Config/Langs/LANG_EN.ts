@@ -64,7 +64,10 @@ export const LANG_EN: LangStruct = {
                 openFileInExplorer: {
                     notSupport: 'Because of browser policy, not support for open in explorer!'
                 }
-            }
+            },
+            useCloseTabs: {
+                isCloseNeedSave: 'Do you want to save the file?',
+            } 
         }
     },
     FileExploer: {
@@ -211,8 +214,11 @@ export const LANG_EN: LangStruct = {
                 },
                 Menu: {
                     closeAllLeft: 'Close All Left',
+                    closeAllLeftSaved: 'Close All Left Saved',
                     closeAllRight: 'Close All Right',
+                    closeAllRightSaved: 'Close All Right Saved',
                     closeAll: 'Close All',
+                    closeAllSaved: 'Close All Saved',
                 }
             },
             BreadCrumbs: {
@@ -276,6 +282,7 @@ export const LANG_EN: LangStruct = {
             success: 'Copy success',
             fail: 'Copy fail!'
         },
-        confirm: 'Confirm'
+        confirm: 'Confirm',
+        close: 'Close',
     }
 }

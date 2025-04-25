@@ -14,7 +14,7 @@ export default function Tabs() {
     const { Lang } = useLang()
     const { getFileEditStatus, setFileEditStatus } = useFileEditStatus()
     const { tabs, selectId, closeTab } = useTabs()
-    const { closeAllLeft, closeAllRight, closeAllTabs } = useCloseTabs()
+    const { closeAllLeft, closeAllLeftSaved, closeAllRight, closeAllRightSaved, closeAll, closeAllSaved } = useCloseTabs()
     const selectedFile = useSelectedFile()
 
     const onCloseTab = useCallback((idx: number | string) => {
@@ -23,7 +23,7 @@ export default function Tabs() {
             if (getFileEditStatus(selectedFile.path).status === FileEditStatus.unSaved) {
                 confirm({
                     title: Lang.FileExploer.Content.Tabs.onCloseFile.title,
-                    info: Lang.FileExploer.Content.Tabs.onCloseFile.info,
+                    description: Lang.FileExploer.Content.Tabs.onCloseFile.info,
                     onConfirm() {
                         setFileEditStatus(selectedFile.path, {
                             status: FileEditStatus.saved,   // 标记为已保存，状态改变里面自动执行保存操作
@@ -65,20 +65,32 @@ export default function Tabs() {
         if (event.ctrlKey && event.altKey) {
             if (event.key === '[') {
                 event.preventDefault()
-                closeAllLeft(selectId)
+                if (event.shiftKey) {
+                    closeAllLeft(selectId)
+                } else {
+                    closeAllLeftSaved(selectId)
+                }
             } else if (event.key === ']') {
                 event.preventDefault()
-                closeAllRight(selectId)
+                if (event.shiftKey) {
+                    closeAllRightSaved(selectId)
+                } else {
+                    closeAllRight(selectId)
+                }
             } else if (event.key === '\\') {
                 event.preventDefault()
-                closeAllTabs()
+                if (event.shiftKey) {
+                    closeAllSaved()
+                } else {
+                    closeAll()
+                }
             } else if (event.key.toLocaleLowerCase() === 'w') { // Ctrl + Alt + W 关闭当前tab
                 event.preventDefault()
                 onCloseTab(selectId)
             }
 
         }
-    }, [selectId, onCloseTab, closeAllLeft, closeAllRight, closeAllTabs]);
+    }, [selectId, onCloseTab, closeAllLeft, closeAllRight, closeAll]);
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);
