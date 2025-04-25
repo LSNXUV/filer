@@ -7,6 +7,7 @@ import { MessageProvider } from './Message'
 import { TabsProvider } from './Tab'
 import { FilesProvider } from './File'
 import { EditorStatusProvider } from './EditorStatus'
+import { SettingProvider } from './Setting'
 
 /**
  * 将多个 provider 包裹在一起，包裹层级顺序与数组顺序一致。
@@ -35,6 +36,7 @@ const Context: FC<PropsWithChildren> = ({ children }) => {
         <ChildrenWithProviders
             providers={[
                 LangProvider,
+                // SettingProvider,
                 ConfirmProvider,
                 SingleInputProvider,
                 MessageProvider,
