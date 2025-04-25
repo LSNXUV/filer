@@ -8,7 +8,8 @@ export const drawPlainWave = ({ cvsCtx, waveBarColor, dataArray }: {
 
     const { width, height } = cvsCtx.canvas.getBoundingClientRect()
     //clear画布
-    cvsCtx.clearRect(0, 0, width, height)
+    cvsCtx.clearRect(0, 0, Math.max(cvsCtx.canvas.width, width), Math.max(cvsCtx.canvas.height, height));
+
 
     const len = dataArray.length / 2.56;    //条数
     const barWidth = width / len / 2;       //单条宽度

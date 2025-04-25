@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { memo, use, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import { getRandomByArray } from '@/lib/Utils/Random/array'
 import { waveBarRandomColorArray } from '@/lib/Config/Content/Audio'
@@ -28,7 +28,13 @@ const Wave = memo(({ url, draw }: {
     const [isInit, setIsInit] = useState(false)
     const [isPlay, setIsPlay] = useState(false)
 
-    //音频切换或者绘画函数变化时，重新初始化
+    const drawRef = useRef(draw)
+
+    useEffect(() => {
+        drawRef.current = draw
+    }, [draw])
+
+    //初始化canvas
     useEffect(() => {
         const cvs = cvsRef.current
         if (!cvs) return;
@@ -47,16 +53,16 @@ const Wave = memo(({ url, draw }: {
 
         // 清除画布
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
-    }, [url, draw])
+        ctx.clearRect(0, 0, rect.width, rect.height)
+    }, [])
 
-    //Audio API,上下文，事件
     useEffect(() => {
-        if (!audioRef.current) return;
-        //随机颜色
+        const audioCur = audioRef.current
+        if (!audioCur) return;
 
         let source: MediaElementAudioSourceNode;
         let audioCtx: AudioContext;
-        const audioCur = audioRef.current
+
         let onPlay = function () {
             //初始化
             try {
@@ -68,7 +74,6 @@ const Wave = memo(({ url, draw }: {
                 analyserRef.current = audioCtx.createAnalyser()
                 const curAnalyser = analyserRef.current
                 curAnalyser.fftSize = FFT_SIZE
-                // curAnalyser.frequencyBinCount
 
                 source.connect(curAnalyser)
                 curAnalyser.connect(audioCtx.destination)
@@ -85,10 +90,8 @@ const Wave = memo(({ url, draw }: {
         audioCur.addEventListener('pause', onPause)
 
         return () => {
-            if (audioRef.current) {
-                audioRef.current.removeEventListener('play', onPlay)
-                audioRef.current.removeEventListener('pause', onPause)
-            }
+            audioCur.removeEventListener('play', onPlay)
+            audioCur.removeEventListener('pause', onPause)
             if (source) {
                 source.disconnect()
             }
@@ -96,7 +99,7 @@ const Wave = memo(({ url, draw }: {
                 audioCtx.close()
             }
         }
-    }, [draw])
+    }, [])
 
 
     //绘画canvas
@@ -114,7 +117,7 @@ const Wave = memo(({ url, draw }: {
                 }
                 analyserRef.current.getByteFrequencyData(dataArray)
                 //绘画
-                draw({
+                drawRef.current({
                     cvsCtx: cvsRef.current?.getContext('2d') || null,
                     waveBarColor: getWaveBarColor(),
                     dataArray
@@ -125,7 +128,7 @@ const Wave = memo(({ url, draw }: {
         return () => {
             cancelAnimationFrame(animationId)
         }
-    }, [isInit, isPlay, draw])
+    }, [isInit, isPlay])
 
     return (
         <div className={styles.container}>
@@ -138,4 +141,5 @@ const Wave = memo(({ url, draw }: {
     )
 })
 
+Wave.displayName = 'Wave';
 export default Wave

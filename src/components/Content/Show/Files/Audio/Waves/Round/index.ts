@@ -8,7 +8,8 @@ export const drawRoundWave = ({ cvsCtx, waveBarColor, dataArray }: {
     if (!cvsCtx) return;
 
     const { width, height } = cvsCtx.canvas.getBoundingClientRect();
-    cvsCtx.clearRect(0, 0, width, height);
+    //clear画布
+    cvsCtx.clearRect(0, 0, Math.max(cvsCtx.canvas.width, width), Math.max(cvsCtx.canvas.height, height));
 
     const centerX = width / 2;
     const centerY = height / 2;
