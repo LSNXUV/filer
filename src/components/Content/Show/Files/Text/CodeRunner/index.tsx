@@ -143,7 +143,7 @@ function CodeRunner({ codeObject }: {
                 <Arrow className={`${styles.close} ${expand ? '' : styles.unexpand}`} onClick={() => onToggle()} />
                 {
                     expand &&
-                    <div className={styles.result} style={{ height: `calc(${runnerHeight}px - var(--footer-height))` }}>
+                    <div className={styles.result} style={{ height: `calc(${runnerHeight}px - var(--footer-height) - var(--resizer-width))` }}>
                         <div className={styles.time}>{`${new Date().toLocaleString()}: \n`}</div>
                         {
                             loading

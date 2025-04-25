@@ -43,7 +43,7 @@ const DirMenu = memo(function DirMenu({ isTop, file, toggle, dirToggle }: {
             info: (value) => {
                 return (
                     <>
-                        <span>{backPath(file.path) + '/' + value}</span>
+                        <span>{`${file.path}/${value}`}</span>
                         <span>{value && <FileIcon name={value} />}</span>
                     </>
                 )
@@ -62,7 +62,7 @@ const DirMenu = memo(function DirMenu({ isTop, file, toggle, dirToggle }: {
             info: (value) => {
                 return (
                     <>
-                        {file.path + '/'}
+                        {`${file.path}/`}
                         {value}
                     </>
                 )

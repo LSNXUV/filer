@@ -6,23 +6,13 @@ export function formatFileSize(bytes: number | null | undefined) {
     const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 }
 
 /** 获取文件后缀 */
 export function getFileExtension(fileName: string, autoToLowerCase: boolean = true): string {
     const ext = fileName.split('.').pop() || '';
     return autoToLowerCase ? ext.toLowerCase() : ext;
-}
-
-
-// 过长省略中间部分，完整显示前后部分
-export function dealTreeFileName(fileName: string) {
-    if (fileName.length > 27) {
-        return fileName.slice(0, 10) + '...' + fileName.slice(-10);
-    } else {
-        return fileName;
-    }
 }
 
 /**

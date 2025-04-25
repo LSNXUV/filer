@@ -25,7 +25,7 @@ export async function processHandle(
         size: null,
         type: '',
         kind: 'directory',
-        path: `${path ? path + '/' : ''}${dirHandle.name}`,
+        path: `${path ? `${path}/` : ''}${dirHandle.name}`,
         children: [],
         loaded: level !== 0,
     };
@@ -42,7 +42,7 @@ export async function processHandle(
                 size: entryFile.size,
                 type: entryFile.type,
                 kind: 'file',
-                path: files.path + '/' + entryFile.name,
+                path: `${files.path}/${entryFile.name}`,
                 children: []
             };
             files.children.push(file);

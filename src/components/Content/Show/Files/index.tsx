@@ -38,7 +38,7 @@ const ShowFile = memo(({ file }: { file: Files }) => {
 
   const ext = getFileExtension(file.name);
   // 没有扩展名,直接使用文本查看器
-  if (ext === file.name) {
+  if (ext === file.name.toLocaleLowerCase()) {
     return <TextShow file={file} />
   }
   // 有扩展名，判断

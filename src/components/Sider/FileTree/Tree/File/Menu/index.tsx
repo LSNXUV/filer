@@ -59,7 +59,7 @@ const FileMenu = memo(function FileMenu({ file, toggle }: {
             info: (value) => {
                 return (
                     <>
-                        <span>{backPath(file.path) + '/' + value}</span>
+                        <span>{`${backPath(file.path)}/${value}`}</span>
                         <span>{value && <FileIcon name={value} />}</span>
                     </>
                 )

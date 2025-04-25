@@ -1,5 +1,5 @@
 import { memo } from "react"
-import { CCode, CSSCode, CppCode, CsCode, DartCode, GitCode, GoCode, HTMLCode, JSCode, JSONCode, JavaCode, KotlinCode, LuaCode, MDCode, PhpCode, PyCode, ReactCode, RubyCode, RustCode, ScalaCode, ShCode, SwiftCode, TSCode, TextCode, YMLCode } from "./Code"
+import { CCode, CSSCode, CppCode, CsCode, DartCode, GitCode, GoCode, HTMLCode, JSCode, JSONCode, JavaCode, KotlinCode, LuaCode, MDCode, PhpCode, PyCode, ReactCode, RubyCode, RustCode, ScalaCode, ShCode, SwiftCode, TSCode, TextCode, VueCode, YMLCode } from "./Code"
 import { getIcon } from "../svg"
 import { getFileExtension } from "@/lib/Utils/File"
 import { supportAudioExt, supportImageExt, supportVideoExt } from "@/lib/Config/File/ext"
@@ -70,7 +70,7 @@ const IconMatch = [
     {
         name: 'vue',
         exts: ['vue'],
-        icon: ReactCode
+        icon: VueCode
     },
     {
         name: 'javascript',

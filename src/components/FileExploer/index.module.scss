@@ -10,6 +10,26 @@
     overflow-y: hidden;
     display: flex;
     width: 100%;
-    
+
+    &::-webkit-scrollbar-thumb {
+      background-color: #41455a;
+
+      &:hover {
+        background-color: #5a5e6b;
+      }
+
+      &:active {
+        background-color: #878b99;
+      }
+    }
+
+    &::-webkit-scrollbar-corner {
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar {
+      height: 8px;
+      width: 8px;
+    }
   }
 }

@@ -55,7 +55,7 @@ const BreadCrumbs = memo(({ path }: {
                         <div key={index} className={styles.route}
                             onClick={(e) => {
                                 if (index === paths.length - 1) {
-                                    openCommand('@');
+                                    openCommand(path, '@');
                                     return;
                                 }
                                 const rect = e.currentTarget.getBoundingClientRect();

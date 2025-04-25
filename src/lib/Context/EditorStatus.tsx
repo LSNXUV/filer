@@ -14,7 +14,7 @@ type EditorStatusCtx = {
    /** 跳转到指定位置 */
    gotoPosition: () => void;
    /** 打开命令面板 */
-   openCommand: (filter: string) => void;
+   openCommand: (id: string,filter: string) => void;
    /** 当前tabSize */
    tabSize: number;
 };
@@ -33,7 +33,7 @@ export function EditorStatusProvider({ children }: PropsWithChildren) {
       editor.getAction('editor.action.gotoLine')?.run();
    }, []);
 
-   const openCommand: EditorStatusCtx['openCommand'] = useCallback((filter) => {
+   const openCommand: EditorStatusCtx['openCommand'] = useCallback((editorId, filter) => {
       const editor = editorRef.current;
       if (!editor) return;
 
@@ -41,8 +41,15 @@ export function EditorStatusProvider({ children }: PropsWithChildren) {
       editor.focus(); // 保证聚焦
       editor.getAction('editor.action.quickCommand')?.run();
 
+      //  查找EditorContainer
+      const EditorContainer = document.querySelector(`[editor-id="${editorId}"]`) as HTMLDivElement;
+      if (!EditorContainer) return;
+      //先隐藏quick-input-widget
+      const quickInputWidget = EditorContainer.querySelector('.quick-input-widget') as HTMLDivElement;
+      if (!quickInputWidget) return;
+      quickInputWidget.style.display = 'none';
       // 自动键入filter筛选
-      const findInput = document.querySelectorAll('.quick-input-and-message input')[0] as HTMLInputElement;
+      const findInput = EditorContainer.querySelectorAll('.quick-input-and-message input')[0] as HTMLInputElement;
       if (findInput) {
          findInput.value = filter;
          // 手动触发输入事件以让筛选生效
@@ -51,6 +58,7 @@ export function EditorStatusProvider({ children }: PropsWithChildren) {
       } else {
          console.error('没有找到quickCommand输入框');
       }
+      quickInputWidget.style.display = ''
    }, []);
 
    const init: EditorStatusCtx['init'] = useCallback((editor) => {
@@ -70,7 +78,7 @@ export function EditorStatusProvider({ children }: PropsWithChildren) {
          const pos = e.position;
          setPosition({ lineNumber: pos.lineNumber, column: pos.column });
       });
-      
+
       // 设置缩进监听器
       if (model.getOptions().insertSpaces) {
          setTabSize(model.getOptions().tabSize); // 获取当前tabSize

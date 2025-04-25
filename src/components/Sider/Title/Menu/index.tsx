@@ -60,9 +60,9 @@ export default function Menu({ show }: {
       >
         {Lang.FileExploer.Sider.Title.Menu.changeLang}
       </div>
-      <div className={styles.menuItem}>
+      {/* <div className={styles.menuItem}>
         {Lang.FileExploer.Sider.Title.Menu.setting}
-      </div>
+      </div> */}
     </div>
   )
 }

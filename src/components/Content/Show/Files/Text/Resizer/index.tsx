@@ -9,7 +9,7 @@ function Resizer({ onToggle, setRunnerHeight }: {
         e.preventDefault();
         const handleMouseMove = (e: MouseEvent) => {
             const delta = window.innerHeight - e.clientY; // 修正为 clientY
-            let newHeight = Math.max(100, delta); // 限制最小高度
+            let newHeight = Math.min(Math.max(100, delta), window.innerHeight - 200); // 限制最小高度
             if (delta < 50) {
                 onToggle(false); // 收起
             } else {

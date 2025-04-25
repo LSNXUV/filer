@@ -17,7 +17,7 @@ export default function Resizer({ width, toggleSider, setWidth, setHasWidthTrans
 
         const handleMouseMove = (e: MouseEvent) => {
             const delta = e.clientX - startX;
-            const newWidth = Math.max(200, width + delta); // 限制最小宽度
+            const newWidth = Math.min(Math.max(200, width + delta), window.innerWidth - 200); // 限制最小和最大宽度
             if (width + delta < 100) {
                 toggleSider?.(false); // 过小则收起
             } else {

@@ -45,7 +45,9 @@ export const TextShow = ({ file }: {
     }, [file.name]);
 
     return (
-        <div className={styles.container}>
+        <div className={styles.container}
+            editor-id={file.path}   // 区分editor
+        >
             <Editor file={file} setRunCode={setRunCode} />
             {runCode.code && <CodeRunner codeObject={runCode} />}
         </div>

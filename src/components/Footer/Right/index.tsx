@@ -7,11 +7,13 @@ import copy from '@/lib/Utils/copy'
 import { useMessage } from '@/lib/Context/Message'
 import { useSelectedFileType } from '@/lib/Hooks/Files/useSelectedFileType'
 import { MessageType } from '@/components/public/Message/Message'
+import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
 
 function Right() {
    const { Lang } = useLang()
    const { showMessage } = useMessage()
    const file = useSelectedFileEntry()
+   const selectedFile = useSelectedFile()
    const { isText } = useSelectedFileType()
    const { position, tabSize, gotoPosition, openCommand } = useEditorStatus()
 
@@ -30,7 +32,7 @@ function Right() {
                         </div>
                      }
                      <div className={styles.indent}
-                        onClick={() => openCommand('>indent')}
+                        onClick={() => selectedFile && openCommand(selectedFile.path,'>indent')}
                      >
                         {
                            tabSize > 0
