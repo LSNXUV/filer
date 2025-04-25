@@ -13,11 +13,6 @@ import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
 const typeMap: {
     [key: string]: string
 } = {
-    'zip': '压缩包',
-    'rar': '压缩包',
-    '7z': '压缩包',
-    'tar': '压缩包',
-    'gz': '压缩包',
 }
 
 export default function NotShow({ file }: {
@@ -30,14 +25,14 @@ export default function NotShow({ file }: {
 
     //是否强制查看
     const [isForcible, setisForcible] = useState(false)
-    
+
     // 如果没有解除封禁状态,则清空编辑器状态
     useEffect(() => {
-        if(selectedFile?.path !== file.path) return;
+        if (selectedFile?.path !== file.path) return;
         if (!isForcible) {
             clearEditorStatus()
         }
-    }, [isForcible, clearEditorStatus, selectedFile])
+    }, [isForcible, clearEditorStatus, selectedFile, file.path])
     return (
         !isForcible ?
             <div className={styles.container}>

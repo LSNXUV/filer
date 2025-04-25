@@ -40,12 +40,8 @@ const ShowFile = memo(({ file }: { file: Files }) => {
   const selectedFile = useSelectedFile()
   const { clearEditorStatus } = useEditorStatus()
 
+  // 后缀
   const ext = useMemo(() => getFileExtension(file.name), [file.name]);
-
-  // 没有扩展名,直接使用文本查看器
-  if (ext === file.name.toLocaleLowerCase()) {
-    return <TextShow file={file} />
-  }
 
   // 有后缀名，判断是否支持
   const isSupport = supportExt.includes(ext);
@@ -59,7 +55,12 @@ const ShowFile = memo(({ file }: { file: Files }) => {
     if (isSupport && type !== 'default') {
       clearEditorStatus()
     }
-  }, [type, isSupport, clearEditorStatus, selectedFile])
+  }, [type, isSupport, clearEditorStatus, selectedFile, file.path])
+
+  // 没有扩展名,直接使用文本查看器
+  if (ext === file.name.toLocaleLowerCase()) {
+    return <TextShow file={file} />
+  }
 
   // 有扩展名，判断
   const ShowFileComponent = isSupport
