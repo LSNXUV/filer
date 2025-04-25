@@ -6,6 +6,7 @@ import { useLang } from '@/lib/Context/Lang'
 import copy from '@/lib/Utils/copy'
 import { useMessage } from '@/lib/Context/Message'
 import { useSelectedFileType } from '@/lib/Hooks/Files/useSelectedFileType'
+import { MessageType } from '@/components/public/Message/Message'
 
 function Right() {
    const { Lang } = useLang()
@@ -43,9 +44,9 @@ function Right() {
                   <div className={styles.name}
                      onClick={() => {
                         copy(file.name).then(() => {
-                           showMessage(Lang.Global.copy.success, 'success')
+                           showMessage(Lang.Global.copy.success, MessageType.success)
                         }).catch(() => {
-                           showMessage(Lang.Global.copy.fail, 'fail')
+                           showMessage(Lang.Global.copy.fail, MessageType.fail)
                         })
                      }}
                   >{file.name}</div>

@@ -7,9 +7,9 @@ import InitContent from './InitContent'
 import { FileEditStatusProvider } from '@/lib/Context/FIleEditStatus'
 import { useTabs } from '@/lib/Context/Tab'
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
+import { memo } from 'react'
 
-
-export default function Content() {
+function Content() {
   const selectedFile = useSelectedFile()
   const { selectId } = useTabs()
   return (
@@ -29,3 +29,5 @@ export default function Content() {
     </FileEditStatusProvider>
   )
 }
+
+export default memo(Content)

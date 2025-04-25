@@ -3,6 +3,7 @@ import { useLang } from '@/lib/Context/Lang';
 import { useMessage } from '@/lib/Context/Message';
 import React from 'react'
 import styles from './index.module.scss'
+import { MessageType } from '@/components/public/Message/Message';
 
 function Action() {
     const { showMessage } = useMessage()
@@ -15,7 +16,7 @@ function Action() {
             // 重置完之后才
             showMessage(
                 Lang.FileExploer.Sider.FileTree.topActions.message.reset,
-                'success'
+                MessageType.success
             )
         })
     }

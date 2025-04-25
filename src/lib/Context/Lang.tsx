@@ -3,13 +3,16 @@ import BalldanceLoading from "@/components/public/Loading/Balldance";
 import { LANG_ZH } from "@/lib/Config/Langs/LANG_ZH";
 import { LANG_EN } from "@/lib/Config/Langs/LANG_EN";
 
-export type LangName = 'zh' | 'en';
+export enum LangName {
+    zh = 'zh',
+    en = 'en'
+}
 
 const Langs: {
     [key in LangName]: LangStruct
 } = {
-    'zh': LANG_ZH,
-    'en': LANG_EN
+    zh: LANG_ZH,
+    en: LANG_EN
 }
 
 type LangCtx = {
@@ -26,11 +29,11 @@ const LangCtx = createContext<LangCtx | null>(null);
 export function LangProvider({ children }: {
     children: React.ReactNode | React.ReactNode[];
 }) {
-    const [langName, setLangName] = useState<LangName>('zh')
+    const [langName, setLangName] = useState<LangName>(LangName.zh)
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-        const lang = localStorage.getItem('filer-lang') as LangName || 'zh';
+        const lang = (localStorage.getItem('filer-lang') as LangName) || LangName.zh;
         setLangName(lang);
         setTimeout(() => {
             setLoading(false)
@@ -41,9 +44,9 @@ export function LangProvider({ children }: {
 
     const changeLang = useCallback(() => {
         setLangName((lang) => {
-            let cur = lang === 'zh' ? 'en' : 'zh'
+            let cur = lang === LangName.zh ? LangName.en : LangName.zh
             localStorage.setItem('filer-lang', cur)
-            return cur as LangName
+            return cur
         })
     }, [])
 
@@ -57,7 +60,6 @@ export function LangProvider({ children }: {
 
     if (loading) {
         return <BalldanceLoading />
-        return null;
     }
 
     return (

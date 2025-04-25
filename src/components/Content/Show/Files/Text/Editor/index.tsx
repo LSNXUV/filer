@@ -10,6 +10,7 @@ import { useFileEntry } from '@/lib/Hooks/Files/useFileEntry';
 import { useEditorStatus } from '@/lib/Context/EditorStatus';
 import { IEditor } from '@/types/editor';
 import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile';
+import { MessageType } from '@/components/public/Message/Message';
 
 export const Editor = ({ file, setRunCode }: {
     file: Files,
@@ -42,7 +43,7 @@ export const Editor = ({ file, setRunCode }: {
 
     const saveFile = useCallback(async (value: string = '') => {
         if (!await updateFile(file, value)) {
-            showMessage(Lang.FileExploer.Content.Show.Editor.log.updateError, 'fail')
+            showMessage(Lang.FileExploer.Content.Show.Editor.log.updateError, MessageType.fail)
         }
         oldValueRef.current = value;
     }, [file])

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import styles from './index.module.scss'
 import Left from './Left'
 import Right from './Right'
@@ -12,4 +12,4 @@ function Footer() {
   )
 }
 
-export default Footer
+export default memo(Footer)

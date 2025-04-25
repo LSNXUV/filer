@@ -68,6 +68,11 @@ const IconMatch = [
         icon: ReactCode
     },
     {
+        name: 'vue',
+        exts: ['vue'],
+        icon: ReactCode
+    },
+    {
         name: 'javascript',
         exts: ['js', 'mjs'],
         icon: JSCode

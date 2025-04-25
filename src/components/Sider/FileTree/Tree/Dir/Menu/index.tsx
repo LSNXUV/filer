@@ -9,6 +9,7 @@ import { memo, useCallback, useEffect } from 'react'
 import FileIcon from '@/components/Icons/File/File'
 import { backPath } from '@/lib/Utils/File'
 import { dirNamePattern, fileNamePattern } from '@/lib/Config/File/regex'
+import { MessageType } from '@/components/public/Message/Message'
 
 const DirMenu = memo(function DirMenu({ isTop, file, toggle, dirToggle }: {
     isTop: boolean, //是否为顶层目录
@@ -82,7 +83,7 @@ const DirMenu = memo(function DirMenu({ isTop, file, toggle, dirToggle }: {
         deleteFile(file).then(res => {
             showMessage(
                 Lang.FileExploer.Sider.FileTree.Tree.Dir.DirMenu.message.delete,
-                res ? 'success' : 'info',
+                res ? MessageType.success : MessageType.info,
             )
             toggle()
         })

@@ -43,7 +43,7 @@ export const MessageProvider: React.FC<{ children: ReactNode }> = ({ children })
     duration?: number
   ) => {
     const id = new Date().getTime().toString() + message;
-    type = typeof type === 'boolean' ? (type ? 'success' : 'fail') : type || 'info';
+    type = typeof type === 'boolean' ? (type ? MessageType.success : MessageType.fail) : type || MessageType.info;
     if (typeof message !== 'string') {
       message = message[type] || Lang.Lib.Context.Message.showMessage.unkownMessage;
     }
@@ -53,7 +53,7 @@ export const MessageProvider: React.FC<{ children: ReactNode }> = ({ children })
         [id]: {
           message: message as string,
           duration: (duration || 3) * 1000,
-          type: (type || 'info') as MessageType
+          type: type || MessageType.info
         }
       }
     });

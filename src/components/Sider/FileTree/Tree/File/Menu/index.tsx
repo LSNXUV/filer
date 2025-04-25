@@ -10,6 +10,7 @@ import { useSingleInput } from '@/lib/Context/SingleInput'
 import { backPath } from '@/lib/Utils/File'
 import FileIcon from '@/components/Icons/File/File'
 import { fileNamePattern } from '@/lib/Config/File/regex'
+import { MessageType } from '@/components/public/Message/Message'
 
 const FileMenu = memo(function FileMenu({ file, toggle }: {
     file: Files,
@@ -48,7 +49,7 @@ const FileMenu = memo(function FileMenu({ file, toggle }: {
             const res = await renameFile(file, value)
             showMessage(
                 Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.message.rename,
-                res ? 'success' : 'info',
+                res ? MessageType.success : MessageType.info,
             )
         }
         showSingleInput({
@@ -72,7 +73,7 @@ const FileMenu = memo(function FileMenu({ file, toggle }: {
         const res = await deleteFile(file)
         showMessage(
             Lang.FileExploer.Sider.FileTree.Tree.File.FileMenu.message.delete,
-            res ? 'success' : 'info',
+            res ? MessageType.success : MessageType.info,
         )
         toggle()
     }, [toggle, deleteFile, file, showMessage, Lang])

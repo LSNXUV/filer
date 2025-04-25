@@ -1,4 +1,5 @@
 
+import { MessageType } from '@/components/public/Message/Message'
 import styles from './index.module.scss'
 import { useFiles } from '@/lib/Context/File'
 import { useLang } from '@/lib/Context/Lang'
@@ -28,7 +29,7 @@ export default function Menu({ show }: {
           await loadFilesAndHandles()
           showMessage(
             Lang.FileExploer.Sider.Title.Menu.message.refresh,
-            'success'
+            MessageType.success
           )
         }}
       >
@@ -41,7 +42,7 @@ export default function Menu({ show }: {
             // 重置完成才显示消息
             showMessage(
               Lang.FileExploer.Sider.Title.Menu.message.reset,
-              'success'
+              MessageType.success
             )
           })
         }}
@@ -53,7 +54,7 @@ export default function Menu({ show }: {
           changeLang()
           showMessage(
             Lang.FileExploer.Sider.Title.Menu.message.changeLang,
-            'success'
+            MessageType.success
           )
         }}
       >

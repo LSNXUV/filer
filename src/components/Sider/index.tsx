@@ -1,13 +1,13 @@
 // 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { memo, useCallback, useEffect, useState } from 'react'
 import styles from './index.module.scss'
 import FileTree from './FileTree'
 import Title from './Title'
 import { Expand } from '../Icons/Public/Close'
 import Resizer from './Resizer'
 
-export default function Sider() {
+function Sider() {
 
   const [expand, setExpand] = useState(true)
   const [width, setWidth] = useState(270)
@@ -67,3 +67,5 @@ export default function Sider() {
     </>
   )
 }
+
+export default memo(Sider)

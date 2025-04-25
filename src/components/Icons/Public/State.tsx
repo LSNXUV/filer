@@ -1,3 +1,4 @@
+import { MessageType } from "@/components/public/Message/Message"
 import { getIcon } from "../svg"
 
 export const Warn = getIcon(
@@ -24,13 +25,14 @@ export const Info = getIcon(
   , { size: 24, fill: "#4DAAFB" }
 )
 
-const IconMap = {
+const IconMap: {
+  [key in MessageType]: ReturnType<typeof getIcon>
+} = {
   success: Success,
   error: Fail,
   fail: Fail,
   info: Info,
-  warn: Warn,
-  warning: Warn,
+  warn: Warn
 }
 
 type TipIconType = keyof typeof IconMap

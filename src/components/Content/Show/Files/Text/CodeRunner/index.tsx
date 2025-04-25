@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from './index.module.scss'
 import Resizer from '../Resizer';
 import { Arrow } from '@/components/Icons/Public/Close';
-import { CodeObject } from '..';
+import { CodeObject, RunnerType } from '..';
 import { BabelRunner } from '@/lib/Utils/CodeRunner/babel';
 import { createSubmission, getSubmissionResult } from '@/lib/service/codeRunner';
 import TextFill from '@/components/public/Loading/TextFill';
@@ -36,7 +36,7 @@ function CodeRunner({ codeObject }: {
             }
 
             // 使用babel运行js/ts代码
-            if (codeObject.type === 'babel') {
+            if (codeObject.type === RunnerType.babel) {
                 if (babelRunner.current.getStatus() === 'running') {
                     return;
                 }
@@ -44,20 +44,20 @@ function CodeRunner({ codeObject }: {
                 setLoading(true);
                 babelRunner.current.run(codeObject.code).then((res) => {
                     setResult({
-                        type: 'success',
+                        type: MessageType.success,
                         result: `${res}`
                     });
                 }).catch((err) => {
                     console.log('err', err);
                     setResult({
-                        type: 'error',
+                        type: MessageType.error,
                         result: `${err}`
                     });
                 }).finally(() => {
                     setLoading(false);
                 });
 
-            } else if (codeObject.type === 'other') {
+            } else if (codeObject.type === RunnerType.judge0) {
                 // 其他类型的代码运行
                 if (didFetch.current) return;
                 showSingleInput({
@@ -94,7 +94,7 @@ function CodeRunner({ codeObject }: {
                                     }
                                     if (res.status_id === 3) {
                                         setResult({
-                                            type: 'success',
+                                            type: MessageType.success,
                                             result: `${res.stdout}`
                                         });
                                         setLoading(false);
@@ -103,7 +103,7 @@ function CodeRunner({ codeObject }: {
                                     }
                                     if (res.status_id > 3) {
                                         setResult({
-                                            type: 'error',
+                                            type: MessageType.error,
                                             result: `${res.status?.description}: ${res.compile_output ? `\n${res.compile_output}` : ''}${res.stderr ? `\n${res.stderr}` : ''}`
                                         });
                                         setLoading(false);

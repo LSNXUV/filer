@@ -4,7 +4,10 @@ import { Close } from '@/components/Icons/Public/Close';
 import { ReactNode } from 'react';
 
 
-export type ConfirmType = 'confirm' | 'alert'
+export enum ConfirmType { 
+    Confirm = 'confirm', 
+    Alert = 'alert' 
+}
 
 export type ConfirmProps = {
     title?: ReactNode;
@@ -20,7 +23,7 @@ export default function Confirm({
     show, title, description,
     onConfirm, onCancel,
     closable = false, onClose,
-    type = 'confirm'
+    type = ConfirmType.Confirm
 }: ConfirmProps & { show: boolean }) {
     const { Lang } = useLang();
 
@@ -43,7 +46,7 @@ export default function Confirm({
                         {Lang.Lib.Context.Confirm.confirm}
                     </button>
                     {
-                        type !== 'alert' &&
+                        type !== ConfirmType.Alert &&
                         <button className={styles.cancel} onClick={onCancel}>
                             {Lang.Lib.Context.Confirm.cancel}
                         </button>

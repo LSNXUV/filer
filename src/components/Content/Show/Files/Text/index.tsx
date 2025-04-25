@@ -6,13 +6,21 @@ import { getFileExtension } from '@/lib/Utils/File';
 import { extToJudge0LanguageId } from '@/lib/Config/CodeRunner/language';
 import { useMessage } from '@/lib/Context/Message';
 import { useLang } from '@/lib/Context/Lang';
+import { MessageType } from '@/components/public/Message/Message';
 
+// babel支持的文件后缀名
+const babelExtensions = ['js', 'ts', 'jsx', 'tsx', 'mjs', 'cjs', 'json', 'vue', 'svelte', 'astro'];
+
+export enum RunnerType {
+    babel = 'babel',
+    judge0 = 'judge0'
+}
 export type CodeObject = {
     code: string,
-    type: 'babel'
+    type: RunnerType.babel
 } | {
     code: string,
-    type: 'other',
+    type: RunnerType.judge0,
     ext: string
 }
 export const TextShow = ({ file }: {
@@ -20,18 +28,18 @@ export const TextShow = ({ file }: {
 }) => {
     const { Lang } = useLang()
     const { showMessage } = useMessage()
-    const [runCode, setrunCode] = useState<CodeObject>({ code: '', type: 'babel' })    //对象,每次改变引用以再次运行代码
+    const [runCode, setrunCode] = useState<CodeObject>({ code: '', type: RunnerType.babel })    //对象,每次改变引用以再次运行代码
 
     const setRunCode = useCallback((code: CodeObject['code']) => {
         if (!code) return;
         const ext = getFileExtension(file.name);
-        if (['js', 'ts', 'jsx', 'tsx'].includes(ext)) {
-            setrunCode({ code, type: 'babel' });
+        if (babelExtensions.includes(ext)) {
+            setrunCode({ code, type: RunnerType.babel });
         } else {
             if (extToJudge0LanguageId[ext]) {
-                setrunCode({ code, type: 'other', ext });
+                setrunCode({ code, type: RunnerType.judge0, ext });
             } else {
-                showMessage(Lang.FileExploer.Content.Show.Editor.CodeRunner.notSupportToRun, 'info')
+                showMessage(Lang.FileExploer.Content.Show.Editor.CodeRunner.notSupportToRun, MessageType.info)
             }
         }
     }, [file.name]);

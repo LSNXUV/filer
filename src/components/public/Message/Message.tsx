@@ -2,7 +2,13 @@ import { useState, useEffect } from "react";
 import styles from './Message.module.scss'
 import { Close } from "@/components/Icons/Public/Close";
 import TipIcon from "@/components/Icons/Public/State";
-export type MessageType = 'success' | 'error' | 'fail' | 'info' | 'warning' | 'warn'
+export enum MessageType { // Changed from '=' to '{'
+  success = 'success',
+  error = 'error',
+  fail = 'fail',
+  info = 'info',
+  warn = 'warn'
+}
 
 export type Message = {
   message: string;
