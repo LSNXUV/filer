@@ -1,4 +1,4 @@
-import React, { } from 'react'
+import React, { useMemo } from 'react'
 import styles from './index.module.scss'
 import useSelectedFileEntry from '@/lib/Hooks/Files/useSelectedFileEntry'
 import { useEditorStatus } from '@/lib/Context/EditorStatus'
@@ -14,16 +14,16 @@ function Right() {
    const { showMessage } = useMessage()
    const file = useSelectedFileEntry()
    const selectedFile = useSelectedFile()
-   const { isText } = useSelectedFileType()
-   const { position, tabSize, gotoPosition, openCommand } = useEditorStatus()
+   const { isEditor } = useEditorStatus()
 
+   const { position, tabSize, gotoPosition, openCommand } = useEditorStatus()
    return (
       <div className={styles.container}>
 
          {file && (
             <>
                {
-                  isText &&
+                  isEditor &&
                   <div className={styles.editor}>
                      {
                         position &&
@@ -32,7 +32,7 @@ function Right() {
                         </div>
                      }
                      <div className={styles.indent}
-                        onClick={() => selectedFile && openCommand(selectedFile.path,'>indent')}
+                        onClick={() => selectedFile && openCommand(selectedFile.path, '>indent')}
                      >
                         {
                            tabSize > 0

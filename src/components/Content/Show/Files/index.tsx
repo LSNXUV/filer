@@ -1,4 +1,4 @@
-import React, { memo, useEffect } from 'react'
+import React, { memo, useEffect, useMemo } from 'react'
 import { supportAudioExt, supportExt, supportImageExt, supportVideoExt } from "@/lib/Config/File/ext"
 import { ImageShow } from "./Image"
 import TextShow from "./Text"
@@ -6,6 +6,8 @@ import NotSupport from "./NotSupport"
 import VideoShow from "./Video"
 import AudioShow from "./Audio"
 import { getFileExtension } from '@/lib/Utils/File'
+import { useEditorStatus } from '@/lib/Context/EditorStatus'
+import { useSelectedFile } from '@/lib/Hooks/Tabs/useSelectedFile'
 
 const showFileMap: {
   [key: string]: React.FC<{
@@ -35,15 +37,33 @@ const getTypeFromFile = (file: Files) => {
 }
 
 const ShowFile = memo(({ file }: { file: Files }) => {
+  const selectedFile = useSelectedFile()
+  const { clearEditorStatus } = useEditorStatus()
 
-  const ext = getFileExtension(file.name);
+  const ext = useMemo(() => getFileExtension(file.name), [file.name]);
+
   // 没有扩展名,直接使用文本查看器
   if (ext === file.name.toLocaleLowerCase()) {
     return <TextShow file={file} />
   }
+
+  // 有后缀名，判断是否支持
+  const isSupport = supportExt.includes(ext);
+
+  // 如果没有扩展名,直接使用文本查看器
+  const type = getTypeFromFile(file)
+
+  // 如果不使用Editor, 则清空编辑器状态
+  useEffect(() => {
+    if (selectedFile?.path !== file.path) return;
+    if (isSupport && type !== 'default') {
+      clearEditorStatus()
+    }
+  }, [type, isSupport, clearEditorStatus, selectedFile])
+
   // 有扩展名，判断
-  const ShowFileComponent = supportExt.includes(ext)
-    ? showFileMap[getTypeFromFile(file)]
+  const ShowFileComponent = isSupport
+    ? showFileMap[type]
     : NotSupport
 
   return <ShowFileComponent file={file} />

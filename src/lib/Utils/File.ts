@@ -9,7 +9,7 @@ export function formatFileSize(bytes: number | null | undefined) {
     return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
 }
 
-/** 获取文件后缀 */
+/** 获取文件后缀, 默认ext小写 */
 export function getFileExtension(fileName: string, autoToLowerCase: boolean = true): string {
     const ext = fileName.split('.').pop() || '';
     return autoToLowerCase ? ext.toLowerCase() : ext;

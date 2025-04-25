@@ -17,11 +17,16 @@ type EditorStatusCtx = {
    openCommand: (id: string,filter: string) => void;
    /** 当前tabSize */
    tabSize: number;
+   /** clear状态 */
+   clearEditorStatus: () => void;
+   /** 当前是否使用编辑器 */
+   isEditor: boolean;
 };
 
 const EditorStatusCtx = createContext<EditorStatusCtx | null>(null);
 
 export function EditorStatusProvider({ children }: PropsWithChildren) {
+   const [isEditor, setIsEditor] = useState<boolean>(false);
    const [position, setPosition] = useState<EditorStatusCtx['position'] | null>(null);
    const [tabSize, setTabSize] = useState<number>(4);
    const editorRef = useRef<IEditor>(null);
@@ -62,6 +67,7 @@ export function EditorStatusProvider({ children }: PropsWithChildren) {
    }, []);
 
    const init: EditorStatusCtx['init'] = useCallback((editor) => {
+      setIsEditor(true); // 设置编辑器状态
       editorRef.current = editor; // 设置编辑器实例
       const model = editor.getModel();
       if (!model) {
@@ -96,18 +102,24 @@ export function EditorStatusProvider({ children }: PropsWithChildren) {
       });
    }, [])
 
+   const clearEditorStatus: EditorStatusCtx['clearEditorStatus'] = useCallback(() => {
+      setIsEditor(false); // 清除编辑器状态
+   }, []);
+
    const value = useMemo(() => {
       return {
          editorRef: editorRef.current, init,
          position, gotoPosition,
          openCommand,
-         tabSize
+         tabSize,
+         isEditor, clearEditorStatus
       };
    }, [
       init,
       position, gotoPosition,
       openCommand,
-      tabSize
+      tabSize,
+      isEditor, clearEditorStatus
    ]);
 
    return (

@@ -118,7 +118,7 @@ export const Editor = ({ file, setRunCode }: {
         if (selectedFile?.path !== file.path || !editorRef.current) {
             return;
         }
-        init(editorRef.current); // 重新初始化编辑器、绑定事件等等
+        init(editorRef.current); // 重新初始化编辑器状态、绑定事件等等
     }, [selectedFile, file, init]);
 
     //重新绑定saveAction
