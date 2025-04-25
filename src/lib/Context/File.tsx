@@ -1,5 +1,5 @@
 
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { processHandle, showDirectoryPicker } from '@/lib/Utils/DirectoryPicker';
 import { useLang } from './Lang';
 import { backPath, queryFileHandlePermission, requestFileHandlePermission } from '@/lib/Utils/File';
@@ -149,7 +149,7 @@ export function FilesProvider({ children }: {
                 console.info(err, Lang.Lib.Fun.DirectoryPicker.showDirectoryPicker.userCancle);
             }
         );
-    }, [Lang, alert, loadFilesAndHandles])
+    }, [Lang, alert, loadFilesAndHandles, showMessage]);
 
     // 重置文件选择器
     const resetDirectoryPicker: FilerCtx['resetDirectoryPicker'] = useCallback((callback) => {
@@ -163,9 +163,12 @@ export function FilesProvider({ children }: {
         });
     }, [closeAll]);
 
+    const isInitRef = useRef(false);
     useEffect(() => {
+        if (isInitRef.current) return; // 如果已经初始化过了，则不再执行
         (async () => {
             const rootDirHandle = await getRootDirectoryHandle();
+            console.log(rootDirHandle, 'rootDirHandle');
             if (rootDirHandle) {
 
                 // 如果没权限，需要强行引导交互，这样才能请求权限
@@ -183,9 +186,10 @@ export function FilesProvider({ children }: {
                 setFiles(newFiles);
 
                 setLoading(false);
+                isInitRef.current = true; // 标记为已初始化
             }
         })();
-    }, []);
+    }, [Lang, confirm]);
 
     useEffect(() => {
         if (rootDirHandle) {

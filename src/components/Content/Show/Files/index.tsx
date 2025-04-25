@@ -49,4 +49,5 @@ const ShowFile = memo(({ file }: { file: Files }) => {
   return <ShowFileComponent file={file} />
 })
 
-export default ShowFile
+ShowFile.displayName = 'ShowFile';
+export default ShowFile;

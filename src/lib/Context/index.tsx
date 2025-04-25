@@ -18,14 +18,14 @@ import { SettingProvider } from './Setting'
  * @returns 返回一个包含所有 providers 的组件。
  */
 const ChildrenWithProviders: React.FC<{
-    children: React.ReactNode,
+    childrens: React.ReactNode,
     providers: React.ComponentType<{
         children: React.ReactNode
     }>[]
-}> = ({ children, providers }) => {
+}> = ({ childrens, providers }) => {
     const allProviders = providers.reduceRight((acc, Provider) => (
         <Provider>{acc}</Provider>
-    ), children);
+    ), childrens);
 
     return <>{allProviders}</>;
 };
@@ -44,7 +44,7 @@ const Context: FC<PropsWithChildren> = ({ children }) => {
                 FilesProvider,
                 EditorStatusProvider,
             ]}
-            children={children}
+            childrens={children}
         />
     )
 }

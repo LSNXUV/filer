@@ -31,9 +31,7 @@ function CodeRunner({ codeObject }: {
 
     useEffect(() => {
         if (codeObject.code) {
-            if (runnerHeight === 0) {
-                setRunnerHeight(initExpandHeight) // 设置初始高度
-            }
+            setRunnerHeight(h => h === 0 ? initExpandHeight : h); // 设置初始高度
 
             // 使用babel运行js/ts代码
             if (codeObject.type === RunnerType.babel) {
@@ -125,7 +123,7 @@ function CodeRunner({ codeObject }: {
 
         } else {
         }
-    }, [codeObject])
+    }, [codeObject, Lang, showSingleInput]);
 
     const onToggle = (b?: boolean) => {
         setExpand((s) => {

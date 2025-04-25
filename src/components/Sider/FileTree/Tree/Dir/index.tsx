@@ -127,7 +127,7 @@ export function Dir({ dir, level }: {
                 initExpand &&
                 <Children
                     expand={expand}
-                    children={dir.children}
+                    data={dir.children}
                     level={level}
                 />
             }

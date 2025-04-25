@@ -61,23 +61,23 @@ export default function Tabs() {
     }, [selectId])
 
     const handleKeyDown = useCallback((event: KeyboardEvent) => {
-        // Ctrl + Alt + [ 关闭当前tab左侧的所有tab
         if (event.ctrlKey && event.altKey) {
-            if (event.key === '[') {
+            if (event.key === '[' || event.key === '{') {
                 event.preventDefault()
+                console.log(event.shiftKey);
                 if (event.shiftKey) {
                     closeAllLeft(selectId)
                 } else {
                     closeAllLeftSaved(selectId)
                 }
-            } else if (event.key === ']') {
+            } else if (event.key === ']' || event.key === '}') {
                 event.preventDefault()
                 if (event.shiftKey) {
                     closeAllRightSaved(selectId)
                 } else {
                     closeAllRight(selectId)
                 }
-            } else if (event.key === '\\') {
+            } else if (event.key === '\\' || event.key === '|') {
                 event.preventDefault()
                 if (event.shiftKey) {
                     closeAllSaved()
@@ -90,7 +90,10 @@ export default function Tabs() {
             }
 
         }
-    }, [selectId, onCloseTab, closeAllLeft, closeAllRight, closeAll]);
+    }, [
+        selectId, onCloseTab,
+        closeAllLeft, closeAllLeftSaved, closeAllRight, closeAllRightSaved, closeAll, closeAllSaved
+    ]);
 
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);

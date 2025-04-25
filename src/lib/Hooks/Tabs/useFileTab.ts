@@ -35,7 +35,7 @@ export function useFileTab() {
             });
         }
         setSelectId(file.path); // 设置选中的tabId
-    }, [addTab, isFileInTab]);
+    }, [addTab, isFileInTab, setSelectId]);
 
     /** 添加文件到查看队列末尾 */
     const addFileToTabsRear: UseFileTab['addFileToTabsRear'] = useCallback((file) => {

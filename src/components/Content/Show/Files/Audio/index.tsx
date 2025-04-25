@@ -21,19 +21,19 @@ export default function AudioShow({ file: { path } }: {
             fileUrl = await getFileUrl(path)
             setInitUrl(fileUrl);
         })()
-
-        return () => {
-            // if (fileUrl) {
-            //     URL.revokeObjectURL(fileUrl);
-            // }
-        };
-    }, [getFileUrl, initUrl])
+    }, [getFileUrl, initUrl, path]);
 
     useEffect(() => {
         if (selectedFile?.path === path && initUrl) {
             setUrl(initUrl)
         }
     }, [selectedFile, path, initUrl])
+
+    useEffect(() => {
+        return () => {
+            url && URL.revokeObjectURL(url);
+        };
+    }, [url])
 
     if (!url) {
         return null;

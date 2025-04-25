@@ -16,13 +16,14 @@ const VirtualShow: FC<VirtualShowProps> = ({ children, ...props }) => {
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const refCurrent = ref.current;
+    if (refCurrent) {
+      observer.observe(refCurrent);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (refCurrent) {
+        observer.unobserve(refCurrent);
       }
     };
   }, []);

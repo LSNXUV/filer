@@ -16,15 +16,14 @@ export const SingleInputProvider = ({ children }: {
 
     const [config, setConfig] = useState<Omit<SingleInputProps, 'show'> | null>(null)
 
-    const showSingleInput = (config: Omit<SingleInputProps, 'show'>) => {
+    const showSingleInput = useCallback((config: Omit<SingleInputProps, 'show'>) => {
         setConfig(config)
         setShow(true)
-    }
+    }, []);
 
     const reset = useCallback(() => {
-        setShow(false)
-        
         setConfig(null)
+        setShow(false)
     }, []);
 
     const handleClick = useCallback(async (value: string) => {

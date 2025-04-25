@@ -17,3 +17,8 @@ interface FileSystemDirectoryHandle {
     values: () => AsyncIterableIterator<FileSystemFileHandle | FileSystemDirectoryHandle>;
 
 }
+
+declare module '*.worker.ts?worker&inline' {
+    const workerUrl: string;
+    export default workerUrl;
+}

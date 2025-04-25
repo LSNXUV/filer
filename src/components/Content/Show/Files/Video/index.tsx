@@ -18,24 +18,25 @@ export default function VideoShow({ file: { path } }: {
     const [initUrl, setInitUrl] = useState('');
 
     useEffect(() => {
+        if (initUrl) return;
         let fileUrl = '';
         (async () => {
             fileUrl = await getFileUrl(path)
             setInitUrl(fileUrl);
         })()
-
-        return () => {
-            if (fileUrl) {
-                URL.revokeObjectURL(fileUrl);
-            }
-        };
-    }, [getFileUrl])
+    }, [getFileUrl, initUrl, path]);
 
     useEffect(() => {
-        if (selectedFile && selectedFile.path === path && initUrl) {
+        if (selectedFile?.path === path && initUrl) {
             setUrl(initUrl)
         }
     }, [selectedFile, path, initUrl])
+
+    useEffect(() => {
+        return () => {
+            url && URL.revokeObjectURL(url);
+        };
+    }, [url])
 
     if (!url) {
         return null;

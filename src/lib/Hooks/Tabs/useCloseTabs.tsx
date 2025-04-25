@@ -56,7 +56,7 @@ export function useCloseTabs() {
                 closable: true
             })
         }
-    }, [getFileEditStatus, setFileEditStatus, confirm, Lang]);
+    }, [setTabs, getFileEditStatus, setFileEditStatus, confirm, Lang]);
 
     const closeAllLeftSaved: CloseTabs['closeAllLeftSaved'] = useCallback((tabId) => {
         setTabs(prevTabs => {
@@ -73,7 +73,7 @@ export function useCloseTabs() {
             }
             return prevTabs;
         });
-    }, [getFileEditStatus]);
+    }, [setTabs, getFileEditStatus]);
 
     const closeAllRight: CloseTabs['closeAllRight'] = useCallback((tabId) => {
         let prevTabs: Tab[] = [];   // 用于存储当前tabs
@@ -106,7 +106,7 @@ export function useCloseTabs() {
                 closable: true
             })
         }
-    }, [getFileEditStatus, setFileEditStatus, confirm, Lang]);
+    }, [setTabs, getFileEditStatus, setFileEditStatus, confirm, Lang]);
 
     const closeAllRightSaved: CloseTabs['closeAllRightSaved'] = useCallback((tabId) => {
         setTabs(prevTabs => {
@@ -123,7 +123,7 @@ export function useCloseTabs() {
             }
             return prevTabs;
         });
-    }, [getFileEditStatus]);
+    }, [setTabs, getFileEditStatus]);
 
     const closeAll: CloseTabs['closeAll'] = useCallback((callback) => {
         let prevTabs: Tab[] = [];   // 用于存储当前tabs
@@ -159,7 +159,7 @@ export function useCloseTabs() {
                 closable: true
             })
         }
-    }, [clearFileEditStatus, setFileEditStatus, confirm]);
+    }, [Lang, clearFileEditStatus, setTabs, getFileEditStatus, setFileEditStatus, confirm]);
 
     const closeAllSaved: CloseTabs['closeAllSaved'] = useCallback(() => {
         setTabs(prevTabs => prevTabs.filter(tab => {
@@ -169,7 +169,7 @@ export function useCloseTabs() {
             }
             return true
         }));
-    }, [getFileEditStatus]);
+    }, [setTabs, getFileEditStatus]);
 
     const closeTabObject = useMemo<CloseTabs>(() => {
         return {

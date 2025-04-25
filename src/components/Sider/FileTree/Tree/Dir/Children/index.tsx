@@ -3,20 +3,21 @@ import TransitiveHeightContainer from '@/components/public/TransitiveHeightConta
 import React, { memo } from 'react'
 import { Tree } from '../..'
 
-const Children = memo(({ expand, children, level }: {
+const Children = memo(({ expand, data, level }: {
     expand: boolean,
-    children: Files['children'],
+    data: Files['children'],
     level: number
 }) => {
     return (
         <TransitiveHeightContainer
             expanded={expand}
         >
-            {children.map((file, _) => (
+            {data.map((file, _) => (
                 <Tree key={file.path} files={file} level={level + 1} />
             ))}
         </TransitiveHeightContainer>
     )
 })
 
+Children.displayName = 'Children';
 export default Children

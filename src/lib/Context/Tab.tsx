@@ -31,7 +31,7 @@ type TabsContextType = {
     /** 当前选中的tabId */
     selectId: string,
     /** 设置当前选中的tabId */
-    setSelectId: (id: string) => void,
+    setSelectId: React.Dispatch<React.SetStateAction<string>>,
     /** 拖拽重新排序tabs，index为当前拖动元素的索引，newIndex为拖动到目标位置的索引 */
     resortTabs: (from: number, to: number) => void,
 }

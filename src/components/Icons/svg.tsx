@@ -14,11 +14,11 @@ function Icon({ size = 16, fill = "#bfbfbf", className = '', style, children, ..
 }
 
 export function getIcon(children: React.ReactNode, defaultProps: IconProps = {}) {
-    return (props: IconProps) => {
+    return function GetIcon(props: IconProps) {
         return (
             <Icon {...defaultProps} {...props}>
                 {children}
             </Icon>
-        )
+        );
     }
 }

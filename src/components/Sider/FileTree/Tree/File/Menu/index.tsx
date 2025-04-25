@@ -67,7 +67,7 @@ const FileMenu = memo(function FileMenu({ file, toggle }: {
             handle: (value) => rename(value)
         })
         toggle()
-    }, [renameFile, file, showMessage, Lang, toggle])
+    }, [renameFile, showSingleInput, file, showMessage, Lang, toggle])
 
     const handleDeleteFile = useCallback(async () => {
         const res = await deleteFile(file)

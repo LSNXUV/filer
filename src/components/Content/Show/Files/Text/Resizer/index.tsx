@@ -3,7 +3,7 @@ import styles from './index.module.scss'
 
 function Resizer({ onToggle, setRunnerHeight }: {
     onToggle: (expand?: boolean) => void,
-    setRunnerHeight: (height: number) => void
+    setRunnerHeight: React.Dispatch<React.SetStateAction<number>>
 }) {
     const handleMouseDown = useCallback((e: React.MouseEvent) => {
         e.preventDefault();
@@ -25,7 +25,7 @@ function Resizer({ onToggle, setRunnerHeight }: {
 
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
-    }, [])
+    }, [onToggle, setRunnerHeight]);
     return (
         <div className={styles.resizer} onMouseDown={handleMouseDown} />
     )

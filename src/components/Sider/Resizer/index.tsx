@@ -34,7 +34,7 @@ export default function Resizer({ width, toggleSider, setWidth, setHasWidthTrans
 
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
-    }, [toggleSider, width])
+    }, [toggleSider, width, setWidth, setHasWidthTransition]);
 
     return (
         <div className={styles.resizer} onMouseDown={handleMouseDown} />

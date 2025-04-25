@@ -42,7 +42,7 @@ export const TextShow = ({ file }: {
                 showMessage(Lang.FileExploer.Content.Show.Editor.CodeRunner.notSupportToRun, MessageType.info)
             }
         }
-    }, [file.name]);
+    }, [file.name, Lang, showMessage]);
 
     return (
         <div className={styles.container}
