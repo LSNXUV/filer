@@ -55,14 +55,21 @@ const TransitiveHeightContainer: FC<PropsWithChildren<{
             .filter(i => !extraTransition.split(/\s+/).includes(i))
             .map(i => `${i} ${duration} ${timingFunction}`).join(', ')
         return (
-            <div className={`${className} thc-toggle-container ${expanded ? 'thc-toggle-container-expanded' : 'thc-toggle-container-collapsed'}`} style={
+            <div className={`${className} thc-toggle-container ${expanded
+                ? 'thc-toggle-container-expanded'
+                : 'thc-toggle-container-collapsed'
+                }`
+            }
+                style={
                 {
                     ...style,
                     transitionDuration: duration,
                     transitionTimingFunction: timingFunction,
                     transitionProperty: `${defaultTransitionProperty}, ${extraTransitionProperty}`,
                     ...(!extraTransition ? {} : {
-                        transition: `${defaultTransitionProperty} ${duration} ${timingFunction}, ${extraTransitions ? `${extraTransitions}, ` : ''}${extraTransition}`,
+                        transition: `${defaultTransitionProperty} ${duration} ${timingFunction}, ${
+                            extraTransitions ? `${extraTransitions}, ` : ''
+                        }${extraTransition}`,
                     })
                 }
             }

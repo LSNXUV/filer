@@ -41,7 +41,9 @@ export const LANG_EN: LangStruct = {
             DirectoryPicker: {
                 showDirectoryPicker: {
                     userCancle: 'User Cancled'
-                }
+                },
+                // notSupport: '当前浏览器暂不支持,建议您使用最新Edge或Chrome浏览器！'
+                notSupport: 'The current browser does not support, it is recommended that you use the latest Edge or Chrome browser!'
             }
         },
         Hooks: {

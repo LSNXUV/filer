@@ -130,12 +130,8 @@ export const TabsProvider = ({ children }: { children: React.ReactNode }) => {
 
 
     const contextValue = useMemo<TabsContextType>(() => ({
-        tabs,setTabs,
-        addTab,
-        resortTabs,
-        closeTab, 
-        selectId, setSelectId,
-        selectedTab,
+        tabs,setTabs, addTab, resortTabs, closeTab, 
+        selectId, setSelectId, selectedTab,
     }), [tabs, addTab, resortTabs, closeTab, selectId, selectedTab]);
 
     return (

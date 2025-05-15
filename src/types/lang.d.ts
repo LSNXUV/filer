@@ -40,8 +40,9 @@ interface LangStruct {
         Fun: {
             DirectoryPicker: {
                 showDirectoryPicker: {
-                    userCancle: string
-                }
+                    userCancle: string,
+                },
+                notSupport: string,
             }
         },
         Hooks: {

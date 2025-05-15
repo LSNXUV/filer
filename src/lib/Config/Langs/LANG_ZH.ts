@@ -41,7 +41,8 @@ export const LANG_ZH: LangStruct = {
             DirectoryPicker: {
                 showDirectoryPicker: {
                     userCancle: '用户取消'
-                }
+                },
+                notSupport: '当前浏览器暂不支持,建议您使用最新Edge或Chrome浏览器！'
             }
         },
         Hooks: {

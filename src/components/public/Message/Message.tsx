@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import styles from './Message.module.scss'
 import { Close } from "@/components/Icons/Public/Close";
 import TipIcon from "@/components/Icons/Public/State";
-export enum MessageType { // Changed from '=' to '{'
+export enum MessageType {
   success = 'success',
   error = 'error',
   fail = 'fail',

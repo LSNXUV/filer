@@ -44,8 +44,9 @@ export const ConfirmProvider: React.FC<{ children: ReactNode }> = ({ children })
         });
     }, [])
 
-    const alert = useCallback((config: Omit<ConfirmProps, 'onCancel' | 'closable' | 'onClose' | 'type'>) => {
-
+    const alert = useCallback((
+        config: Omit<ConfirmProps, 'onCancel' | 'closable' | 'onClose' | 'type'>
+    ) => {
         return confirm({
             ...config,
             type: ConfirmType.Alert,

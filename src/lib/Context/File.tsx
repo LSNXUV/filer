@@ -146,7 +146,10 @@ export function FilesProvider({ children }: {
                 }
             },
             (err) => {
-                console.info(err, Lang.Lib.Fun.DirectoryPicker.showDirectoryPicker.userCancle);
+                showMessage(
+                    Lang.Lib.Fun.DirectoryPicker.notSupport,
+                    false
+                );
             }
         );
     }, [Lang, alert, loadFilesAndHandles, showMessage]);
