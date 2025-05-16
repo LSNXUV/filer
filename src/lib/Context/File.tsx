@@ -171,7 +171,6 @@ export function FilesProvider({ children }: {
         if (isInitRef.current) return; // 如果已经初始化过了，则不再执行
         (async () => {
             const rootDirHandle = await getRootDirectoryHandle();
-            console.log(rootDirHandle, 'rootDirHandle');
             if (rootDirHandle) {
 
                 // 如果没权限，需要强行引导交互，这样才能请求权限
