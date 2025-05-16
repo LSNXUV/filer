@@ -1,12 +1,12 @@
 :root {
   --file-tree-indent: calc(1rem * 1.4); // 文件树的缩进
 
-  --resizer-width: 4px;   // 拖拽调整resizer的宽度
+  --resizer-width: 4px; // 拖拽调整resizer的宽度
 
-  --sider-unexpand-width: calc(16px + 12px * 2);    // sider未展开的宽度
+  --sider-unexpand-width: calc(16px + 12px * 2); // sider未展开的宽度
 
-  --content-tabs-height: 40px;  // tabs的高度
-  --content-tabs-scrollbar-height: 4px;  // tabs的滚动条高度
+  --content-tabs-height: 40px; // tabs的高度
+  --content-tabs-scrollbar-height: 4px; // tabs的滚动条高度
 
   --content-breadcrumbs-height: 32px; // breadcrumbs的高度
 
@@ -23,11 +23,9 @@
   box-sizing: border-box;
 }
 
-@media screen and (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-    color: #dedede;
-  }
+html {
+  color-scheme: dark;
+  color: #dedede;
 }
 
 .bar {
@@ -50,4 +48,3 @@
   opacity: 0.6;
   cursor: not-allowed !important;
 }
-
